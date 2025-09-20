@@ -1,0 +1,23 @@
+{
+  "name": "Piano di Studio AI Development",
+  "short_name": "AI StudyPlan",
+  "description": "Sistema completo per la pianificazione di studi in AI e sviluppo software",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#6C5CE7",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary"
+}
