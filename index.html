@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano di Studio AI Development - Sistema Completo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 id="appTitle">📊 Piano di Studio AI Development</h1>
+            <p id="appDescription">Percorso completo di certificazione professionale - Ore Effettive Ricalcolate</p>
+        </div>
+        
+        <!-- Calculation Info -->
+        <div class="calculation-info">
+            <h3>ℹ️ Calcolo Ore Effettive</h3>
+            <ul id="calculationDisplay">
+                <li><strong>Teoria:</strong> ore originali × <span id="theoryMultiplier">1.5</span></li>
+                <li><strong>Pratica:</strong> ore originali × <span id="practiceMultiplier">1.2</span></li>
+                <li><strong>Esercitazioni:</strong> <span id="exerciseHours">3</span> ore per esercitazione</li>
+                <li><strong>Progetti:</strong> <span id="projectHours">5</span> ore per progetto</li>
+            </ul>
+        </div>
+        
+        <!-- Settings Bar -->
+        <div class="settings-bar">
+            <div class="setting-group">
+                <span class="setting-label">Ore settimanali:</span>
+                <input type="number" id="weeklyHours" class="setting-input" value="15" onchange="updateWeeklyHours()" readonly>
+            </div>
+            <div class="setting-group">
+                <span class="setting-label">Data inizio:</span>
+                <input type="date" id="startDate" class="setting-input" style="width: 150px;" value="2025-09-08" onchange="recalculateDates()" readonly>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalHours">437</div>
+                <div class="stat-label">Ore Totali Effettive</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalWeeks">29</div>
+                <div class="stat-label">Settimane</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalCourses">10</div>
+                <div class="stat-label">Corsi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="weeklyHoursDisplay">15</div>
+                <div class="stat-label">Ore/Sett</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="startDateDisplay">8 Set</div>
+                <div class="stat-label">Inizio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="endDateDisplay">30 Mar</div>
+                <div class="stat-label">Fine</div>
+            </div>
+        </div>
+        
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div>
+                <button class="btn btn-primary" onclick="toggleEditMode()">
+                    ✏️ <span id="editBtnText">Modifica</span>
+                </button>
+                <button class="btn btn-warning" onclick="showAddCourseModal()">
+                    ➕ Aggiungi Corso
+                </button>
+                <button class="btn btn-success" onclick="showSaveModal()">
+                    💾 Salva Piano
+                </button>
+                <button class="btn btn-info" onclick="showLoadModal()">
+                    📁 Gestisci Piani
+                </button>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    📥 Importa File
+                </button>
+                <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadData(event)">
+            </div>
+            <div>
+                <span id="currentPlanName" style="color: #667eea; font-weight: 600;"></span>
+            </div>
+        </div>
+        
+        <!-- Gantt Chart -->
+        <div class="gantt-container">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Diagramma di Gantt - Pianificazione Corsi</h2>
+            <p style="color: #666; margin-bottom: 20px;">💡 Clicca su ogni corso per vedere la schedulazione settimanale dettagliata con gli argomenti specifici</p>
+            
+            <div id="timelineMonths" class="timeline-months">
+                <!-- I mesi verranno generati da JavaScript -->
+            </div>
+            
+            <table class="gantt-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Corso</th>
+                        <th style="width: 8%;">Ore Eff.</th>
+                        <th style="width: 8%;">Sett.</th>
+                        <th style="width: 12%;">Periodo</th>
+                        <th style="width: 52%;" id="timelineHeader">Timeline</th>
+                    </tr>
+                </thead>
+                <tbody id="ganttBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Schedule Detail Section -->
+        <div id="scheduleDetail" class="schedule-detail">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Add Course Modal -->
+    <div id="addCourseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Aggiungi Nuovo Corso</div>
+            <div class="form-group">
+                <label class="form-label">Nome del corso:</label>
+                <input type="text" id="newCourseName" class="form-input" placeholder="Es: Machine Learning Avanzato">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Ore totali:</label>
+                <input type="number" id="newCourseHours" class="form-input" placeholder="Es: 30">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Colore:</label>
+                <input type="color" id="newCourseColor" class="form-input" value="#667eea">
+            </div>
+            <div class="form-buttons">
+                <button class="btn btn-success" onclick="addNewCourse()">Aggiungi</button>
+                <button class="btn btn-primary" onclick="closeAddCourseModal()">Annulla</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Plan Modal -->
+    <div id="savePlanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Salva Piano di Studio</div>
+            <div class="form-group">
+                <label class="form-label">Nome del piano:</label>
+                <input type="text" id="planName" class="form-input" placeholder="Es: Piano AI Development - Settembre 2025">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Descrizione (opzionale):</label>
+                <input type="text" id="planDescription" class="form-input" placeholder="Es: Piano completo con specializzazione LLM">
+            </div>
+            <div class="form-buttons">
+                <button class="btn btn-success" onclick="savePlan()">💾 Salva</button>
+                <button class="btn btn-warning" onclick="exportPlan()">📤 Esporta File</button>
+                <button class="btn btn-primary" onclick="closeSaveModal()">Annulla</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Plan Modal -->
+    <div id="loadPlanModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">Gestisci Piani di Studio</div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <strong>Piano Corrente:</strong> <span id="currentPlanDisplay">Nessun piano caricato</span>
+                </div>
+            </div>
+            
+            <div id="savedPlansList" style="max-height: 400px; overflow-y: auto;">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <div class="form-buttons">
+                <button class="btn btn-primary" onclick="closeLoadModal()">Chiudi</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Plan Confirmation Modal -->
+    <div id="deletePlanModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">Conferma Eliminazione</div>
+            <p>Sei sicuro di voler eliminare il piano "<span id="planToDelete"></span>"?</p>
+            <p style="color: #ef4444; font-size: 0.9em;">Questa azione non può essere annullata.</p>
+            <div class="form-buttons">
+                <button class="btn btn-warning" onclick="confirmDeletePlan()">🗑️ Elimina</button>
+                <button class="btn btn-primary" onclick="closeDeleteModal()">Annulla</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/calculations.js"></script>
+    <script src="js/planManager.js"></script>
+    <script src="js/ganttChart.js"></script>
+    <script src="js/courseDetail.js"></script>
+    <script src="js/modalManager.js"></script>
+    <script src="js/uiManager.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+/* Reset e stili base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container principale */
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Settings Bar */
+.settings-bar {
+    background: #f8f9fa;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.setting-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.setting-input {
+    padding: 8px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    width: 80px;
+    transition: all 0.3s ease;
+}
+
+.setting-input[readonly] {
+    background: #f0f0f0;
+    cursor: not-allowed;
+    color: #666;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-label {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Bottoni */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-info {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #2563eb;
+}
+
+.btn-warning {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #d97706;
+}
+
+.btn-small {
+    padding: 5px 12px;
+    font-size: 0.85em;
+}
+
+/* Gantt Chart */
+.gantt-container {
+    padding: 30px;
+    overflow-x: auto;
+}
+
+.gantt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.gantt-table th {
+    background: #667eea;
+    color: white;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.gantt-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.9em;
+}
+
+.gantt-table tr {
+    transition: background 0.3s ease;
+}
+
+.gantt-table tr:hover {
+    background: #f5f5f5;
+}
+
+.course-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.course-input {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.gantt-bar-container {
+    position: relative;
+    height: 30px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    overflow: visible;
+}
+
+.gantt-bar {
+    position: absolute;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    color: white;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.gantt-bar:hover {
+    transform: scaleY(1.2);
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Timeline */
+.timeline-months {
+    position: relative;
+    height: 50px;
+    border-top: 2px solid #667eea;
+    margin-top: 20px;
+    padding-top: 10px;
+    margin-left: calc(20% + 8% + 8% + 12%);
+    width: 52%;
+    background: #fafafa;
+}
+
+.month {
+    position: absolute;
+    text-align: center;
+    padding: 2px 4px;
+    font-weight: 600;
+    color: #667eea;
+    border-right: 1px solid #e0e0e0;
+    font-size: 0.75em;
+    overflow: hidden;
+    white-space: nowrap;
+    top: 10px;
+}
+
+.month:last-child {
+    border-right: none;
+}
+
+/* Course Controls */
+.delete-course-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+/* Week Schedule */
+.week-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.week-tab {
+    padding: 8px 16px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.week-tab:hover {
+    background: #d0d0d0;
+}
+
+.week-tab.active {
+    background: #667eea;
+    color: white;
+}
+
+.schedule-detail {
+    padding: 30px;
+    background: white;
+    display: none;
+}
+
+.schedule-detail.active {
+    display: block;
+}
+
+.week-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.week-title {
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.topic-input {
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.topics-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.topics-box h3 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+/* Day Schedule */
+.day-schedule {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #667eea;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.day-name {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.add-session-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* Sessions */
+.session {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid;
+}
+
+.session.study { border-left-color: #10b981; background: #f0fdf4; }
+.session.work { border-left-color: #f97316; background: #fff7ed; }
+.session.gym { border-left-color: #ef4444; background: #fef2f2; }
+.session.community { border-left-color: #a855f7; background: #faf5ff; }
+.session.prayer { border-left-color: #3b82f6; background: #eff6ff; }
+.session.fraternita { border-left-color: #ec4899; background: #fdf2f8; }
+.session.centro { border-left-color: #14b8a6; background: #f0fdfa; }
+.session.uepe { border-left-color: #f59e0b; background: #fffbeb; }
+.session.altro { border-left-color: #6b7280; background: #f9fafb; }
+
+.session-time {
+    font-weight: 600;
+    color: #667eea;
+    min-width: 100px;
+}
+
+.session-content {
+    flex: 1;
+    white-space: pre-line;
+}
+
+.session-input {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.session-select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.hidden {
+    display: none;
+}
+
+.close-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #666;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Calculation Info */
+.calculation-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px;
+    border-left: 4px solid #2196f3;
+}
+
+.calculation-info h3 {
+    color: #1976d2;
+    margin-bottom: 10px;
+}
+
+.calculation-info ul {
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+/* Saved Plans */
+.saved-plan-item {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.saved-plan-item:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.plan-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.plan-name {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.plan-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.plan-description {
+    color: #666;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.plan-stats {
+    display: flex;
+    gap: 15px;
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.plan-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.current-plan-indicator {
+    background: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.no-plans-message {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+    font-style: italic;
+}
