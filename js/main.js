@@ -10,6 +10,9 @@ function init() {
     // Solo DOPO aver caricato eventuali dati salvati, calcola le ore
     initializeCourseHours();
     
+    // IMPORTANTE: Prima calcola le date (che calcola anche le settimane individuali e le statistiche)
+    recalculateDates();
+    
     // Aggiorna display del piano corrente
     updateCurrentPlanDisplay();
     
@@ -21,9 +24,6 @@ function init() {
     const startDateInput = document.getElementById('startDate');
     weeklyHoursInput.style.background = '#f0f0f0';
     startDateInput.style.background = '#f0f0f0';
-    
-    // Forza un ricalcolo delle date per essere sicuri
-    recalculateDates();
 }
 
 // Inizializza l'applicazione al caricamento della pagina

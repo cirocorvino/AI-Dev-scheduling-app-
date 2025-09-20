@@ -22,7 +22,7 @@ function calculateCourseEffectiveHours(courseName) {
     console.log("Calcolando ore per:", courseName);
     const course = curriculum[courseName];
     if (!course) {
-        console.log("Corso non trovato nel curriculum");
+        console.warn(`ATTENZIONE: Corso "${courseName}" non trovato nel curriculum!`);
         return 0;
     }
     
@@ -32,7 +32,7 @@ function calculateCourseEffectiveHours(courseName) {
         return total + effectiveTime;
     }, 0);
     
-    console.log("Totale ore calcolate:", total);
+    console.log(`Totale ore calcolate per ${courseName}:`, total);
     return total;
 }
 
@@ -45,9 +45,13 @@ function recalculateAllEffectiveHours() {
 
 // Calcola le ore iniziali per tutti i corsi
 function initializeCourseHours() {
+    console.log("=== INIZIALIZZAZIONE ORE CORSI ===");
     courses.forEach(course => {
+        const oldHours = course.hours;
         course.hours = calculateCourseEffectiveHours(course.name);
+        console.log(`${course.name}: ${oldHours}h → ${course.hours}h`);
     });
+    console.log("=== FINE INIZIALIZZAZIONE ===");
 }
 
 // Ricalcola tutte le date
@@ -79,8 +83,18 @@ function updateWeeklyHours() {
 // Aggiorna statistiche
 function updateStats() {
     const totalHours = courses.reduce((sum, course) => sum + course.hours, 0);
-    const totalWeeks = Math.ceil(totalHours / weeklyHours);
+    
+    // CORREZIONE: Usa il calcolo reale delle settimane (somma delle settimane individuali)
+    // invece del calcolo semplificato, per maggiore accuratezza
+    const totalWeeks = courses.reduce((sum, course) => sum + (course.weeks || 0), 0);
+    
     const endDate = courses.length > 0 ? new Date(courses[courses.length - 1].endDate) : new Date();
+    
+    console.log(`=== AGGIORNAMENTO STATISTICHE ===`);
+    console.log(`Ore totali calcolate: ${totalHours}`);
+    console.log(`Settimane totali (somma reale): ${totalWeeks}`);
+    console.log(`Settimane totali (calcolo semplice): ${Math.ceil(totalHours / weeklyHours)}`);
+    console.log(`Corsi totali: ${courses.length}`);
     
     document.getElementById('totalHours').textContent = Math.round(totalHours);
     document.getElementById('totalWeeks').textContent = totalWeeks;

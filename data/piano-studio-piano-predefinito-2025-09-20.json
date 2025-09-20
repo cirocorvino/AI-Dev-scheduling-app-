@@ -1,0 +1,2455 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "AI Applicata",
+      "hours": 112.85000000000002,
+      "color": "#FF6B6B",
+      "startDate": "2025-09-08",
+      "weeks": 8,
+      "endDate": "2025-11-03"
+    },
+    {
+      "id": 2,
+      "name": "REST API per ML",
+      "hours": 26.299999999999997,
+      "color": "#4ECDC4",
+      "startDate": "2025-11-03",
+      "weeks": 2,
+      "endDate": "2025-11-17"
+    },
+    {
+      "id": 3,
+      "name": "SQL Database",
+      "hours": 26.6,
+      "color": "#FFD93D",
+      "startDate": "2025-11-17",
+      "weeks": 2,
+      "endDate": "2025-12-01"
+    },
+    {
+      "id": 4,
+      "name": "NoSQL",
+      "hours": 33.8,
+      "color": "#6C5CE7",
+      "startDate": "2025-12-01",
+      "weeks": 3,
+      "endDate": "2025-12-22"
+    },
+    {
+      "id": 5,
+      "name": "Python Avanzato",
+      "hours": 28.099999999999998,
+      "color": "#FD79A8",
+      "startDate": "2025-12-22",
+      "weeks": 2,
+      "endDate": "2026-01-05"
+    },
+    {
+      "id": 6,
+      "name": "Large Language Models",
+      "hours": 29.6,
+      "color": "#00B894",
+      "startDate": "2026-01-05",
+      "weeks": 2,
+      "endDate": "2026-01-19"
+    },
+    {
+      "id": 7,
+      "name": "Agentic AI",
+      "hours": 29,
+      "color": "#E17055",
+      "startDate": "2026-01-19",
+      "weeks": 2,
+      "endDate": "2026-02-02"
+    },
+    {
+      "id": 8,
+      "name": "Architetture Transformer",
+      "hours": 29.900000000000002,
+      "color": "#74B9FF",
+      "startDate": "2026-02-02",
+      "weeks": 2,
+      "endDate": "2026-02-16"
+    },
+    {
+      "id": 9,
+      "name": "MERN Stack",
+      "hours": 49.4,
+      "color": "#A29BFE",
+      "startDate": "2026-02-16",
+      "weeks": 4,
+      "endDate": "2026-03-16"
+    },
+    {
+      "id": 10,
+      "name": "DevOps",
+      "hours": 29.9,
+      "color": "#FDCB6E",
+      "startDate": "2026-03-16",
+      "weeks": 2,
+      "endDate": "2026-03-30"
+    }
+  ],
+  "weeklySchedules": {
+    "1-0": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Introduzione ML - Teoria\n• Dataset - Teoria\n• Dataset CSV/JSON/XML - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Introduzione ML - Teoria",
+              "time": 0.5,
+              "effectiveTime": 0.75
+            },
+            {
+              "name": "Dataset - Teoria",
+              "time": 0.5,
+              "effectiveTime": 0.75
+            },
+            {
+              "name": "Dataset CSV/JSON/XML - Pratica",
+              "time": 1,
+              "effectiveTime": 1.2
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Dataset CSV/JSON/XML - Pratica\n• Data Preprocessing Encoding - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Dataset CSV/JSON/XML - Pratica",
+              "time": 1,
+              "effectiveTime": 1.2
+            },
+            {
+              "name": "Data Preprocessing Encoding - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Data Preprocessing Encoding - Pratica\n• Data Preprocessing Missing Data - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Data Preprocessing Encoding - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Data Preprocessing Missing Data - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• Data Preprocessing Missing Data - Pratica\n• Data Preprocessing Normalizzazione - Pratica\n• Data Preprocessing - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Data Preprocessing Missing Data - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Data Preprocessing Normalizzazione - Pratica",
+              "time": 1,
+              "effectiveTime": 1.2
+            },
+            {
+              "name": "Data Preprocessing - Esercitazione",
+              "time": 1.5,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Data Preprocessing - Esercitazione\n• Regressione Lineare - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Data Preprocessing - Esercitazione",
+              "time": 1.5,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Regressione Lineare - Teoria",
+              "time": 1.5,
+              "effectiveTime": 2.25
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI - Regressione Lineare - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione Lineare - Teoria",
+              "time": 1.5,
+              "effectiveTime": 2.25
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI:\n• Regressione Lineare - Teoria\n• Regressione Minimi Quadrati - Teoria\n• Regressione scikit-learn - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione Lineare - Teoria",
+              "time": 1.5,
+              "effectiveTime": 2.25
+            },
+            {
+              "name": "Regressione Minimi Quadrati - Teoria",
+              "time": 1,
+              "effectiveTime": 1.5
+            },
+            {
+              "name": "Regressione scikit-learn - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Regressione scikit-learn - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione scikit-learn - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ]
+    },
+    "1-1": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - Regressione Multipla/Polinomiale - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione Multipla/Polinomiale - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Regressione Multipla/Polinomiale - Pratica\n• Regressione Abitazioni - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione Multipla/Polinomiale - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Regressione Abitazioni - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Regressione Abitazioni - Esercitazione\n• Overfitting - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regressione Abitazioni - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Overfitting - Teoria",
+              "time": 1,
+              "effectiveTime": 1.5
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• Overfitting - Teoria\n• Cross-validation - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Overfitting - Teoria",
+              "time": 1,
+              "effectiveTime": 1.5
+            },
+            {
+              "name": "Cross-validation - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Cross-validation - Pratica\n• Regolarizzazione L1/L2 - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Cross-validation - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Regolarizzazione L1/L2 - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI:\n• Regolarizzazione L1/L2 - Pratica\n• Overfitting - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Regolarizzazione L1/L2 - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Overfitting - Esercitazione",
+              "time": 1.5,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI - Overfitting - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Overfitting - Esercitazione",
+              "time": 1.5,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio libero",
+          "type": "study"
+        }
+      ]
+    },
+    "1-2": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - Classificazione Logistica - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Classificazione Logistica - Teoria",
+              "time": 1.5,
+              "effectiveTime": 2.25
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Classificazione Logistica - Teoria\n• Metriche Classificazione - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Classificazione Logistica - Teoria",
+              "time": 1.5,
+              "effectiveTime": 2.25
+            },
+            {
+              "name": "Metriche Classificazione - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Metriche Classificazione - Pratica\n• ROC e Multiclasse - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Metriche Classificazione - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "ROC e Multiclasse - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• ROC e Multiclasse - Pratica\n• Classificazione Tumori - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "ROC e Multiclasse - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Classificazione Tumori - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Classificazione Tumori - Esercitazione\n• Clustering K-Means - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Classificazione Tumori - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Clustering K-Means - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI:\n• Clustering K-Means - Pratica\n• Elbow Method - Pratica\n• Clustering Clienti - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Clustering K-Means - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Elbow Method - Pratica",
+              "time": 1,
+              "effectiveTime": 1.2
+            },
+            {
+              "name": "Clustering Clienti - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI - Clustering Clienti - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Clustering Clienti - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Clustering Clienti - Esercitazione",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Clustering Clienti - Esercitazione",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ]
+    },
+    "1-7": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - NER con SpaCy - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "NER con SpaCy - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• NER con SpaCy - Pratica\n• Progetto: Identificazione lingua museo",
+          "type": "study",
+          "modules": [
+            {
+              "name": "NER con SpaCy - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Progetto: Identificazione lingua museo",
+              "time": 10,
+              "effectiveTime": 5
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Progetto: Identificazione lingua museo",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Progetto: Identificazione lingua museo",
+              "time": 10,
+              "effectiveTime": 5
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Progetto: Identificazione lingua museo",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Progetto: Identificazione lingua museo",
+              "time": 10,
+              "effectiveTime": 5
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio libero",
+          "type": "study"
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio libero",
+          "type": "study"
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio libero",
+          "type": "study"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio libero",
+          "type": "study"
+        }
+      ]
+    },
+    "1-6": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - NLP Stemming/Lemmatization - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "NLP Stemming/Lemmatization - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• NLP Stemming/Lemmatization - Pratica\n• Bag of Words - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "NLP Stemming/Lemmatization - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Bag of Words - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Bag of Words - Teoria\n• Text Classification - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Bag of Words - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Text Classification - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Text Classification - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Text Classification - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Text Classification - Pratica\n• Language Identification - Pratica\n• Sentiment Analysis - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Text Classification - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Language Identification - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Sentiment Analysis - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI - Sentiment Analysis - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Sentiment Analysis - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI:\n• Sentiment Analysis - Pratica\n• Topic Modelling LDA - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Sentiment Analysis - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Topic Modelling LDA - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Topic Modelling LDA - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Topic Modelling LDA - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ]
+    },
+    "1-5": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - K-NN - Teoria e Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "K-NN - Teoria e Pratica",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• K-NN - Teoria e Pratica\n• Decision Trees - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "K-NN - Teoria e Pratica",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Decision Trees - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Decision Trees - Pratica\n• Random Forest - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Decision Trees - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Random Forest - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• Random Forest - Pratica\n• Ottimizzazione Iperparametri - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Random Forest - Pratica",
+              "time": 1.5,
+              "effectiveTime": 1.7999999999999998
+            },
+            {
+              "name": "Ottimizzazione Iperparametri - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Ottimizzazione Iperparametri - Pratica\n• AutoML FLAML - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Ottimizzazione Iperparametri - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "AutoML FLAML - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI - AutoML FLAML - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "AutoML FLAML - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI:\n• AutoML FLAML - Pratica\n• NLP Data Cleaning - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "AutoML FLAML - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "NLP Data Cleaning - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - NLP Data Cleaning - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "NLP Data Cleaning - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ]
+    },
+    "2-0": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Introduzione REST - Teoria\n• Flask Basics - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Introduzione REST - Teoria",
+              "time": 1,
+              "effectiveTime": 1.5
+            },
+            {
+              "name": "Flask Basics - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Flask Basics - Pratica\n• FastAPI Setup - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Flask Basics - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "FastAPI Setup - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - FastAPI Setup - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "FastAPI Setup - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• FastAPI Setup - Pratica\n• Serializzazione Modelli - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "FastAPI Setup - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Serializzazione Modelli - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Serializzazione Modelli - Pratica\n• Deploy con Docker - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Serializzazione Modelli - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            },
+            {
+              "name": "Deploy con Docker - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI:\n• Deploy con Docker - Pratica\n• API Authentication - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Deploy con Docker - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "API Authentication - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI - API Authentication - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "API Authentication - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - API Authentication - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "API Authentication - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ]
+    },
+    "3-0": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - Fondamenti SQL - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Fondamenti SQL - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Fondamenti SQL - Teoria\n• Query Avanzate - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Fondamenti SQL - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Query Avanzate - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - Query Avanzate - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Query Avanzate - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• Query Avanzate - Pratica\n• Join e Subquery - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Query Avanzate - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "Join e Subquery - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• Join e Subquery - Pratica\n• Stored Procedures - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Join e Subquery - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "Stored Procedures - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI - Stored Procedures - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Stored Procedures - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI:\n• Stored Procedures - Teoria\n• Ottimizzazione Query - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Stored Procedures - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "Ottimizzazione Query - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Ottimizzazione Query - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Ottimizzazione Query - Pratica",
+              "time": 2,
+              "effectiveTime": 2.4
+            }
+          ]
+        }
+      ]
+    },
+    "4-0": {
+      "Lunedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - Introduzione NoSQL - Teoria",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Introduzione NoSQL - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            }
+          ]
+        }
+      ],
+      "Martedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Mercoledì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI:\n• Introduzione NoSQL - Teoria\n• MongoDB Basics - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Introduzione NoSQL - Teoria",
+              "time": 2,
+              "effectiveTime": 3
+            },
+            {
+              "name": "MongoDB Basics - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Giovedì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:00",
+          "content": "🏋️ Cardio",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "📚 Studio AI - MongoDB Basics - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "MongoDB Basics - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Venerdì": [
+        {
+          "time": "06:30-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-18:00",
+          "content": "💼 Lavoro",
+          "type": "work"
+        },
+        {
+          "time": "18:15-19:30",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI:\n• MongoDB Basics - Pratica\n• MongoDB Aggregation - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "MongoDB Basics - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "MongoDB Aggregation - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ],
+      "Sabato": [
+        {
+          "time": "07:00-07:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "09:00-12:00",
+          "content": "📚 Studio AI:\n• MongoDB Aggregation - Pratica\n• Redis - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "MongoDB Aggregation - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "Redis - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        },
+        {
+          "time": "14:00-16:00",
+          "content": "📚 Studio AI - Redis - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Redis - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        },
+        {
+          "time": "17:00-18:15",
+          "content": "🏋️ Pesi",
+          "type": "gym"
+        },
+        {
+          "time": "21:00-23:00",
+          "content": "👥 Comunità Neocatecumenale",
+          "type": "community"
+        }
+      ],
+      "Domenica": [
+        {
+          "time": "07:30-08:45",
+          "content": "🙏 Lodi + Letture",
+          "type": "prayer"
+        },
+        {
+          "time": "11:00-13:00",
+          "content": "📚 Studio AI:\n• Redis - Pratica\n• Cassandra - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Redis - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            },
+            {
+              "name": "Cassandra - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        },
+        {
+          "time": "21:00-22:30",
+          "content": "📚 Studio AI - Cassandra - Pratica",
+          "type": "study",
+          "modules": [
+            {
+              "name": "Cassandra - Pratica",
+              "time": 3,
+              "effectiveTime": 3.5999999999999996
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "courseTopics": {
+    "1-0_paramsVersion": "1.5-1.2-3-5",
+    "1-0_distributed": [
+      {
+        "name": "Introduzione ML - Teoria",
+        "time": 0.5,
+        "effectiveTime": 0.75
+      },
+      {
+        "name": "Dataset - Teoria",
+        "time": 0.5,
+        "effectiveTime": 0.75
+      },
+      {
+        "name": "Dataset CSV/JSON/XML - Pratica",
+        "time": 1,
+        "effectiveTime": 1.2
+      },
+      {
+        "name": "Data Preprocessing Encoding - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Data Preprocessing Missing Data - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Data Preprocessing Normalizzazione - Pratica",
+        "time": 1,
+        "effectiveTime": 1.2
+      },
+      {
+        "name": "Data Preprocessing - Esercitazione",
+        "time": 1.5,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Regressione Lineare - Teoria",
+        "time": 1.5,
+        "effectiveTime": 2.25
+      },
+      {
+        "name": "Regressione Minimi Quadrati - Teoria",
+        "time": 1,
+        "effectiveTime": 1.5
+      },
+      {
+        "name": "Regressione scikit-learn - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      }
+    ],
+    "1-1_paramsVersion": "1.5-1.2-3-5",
+    "1-1_distributed": [
+      {
+        "name": "Regressione Multipla/Polinomiale - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Regressione Abitazioni - Esercitazione",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Overfitting - Teoria",
+        "time": 1,
+        "effectiveTime": 1.5
+      },
+      {
+        "name": "Cross-validation - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Regolarizzazione L1/L2 - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Overfitting - Esercitazione",
+        "time": 1.5,
+        "effectiveTime": 3
+      }
+    ],
+    "1-2_paramsVersion": "1.5-1.2-3-5",
+    "1-2_distributed": [
+      {
+        "name": "Classificazione Logistica - Teoria",
+        "time": 1.5,
+        "effectiveTime": 2.25
+      },
+      {
+        "name": "Metriche Classificazione - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "ROC e Multiclasse - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Classificazione Tumori - Esercitazione",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Clustering K-Means - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Elbow Method - Pratica",
+        "time": 1,
+        "effectiveTime": 1.2
+      },
+      {
+        "name": "Clustering Clienti - Esercitazione",
+        "time": 2,
+        "effectiveTime": 3
+      }
+    ],
+    "1-7_paramsVersion": "1.5-1.2-3-5",
+    "1-7_distributed": [
+      {
+        "name": "NER con SpaCy - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Progetto: Identificazione lingua museo",
+        "time": 10,
+        "effectiveTime": 5
+      }
+    ],
+    "1-6_paramsVersion": "1.5-1.2-3-5",
+    "1-6_distributed": [
+      {
+        "name": "NLP Stemming/Lemmatization - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Bag of Words - Teoria",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Text Classification - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Language Identification - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Sentiment Analysis - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Topic Modelling LDA - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      }
+    ],
+    "1-5_paramsVersion": "1.5-1.2-3-5",
+    "1-5_distributed": [
+      {
+        "name": "K-NN - Teoria e Pratica",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Decision Trees - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Random Forest - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Ottimizzazione Iperparametri - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "AutoML FLAML - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "NLP Data Cleaning - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      }
+    ],
+    "1-0_customModules": [
+      {
+        "name": "Introduzione ML - Teoria",
+        "time": 0.5,
+        "effectiveTime": 0.75
+      },
+      {
+        "name": "Dataset - Teoria",
+        "time": 0.5,
+        "effectiveTime": 0.75
+      },
+      {
+        "name": "Dataset CSV/JSON/XML - Pratica",
+        "time": 1,
+        "effectiveTime": 1.2
+      },
+      {
+        "name": "Data Preprocessing Encoding - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Data Preprocessing Missing Data - Pratica",
+        "time": 1.5,
+        "effectiveTime": 1.7999999999999998
+      },
+      {
+        "name": "Data Preprocessing Normalizzazione - Pratica",
+        "time": 1,
+        "effectiveTime": 1.2
+      },
+      {
+        "name": "Data Preprocessing - Esercitazione",
+        "time": 1.5,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Regressione Lineare - Teoria",
+        "time": 1.5,
+        "effectiveTime": 2.25
+      },
+      {
+        "name": "Regressione Minimi Quadrati - Teoria",
+        "time": 1,
+        "effectiveTime": 1.5
+      },
+      {
+        "name": "Regressione scikit-learn - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      }
+    ],
+    "2-0_paramsVersion": "1.5-1.2-3-5",
+    "2-0_distributed": [
+      {
+        "name": "Introduzione REST - Teoria",
+        "time": 1,
+        "effectiveTime": 1.5
+      },
+      {
+        "name": "Flask Basics - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "FastAPI Setup - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Serializzazione Modelli - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      },
+      {
+        "name": "Deploy con Docker - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "API Authentication - Teoria",
+        "time": 2,
+        "effectiveTime": 3
+      }
+    ],
+    "3-0_paramsVersion": "1.5-1.2-3-5",
+    "3-0_distributed": [
+      {
+        "name": "Fondamenti SQL - Teoria",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Query Avanzate - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "Join e Subquery - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "Stored Procedures - Teoria",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "Ottimizzazione Query - Pratica",
+        "time": 2,
+        "effectiveTime": 2.4
+      }
+    ],
+    "4-0_paramsVersion": "1.5-1.2-3-5",
+    "4-0_distributed": [
+      {
+        "name": "Introduzione NoSQL - Teoria",
+        "time": 2,
+        "effectiveTime": 3
+      },
+      {
+        "name": "MongoDB Basics - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "MongoDB Aggregation - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "Redis - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      },
+      {
+        "name": "Cassandra - Pratica",
+        "time": 3,
+        "effectiveTime": 3.5999999999999996
+      }
+    ]
+  },
+  "weeklyHours": 15,
+  "globalStartDate": "2025-09-08",
+  "metadata": {
+    "id": "plan_1758382761525_4cznxg0v8",
+    "name": "Piano Predefinito",
+    "createdAt": "2025-09-20T15:39:21.525Z",
+    "modifiedAt": "2025-09-20T15:39:32.401Z",
+    "description": "",
+    "exportDate": "2025-09-20T15:39:32.401Z"
+  }
+}
