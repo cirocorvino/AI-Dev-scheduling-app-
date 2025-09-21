@@ -69,7 +69,6 @@ function makeHeaderReadonly() {
             currentPlanName = newTitle;
             console.log('🎯 makeHeaderReadonly - Titolo salvato:', currentPlanName);
             saveHeaderMetadata();
-            autoSaveCurrentPlan();
         }
         title.removeAttribute('data-original');
     }
@@ -86,7 +85,6 @@ function makeHeaderReadonly() {
             currentPlanDescription = newDesc;
             console.log('🎯 makeHeaderReadonly - Descrizione salvata:', currentPlanDescription);
             saveHeaderMetadata();
-            autoSaveCurrentPlan();
         }
         description.removeAttribute('data-original');
     }

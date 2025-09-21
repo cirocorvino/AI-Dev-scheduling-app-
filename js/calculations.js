@@ -69,7 +69,6 @@ function recalculateDates() {
     
     updateStats();
     renderGantt();
-    autoSaveCurrentPlan();
 }
 
 // Aggiorna ore settimanali
@@ -77,7 +76,6 @@ function updateWeeklyHours() {
     weeklyHours = parseInt(document.getElementById('weeklyHours').value) || 15;
     document.getElementById('weeklyHoursDisplay').textContent = weeklyHours;
     recalculateDates();
-    autoSaveCurrentPlan();
 }
 
 // Aggiorna statistiche
@@ -126,9 +124,6 @@ function updateCalculationParam(param, value) {
     if (selectedCourse) {
         renderCourseDetail();
     }
-    
-    // 5. Auto-salva
-    autoSaveCurrentPlan();
 }
 
 // Aggiorna la visualizzazione dei parametri di calcolo

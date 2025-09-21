@@ -62,7 +62,8 @@ function loadPlanFromData(planData) {
         corsesCount: planData.courses ? planData.courses.length : 0,
         totalHours: planData.courses ? planData.courses.reduce((sum, c) => sum + c.hours, 0) : 0,
         weeklyHours: planData.weeklyHours,
-        startDate: planData.globalStartDate
+        startDate: planData.globalStartDate,
+        hasCalculationParams: !!planData.calculationParams
     });
     
     courses = planData.courses || courses;
@@ -70,6 +71,13 @@ function loadPlanFromData(planData) {
     courseTopics = planData.courseTopics || {};
     weeklyHours = planData.weeklyHours || 15;
     globalStartDate = planData.globalStartDate || '2025-09-08';
+    
+    // IMPORTANTE: Carica anche i parametri di calcolo
+    if (planData.calculationParams) {
+        Object.assign(calculationParams, planData.calculationParams);
+        console.log('📊 Parametri di calcolo caricati:', calculationParams);
+        updateCalculationDisplay(); // Aggiorna la visualizzazione
+    }
     
     document.getElementById('weeklyHours').value = weeklyHours;
     document.getElementById('startDate').value = globalStartDate;
@@ -94,6 +102,7 @@ function getCurrentPlanData() {
         courseTopics: courseTopics,
         weeklyHours: weeklyHours,
         globalStartDate: globalStartDate,
+        calculationParams: calculationParams, // IMPORTANTE: Includi parametri di calcolo
         metadata: {
             id: currentPlanId,
             name: currentPlanName,
@@ -378,12 +387,7 @@ function exportSavedPlan(planId) {
 }
 
 // Auto-salvataggio (disabilitato per ora)
-function autoSaveCurrentPlan() {
-    // if (currentPlanId) {
-    //     const planData = getCurrentPlanData();
-    //     savePlanToStorage(currentPlanId, planData);
-    // }
-}
+// Funzione auto-save rimossa - salvataggio solo manuale
 
 // Carica dati da file
 function loadData(event) {
