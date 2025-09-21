@@ -389,6 +389,7 @@ function renderWeekSchedule() {
         
         html += `
                 </div>
+                ${editMode ? `<button class="btn btn-success" style="padding: 5px 10px; font-size: 0.8em; margin-top: 5px;" onclick="addSession('${day}')">+ Aggiungi attività</button>` : ''}
             </div>
         `;
     });
@@ -561,6 +562,38 @@ function updateSession(day, index, field, value) {
     if (editMode) {
         renderCourseDetail();
     }
+}
+
+function addSession(day) {
+    const weekKey = `${selectedCourse.id}-${selectedWeek}`;
+    
+    // Assicurati che esista lo schedule per questa settimana
+    if (!weeklySchedules[weekKey]) {
+        weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
+    }
+    
+    // Crea una nuova sessione
+    const newSession = {
+        time: '09:00-10:00',
+        content: 'Nuova attività',
+        type: 'study'
+    };
+    
+    // Aggiungi la sessione al giorno
+    if (!weeklySchedules[weekKey][day]) {
+        weeklySchedules[weekKey][day] = [];
+    }
+    
+    weeklySchedules[weekKey][day].push(newSession);
+    
+    // Ordina le sessioni per orario
+    weeklySchedules[weekKey][day].sort((a, b) => {
+        const timeA = a.time.split('-')[0].replace(':', '');
+        const timeB = b.time.split('-')[0].replace(':', '');
+        return timeA.localeCompare(timeB);
+    });
+    
+    renderCourseDetail();
 }
 
 function removeSession(day, index) {
