@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST GRANULARITÀ - Piano Studi AI</title>
+    <link rel="stylesheet" href="../Style/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 TEST GRANULARITÀ AGGIORNAMENTI</h1>
+        
+        <div class="section">
+            <h2>📅 Test Scenario</h2>
+            <div id="test-scenario">
+                <p><strong>Scenario:</strong> Master iniziato il 1 novembre 2024, data corrente 15 gennaio 2025</p>
+                <p><strong>Aspettativa:</strong> Modificando i parametri di calcolo, solo le settimane future (dalla 13+ in poi) devono essere aggiornate</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚙️ Parametri di Calcolo</h2>
+            <div class="calculation-params">
+                <label>Tempo Effettivo: <span id="effectiveTimeDisplay">1.0</span></label>
+                <div>
+                    <input type="range" id="effectiveTime" min="0.5" max="2.0" step="0.1" value="1.0" onchange="updateTestParam('effectiveTime', this.value)">
+                </div>
+                
+                <label>Ore Settimanali: <span id="weeklyHoursDisplay">10</span></label>
+                <div>
+                    <input type="range" id="weeklyHours" min="5" max="20" step="1" value="10" onchange="updateTestParam('weeklyHours', this.value)">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Stato Cache</h2>
+            <div id="cache-status">
+                <div class="cache-info">
+                    <strong>Topics Cache:</strong> <span id="topics-count">0</span> entries
+                    <div id="topics-detail"></div>
+                </div>
+                <div class="cache-info">
+                    <strong>Schedules Cache:</strong> <span id="schedules-count">0</span> entries  
+                    <div id="schedules-detail"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Log Attività</h2>
+            <div id="activity-log" style="height: 300px; overflow-y: auto; background: #f5f5f5; padding: 10px; border: 1px solid #ddd;">
+                <div>Inizializzazione test...</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Risultati Verifica</h2>
+            <div id="verification-results">
+                <div class="result-item">
+                    <span class="result-label">Settimane passate preservate:</span>
+                    <span id="past-weeks-result" class="result-value">⏳ In attesa...</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Settimane future eliminate:</span>
+                    <span id="future-weeks-result" class="result-value">⏳ In attesa...</span>
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="runCompleteTest()" class="btn-primary">🚀 Esegui Test Completo</button>
+        <button onclick="clearTestCache()" class="btn-secondary">🧹 Azzera Cache Test</button>
+    </div>
+
+    <style>
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .calculation-params { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .calculation-params label { font-weight: bold; display: block; }
+        .calculation-params input[type="range"] { width: 100%; }
+        .cache-info { margin: 10px 0; padding: 10px; background: #f9f9f9; border-left: 4px solid #007acc; }
+        .result-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .result-label { font-weight: bold; }
+        .result-value { font-family: monospace; }
+        .result-value.success { color: green; }
+        .result-value.error { color: red; }
+        .btn-primary, .btn-secondary { 
+            padding: 12px 24px; margin: 10px 5px; border: none; border-radius: 6px; cursor: pointer; 
+            font-size: 16px; font-weight: bold;
+        }
+        .btn-primary { background: #007acc; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-primary:hover { background: #005fa3; }
+        .btn-secondary:hover { background: #545b62; }
+        #activity-log div { margin: 2px 0; padding: 4px; font-family: monospace; font-size: 12px; }
+        .log-calc { color: #007acc; }
+        .log-cache { color: #6f42c1; }
+        .log-error { color: #dc3545; background: #f8d7da; }
+        .log-success { color: #155724; background: #d4edda; }
+    </style>
+
+    <script>
+        // Mock data per il test
+        let testCourses = [
+            {
+                id: 1,
+                name: "Master AI Specialist",
+                startDate: "2024-11-01",
+                endDate: "2025-03-01", 
+                weeks: 17,
+                hours: 170
+            }
+        ];
+        
+        let testCalculationParams = {
+            effectiveTime: 1.0,
+            studyRatio: 1.0,
+            complexityFactor: 1.0,
+            weeklyHours: 10
+        };
+        
+        let testCourseTopics = {};
+        let testWeeklySchedules = {};
+        
+        // Mock Logger
+        const TestLogger = {
+            calc: msg => addLog(`📊 CALC: ${msg}`, 'log-calc'),
+            cache: msg => addLog(`💾 CACHE: ${msg}`, 'log-cache'),
+            error: msg => addLog(`❌ ERROR: ${msg}`, 'log-error'),
+            success: msg => addLog(`✅ SUCCESS: ${msg}`, 'log-success')
+        };
+        
+        function addLog(message, className = '') {
+            const logContainer = document.getElementById('activity-log');
+            const logEntry = document.createElement('div');
+            logEntry.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            if (className) logEntry.className = className;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        // Mock date per test (15 gennaio 2025)
+        const mockCurrentDate = new Date('2025-01-15T10:00:00Z');
+        
+        // Funzioni di analisi temporale
+        function isCourseCompleted(course) {
+            const courseEndDate = new Date(course.endDate);
+            return courseEndDate < mockCurrentDate;
+        }
+        
+        function isCourseFuture(course) {
+            const courseStartDate = new Date(course.startDate);
+            return courseStartDate > mockCurrentDate;
+        }
+        
+        function isCourseInProgress(course) {
+            return !isCourseCompleted(course) && !isCourseFuture(course);
+        }
+        
+        function getFirstWeekToUpdate(course) {
+            const courseStartDate = new Date(course.startDate);
+            
+            if (isCourseFuture(course)) return 0;
+            if (isCourseCompleted(course)) return -1;
+            
+            const startOfWeek = new Date(courseStartDate);
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+            
+            const currentWeekStart = new Date(mockCurrentDate);
+            currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay());
+            
+            const weeksDiff = Math.floor((currentWeekStart - startOfWeek) / (7 * 24 * 60 * 60 * 1000));
+            return Math.max(0, weeksDiff + 1);
+        }
+        
+        function canUpdateWeek(course, weekIndex) {
+            if (isCourseCompleted(course)) return false;
+            if (isCourseFuture(course)) return true;
+            return weekIndex >= getFirstWeekToUpdate(course);
+        }
+        
+        // Inizializza cache di test
+        function initTestCache() {
+            TestLogger.success('Inizializzazione cache di test...');
+            
+            testCourseTopics = {
+                "1-0_customModules": ["modulo-week-0"],
+                "1-5_customModules": ["modulo-week-5"],
+                "1-10_customModules": ["modulo-week-10"],
+                "1-12_customModules": ["modulo-week-12"],
+                "1-15_customModules": ["modulo-week-15"],
+                "1-0_paramsVersion": "old-version",
+                "1-5_paramsVersion": "old-version", 
+                "1-10_paramsVersion": "old-version",
+                "1-12_paramsVersion": "old-version",
+                "1-15_paramsVersion": "old-version"
+            };
+            
+            testWeeklySchedules = {
+                "1-0": {mock: "schedule-week-0"},
+                "1-5": {mock: "schedule-week-5"},
+                "1-10": {mock: "schedule-week-10"},
+                "1-12": {mock: "schedule-week-12"},
+                "1-15": {mock: "schedule-week-15"}
+            };
+            
+            updateCacheDisplay();
+            TestLogger.success(`Cache inizializzata: ${Object.keys(testCourseTopics).length} topics, ${Object.keys(testWeeklySchedules).length} schedules`);
+        }
+        
+        // Pulizia cache selettiva 
+        function clearWeekModulesCacheForActiveCourses() {
+            TestLogger.calc('🧹 PULIZIA CACHE SELETTIVA - Solo corsi attivi/futuri');
+            
+            let deletedTopics = 0, preservedTopics = 0;
+            let deletedSchedules = 0, preservedSchedules = 0;
+            
+            testCourses.forEach(course => {
+                const courseId = course.id;
+                
+                if (isCourseCompleted(course)) {
+                    TestLogger.calc(`🔒 Corso completato - nessun aggiornamento: ${course.name}`);
+                    return;
+                }
+                
+                if (isCourseFuture(course)) {
+                    TestLogger.calc(`🔮 Corso futuro - aggiornamento completo: ${course.name}`);
+                    // Cancella tutto
+                    Object.keys(testCourseTopics).forEach(key => {
+                        if (key.startsWith(courseId + '-')) {
+                            delete testCourseTopics[key];
+                            deletedTopics++;
+                        }
+                    });
+                    Object.keys(testWeeklySchedules).forEach(key => {
+                        if (key.startsWith(courseId + '-')) {
+                            delete testWeeklySchedules[key];
+                            deletedSchedules++;
+                        }
+                    });
+                } else if (isCourseInProgress(course)) {
+                    const firstWeekToUpdate = getFirstWeekToUpdate(course);
+                    TestLogger.calc(`⏳ Corso in corso - aggiornamento dalla settimana ${firstWeekToUpdate + 1}: ${course.name}`);
+                    
+                    // Cancella solo settimane future
+                    Object.keys(testCourseTopics).forEach(key => {
+                        if (key.includes('_customModules') || key.includes('_paramsVersion')) {
+                            const keyParts = key.split('_')[0].split('-');
+                            if (keyParts[0] == courseId) {
+                                const weekIndex = parseInt(keyParts[1]);
+                                if (weekIndex >= firstWeekToUpdate) {
+                                    delete testCourseTopics[key];
+                                    deletedTopics++;
+                                } else {
+                                    preservedTopics++;
+                                }
+                            }
+                        }
+                    });
+                    
+                    Object.keys(testWeeklySchedules).forEach(key => {
+                        const keyParts = key.split('-');
+                        if (keyParts[0] == courseId) {
+                            const weekIndex = parseInt(keyParts[1]);
+                            if (weekIndex >= firstWeekToUpdate) {
+                                delete testWeeklySchedules[key];
+                                deletedSchedules++;
+                            } else {
+                                preservedSchedules++;
+                            }
+                        }
+                    });
+                }
+            });
+            
+            TestLogger.calc(`🧹 RISULTATI - Topics: ${deletedTopics} eliminati, ${preservedTopics} preservati`);
+            TestLogger.calc(`🧹 RISULTATI - Schedules: ${deletedSchedules} eliminati, ${preservedSchedules} preservati`);
+        }
+        
+        function updateCacheDisplay() {
+            document.getElementById('topics-count').textContent = Object.keys(testCourseTopics).length;
+            document.getElementById('schedules-count').textContent = Object.keys(testWeeklySchedules).length;
+            
+            document.getElementById('topics-detail').innerHTML = 
+                Object.keys(testCourseTopics).map(k => `<small>${k}</small>`).join('<br>');
+            document.getElementById('schedules-detail').innerHTML = 
+                Object.keys(testWeeklySchedules).map(k => `<small>${k}</small>`).join('<br>');
+        }
+        
+        function updateTestParam(param, value) {
+            const oldValue = testCalculationParams[param];
+            testCalculationParams[param] = parseFloat(value);
+            
+            document.getElementById(param + 'Display').textContent = value;
+            
+            TestLogger.calc(`🔧 Parametro ${param} cambiato da ${oldValue} a ${value}`);
+            
+            // Simula la pulizia cache
+            clearWeekModulesCacheForActiveCourses();
+            updateCacheDisplay();
+            verifyResults();
+        }
+        
+        function verifyResults() {
+            const course = testCourses[0];
+            const firstWeekToUpdate = getFirstWeekToUpdate(course);
+            
+            // Verifica settimane passate preservate (0-11) 
+            const pastWeeksPreserved = [0, 5, 10].every(w => 
+                testCourseTopics[`1-${w}_customModules`] && testWeeklySchedules[`1-${w}`]
+            );
+            
+            // Verifica settimane future eliminate (12+)
+            const futureWeeksCleared = [12, 15].every(w => 
+                !testCourseTopics[`1-${w}_customModules`] && !testWeeklySchedules[`1-${w}`]
+            );
+            
+            const pastResult = document.getElementById('past-weeks-result');
+            const futureResult = document.getElementById('future-weeks-result');
+            
+            pastResult.textContent = pastWeeksPreserved ? '✅ PASS' : '❌ FAIL';
+            pastResult.className = 'result-value ' + (pastWeeksPreserved ? 'success' : 'error');
+            
+            futureResult.textContent = futureWeeksCleared ? '✅ PASS' : '❌ FAIL';  
+            futureResult.className = 'result-value ' + (futureWeeksCleared ? 'success' : 'error');
+            
+            if (pastWeeksPreserved && futureWeeksCleared) {
+                TestLogger.success('🎉 Test superato! Granularità funziona correttamente');
+            } else {
+                TestLogger.error('💥 Test fallito! Controllare implementazione granularità');
+            }
+        }
+        
+        function runCompleteTest() {
+            TestLogger.success('🚀 Avvio test completo...');
+            initTestCache();
+            
+            setTimeout(() => {
+                TestLogger.calc('Simulazione modifica parametri...');
+                updateTestParam('effectiveTime', '1.5');
+            }, 1000);
+        }
+        
+        function clearTestCache() {
+            testCourseTopics = {};
+            testWeeklySchedules = {};
+            updateCacheDisplay();
+            
+            document.getElementById('past-weeks-result').textContent = '⏳ In attesa...';
+            document.getElementById('future-weeks-result').textContent = '⏳ In attesa...';
+            document.getElementById('past-weeks-result').className = 'result-value';
+            document.getElementById('future-weeks-result').className = 'result-value';
+            
+            TestLogger.success('Cache test azzerata');
+        }
+        
+        // Inizializzazione
+        window.onload = function() {
+            addLog('🧪 Test granularità caricato - Pronto per test');
+            addLog(`📅 Data simulata: ${mockCurrentDate.toDateString()}`);
+            addLog(`📚 Corso test: ${testCourses[0].name} (${testCourses[0].startDate} → ${testCourses[0].endDate})`);
+            
+            const course = testCourses[0];
+            addLog(`🔍 Stato corso: ${isCourseInProgress(course) ? 'IN CORSO' : 'ALTRO'}`);
+            addLog(`⏰ Prima settimana aggiornabile: ${getFirstWeekToUpdate(course) + 1}`);
+        };
+    </script>
+</body>
+</html>

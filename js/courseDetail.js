@@ -1,5 +1,72 @@
 // courseDetail.js - Gestione dettagli corso con sincronizzazione argomenti
 
+// Funzioni di analisi temporale corsi (duplicate da calculations.js per compatibilità)
+function isCourseCompleted(course) {
+    const courseEndDate = new Date(course.endDate);
+    const today = new Date();
+    return courseEndDate < today;
+}
+
+function isCourseFuture(course) {
+    const courseStartDate = new Date(course.startDate);
+    const today = new Date();
+    return courseStartDate > today;
+}
+
+function isCourseInProgress(course) {
+    return !isCourseCompleted(course) && !isCourseFuture(course);
+}
+
+function getFirstWeekToUpdate(course) {
+    const courseStartDate = new Date(course.startDate);
+    const today = new Date();
+    
+    if (isCourseFuture(course)) {
+        return 0; // Corso futuro: aggiorna dall'inizio
+    }
+    
+    if (isCourseCompleted(course)) {
+        return -1; // Corso completato: non aggiornare
+    }
+    
+    // Corso in corso: calcola la settimana successiva a oggi
+    const startOfWeek = new Date(courseStartDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Inizio della settimana del corso
+    
+    const currentWeekStart = new Date(today);
+    currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay()); // Inizio settimana corrente
+    
+    const weeksDiff = Math.floor((currentWeekStart - startOfWeek) / (7 * 24 * 60 * 60 * 1000));
+    return Math.max(0, weeksDiff + 1); // Settimana successiva (indice basato su 0)
+}
+
+// Verifica se una settimana specifica può essere aggiornata
+function canUpdateWeek(course, weekIndex) {
+    if (isCourseCompleted(course)) {
+        return false; // Corsi completati non si aggiornano mai
+    }
+    
+    if (isCourseFuture(course)) {
+        return true; // Corsi futuri si aggiornano sempre
+    }
+    
+    // Corso in corso: solo settimane future
+    const firstWeekToUpdate = getFirstWeekToUpdate(course);
+    return weekIndex >= firstWeekToUpdate;
+}
+
+// Genera schedule per una settimana rispettando le restrizioni temporali
+function safeGenerateWeekSchedule(courseName, weekIndex) {
+    if (selectedCourse && !canUpdateWeek(selectedCourse, weekIndex)) {
+        Logger.debug(`🔒 GENERAZIONE BLOCCATA per settimana ${weekIndex + 1}: corso in corso, settimana già trascorsa`);
+        // Restituisci uno schedule di default se non esiste
+        return JSON.parse(JSON.stringify(weekTemplate));
+    }
+    
+    Logger.debug(`✅ Generazione schedule settimana ${weekIndex + 1}: corso aggiornabile`);
+    return generateWeekSchedule(courseName, weekIndex);
+}
+
 // Mostra dettagli del corso
 function showCourseDetail(courseId) {
     selectedCourse = courses.find(c => c.id === courseId);
@@ -32,11 +99,21 @@ function renderCourseDetail() {
     const shouldRegenerate = shouldRegenerateSchedule(weekKey);
     Logger.calc(`Deve rigenerare schedule: ${shouldRegenerate}`);
     
-    // IMPORTANTE: Genera sempre lo schedule prima di mostrare gli argomenti
-    // per garantire coerenza tra lista e dettaglio giornaliero
-    if (!weeklySchedules[weekKey] || shouldRegenerate) {
-        Logger.calc('Generazione nuovo schedule settimanale...');
-        weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
+    // CONTROLLO TEMPORALE: verifica se la settimana può essere aggiornata
+    const canUpdate = canUpdateWeek(selectedCourse, selectedWeek);
+    Logger.calc(`Settimana ${selectedWeek + 1} aggiornabile: ${canUpdate}`);
+    
+    // IMPORTANTE: Genera schedule solo se non esiste O se deve rigenerare E la settimana è aggiornabile
+    if (!weeklySchedules[weekKey] || (shouldRegenerate && canUpdate)) {
+        if (!canUpdate && !weeklySchedules[weekKey]) {
+            Logger.calc(`⚠️ Settimana ${selectedWeek + 1} bloccata ma senza cache: creazione schedule di default vuoto`);
+            weeklySchedules[weekKey] = JSON.parse(JSON.stringify(weekTemplate));
+        } else if (canUpdate) {
+            Logger.calc('Generazione nuovo schedule settimanale...');
+            weeklySchedules[weekKey] = safeGenerateWeekSchedule(selectedCourse.name, selectedWeek);
+        } else {
+            Logger.calc(`🔒 Schedule esistente preservato per settimana ${selectedWeek + 1} (bloccata)`);
+        }
     }
     
     const modules = getWeekModules(selectedCourse.name, selectedWeek);
@@ -159,16 +236,29 @@ function renderWeekHoursSummary(modules) {
     `;
 }
 
-// Ottieni moduli per settimana con gestione cache migliorata
+// Ottieni moduli per settimana con gestione cache migliorata e restrizioni temporali
 function getWeekModules(courseName, weekIndex) {
     const weekKey = `${selectedCourse?.id || 0}-${weekIndex}`;
     
-    // Se ci sono moduli personalizzati, usali
+    // Se ci sono moduli personalizzati, usali (cache esistente)
     if (courseTopics[weekKey + '_customModules']) {
+        Logger.debug(`📦 Cache HIT per ${weekKey}: moduli personalizzati trovati`);
         return [...courseTopics[weekKey + '_customModules']];
     }
     
-    // Altrimenti calcola dal curriculum
+    // CONTROLLO TEMPORALE: verifica se questa settimana può essere aggiornata
+    const canUpdate = selectedCourse ? canUpdateWeek(selectedCourse, weekIndex) : true;
+    
+    if (!canUpdate) {
+        Logger.debug(`🔒 SETTIMANA BLOCCATA ${weekKey}: corso in corso, settimana già trascorsa`);
+        // IMPORTANTE: se la settimana è bloccata ma non ha cache, calcoliamo dal curriculum
+        // UNA VOLTA SOLA e poi congeliamo quella cache per il futuro
+        Logger.debug(`🔄 Prima generazione per settimana bloccata ${weekKey}: calcolo dal curriculum`);
+    } else {
+        Logger.debug(`🔄 Cache MISS per ${weekKey}: calcolo dal curriculum (settimana aggiornabile)`);
+    }
+    
+    // Calcola dal curriculum (sia per settimane aggiornabili che per prime generazioni di settimane bloccate)
     const courseData = curriculum[courseName];
     if (!courseData) return [];
     
@@ -205,8 +295,15 @@ function getWeekModules(courseName, weekIndex) {
         }
     }
     
-    // Salva la versione dei parametri usati
+    // Salva la cache SEMPRE (per settimane aggiornabili o per prima generazione di settimane bloccate)
+    courseTopics[weekKey + '_customModules'] = weekModules;
     courseTopics[weekKey + '_paramsVersion'] = getParamsVersion();
+    
+    if (canUpdate) {
+        Logger.debug(`💾 Cache salvata per ${weekKey} (aggiornabile): versione ${getParamsVersion()}`);
+    } else {
+        Logger.debug(`🔐 Cache congelata per ${weekKey} (bloccata): versione ${getParamsVersion()}`);
+    }
     
     return weekModules;
 }
@@ -307,8 +404,13 @@ function generateWeekSchedule(courseName, weekIndex) {
         });
     }
     
-    // Salva i moduli effettivamente distribuiti per riferimento
-    courseTopics[weekKey + '_distributed'] = distributedModules;
+    // Salva i moduli effettivamente distribuiti per riferimento SOLO se aggiornabile
+    if (selectedCourse && canUpdateWeek(selectedCourse, weekIndex)) {
+        courseTopics[weekKey + '_distributed'] = distributedModules;
+        Logger.debug(`💾 Distribuzione salvata per ${weekKey}: ${distributedModules.length} moduli`);
+    } else {
+        Logger.debug(`🔒 Distribuzione NON salvata per ${weekKey}: settimana bloccata`);
+    }
     
     return schedule;
 }
