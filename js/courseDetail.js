@@ -52,9 +52,7 @@ function renderCourseDetail() {
                 <div id="weekTopicsList">
                     ${renderWeekTopics(modules)}
                 </div>
-                <div style="margin-top: 10px; padding: 10px; background: #e8f4f8; border-radius: 5px; font-size: 0.9em; color: #666;">
-                    <strong>Totale ore settimana:</strong> ${modules.reduce((sum, m) => sum + m.effectiveTime, 0).toFixed(1)}h / ${weeklyHours}h disponibili
-                </div>
+                ${renderWeekHoursSummary(modules)}
             </div>
         ` : ''}
         
@@ -113,6 +111,41 @@ function formatWeekRange(start, end) {
     } else {
         return `${startDay} ${startMonth}-${endDay} ${endMonth}`;
     }
+}
+
+// Rendering del riepilogo ore con feedback visivo
+function renderWeekHoursSummary(modules) {
+    const totalHours = modules.reduce((sum, m) => sum + m.effectiveTime, 0);
+    const percentage = (totalHours / weeklyHours) * 100;
+    
+    let bgColor, textColor, status, icon;
+    
+    if (totalHours <= weeklyHours * 0.85) {
+        // Verde: < 85% (sicuro)
+        bgColor = '#d4edda';
+        textColor = '#155724';
+        status = 'Ottimale';
+        icon = '🟢';
+    } else if (totalHours <= weeklyHours) {
+        // Giallo: 85-100% (attenzione)
+        bgColor = '#fff3cd';
+        textColor = '#856404';
+        status = 'Al limite';
+        icon = '🟡';
+    } else {
+        // Rosso: > 100% (sovraccarico)
+        bgColor = '#f8d7da';
+        textColor = '#721c24';
+        status = 'Sovraccarico';
+        icon = '🔴';
+    }
+    
+    return `
+        <div style="margin-top: 10px; padding: 10px; background: ${bgColor}; border-radius: 5px; font-size: 0.9em; color: ${textColor}; border: 1px solid ${textColor}20;">
+            <strong>${icon} Totale ore settimana:</strong> ${totalHours.toFixed(1)}h / ${weeklyHours}h disponibili (${percentage.toFixed(0)}%)
+            <div style="font-size: 0.8em; margin-top: 5px;">Status: <strong>${status}</strong></div>
+        </div>
+    `;
 }
 
 // Ottieni moduli per settimana con gestione cache migliorata
@@ -366,9 +399,21 @@ function renderWeekSchedule() {
 // Gestione argomenti settimana con sincronizzazione
 function addWeekTopic() {
     const weekKey = `${selectedCourse.id}-${selectedWeek}`;
-    
     let currentModules = getWeekModules(selectedCourse.name, selectedWeek);
     
+    const currentTotal = currentModules.reduce((sum, m) => sum + m.effectiveTime, 0);
+    const newTotal = currentTotal + 1; // 1h di default per nuovo argomento
+    
+    if (newTotal > weeklyHours) {
+        showOverflowDialog(currentTotal, newTotal);
+        return;
+    }
+    
+    // Procedi con l'aggiunta normale
+    addModuleDirectly(currentModules, weekKey);
+}
+
+function addModuleDirectly(currentModules, weekKey) {
     const newModule = {
         name: 'Nuovo argomento',
         time: 1,
@@ -383,8 +428,28 @@ function addWeekTopic() {
     // Rigenera lo schedule per includere il nuovo modulo
     weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
     
-    
     renderCourseDetail();
+}
+
+function showOverflowDialog(currentTotal, newTotal) {
+    const overflow = newTotal - weeklyHours;
+    const message = `
+        ⚠️ ATTENZIONE: Superamento ore settimanali
+        
+        Ore attuali: ${currentTotal}h
+        Con nuovo argomento: ${newTotal}h
+        Limite settimanale: ${weeklyHours}h
+        Eccedenza: +${overflow}h
+        
+        Cosa vuoi fare?
+    `;
+    
+    if (confirm(`${message}\n\n✅ OK = Continua comunque (sovraccarico)\n❌ Annulla = Non aggiungere`)) {
+        // L'utente sceglie di continuare nonostante il sovraccarico
+        const weekKey = `${selectedCourse.id}-${selectedWeek}`;
+        let currentModules = getWeekModules(selectedCourse.name, selectedWeek);
+        addModuleDirectly(currentModules, weekKey);
+    }
 }
 
 function removeWeekTopic(index) {
@@ -425,13 +490,38 @@ function updateModuleHours(index, newHours) {
     
     if (currentModules[index]) {
         const hours = parseFloat(newHours) || 0;
+        const oldHours = currentModules[index].effectiveTime;
+        
+        // Calcola il nuovo totale
+        const currentTotal = currentModules.reduce((sum, m) => sum + m.effectiveTime, 0);
+        const newTotal = currentTotal - oldHours + hours;
+        
+        if (newTotal > weeklyHours && hours > oldHours) {
+            // Solo se si sta aumentando e si supera il limite
+            const overflow = newTotal - weeklyHours;
+            const message = `
+                ⚠️ ATTENZIONE: Superamento ore settimanali
+                
+                Ore attuali totali: ${currentTotal.toFixed(1)}h
+                Con nuove ore: ${newTotal.toFixed(1)}h
+                Limite: ${weeklyHours}h
+                Eccedenza: +${overflow.toFixed(1)}h
+                
+                Continuare comunque?
+            `;
+            
+            if (!confirm(message)) {
+                return; // L'utente annulla la modifica
+            }
+        }
+        
+        // Procedi con l'aggiornamento
         currentModules[index].effectiveTime = hours;
         currentModules[index].time = hours;
         courseTopics[weekKey + '_customModules'] = currentModules;
         
         // Rigenera lo schedule per ridistribuire le ore
         weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
-        
         
         renderCourseDetail();
     }
