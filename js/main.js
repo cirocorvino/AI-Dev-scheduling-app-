@@ -13,15 +13,37 @@ function init() {
     const wasLoaded = loadLastPlan();
     console.log('📁 Piano caricato:', wasLoaded ? 'SI' : 'NO (usando default)');
     
+    // Se non è stato caricato nessun piano, assicurati che le variabili siano corrette
+    if (!wasLoaded) {
+        console.log('🔄 Inizializzando valori predefiniti...');
+        currentPlanName = 'Piano Predefinito';
+        currentPlanDescription = 'Percorso completo di certificazione professionale - Ore Effettive Ricalcolate';
+        currentPlanId = null;
+    }
+    
     // IMPORTANTE: Calcola le date (che calcola anche le settimane individuali e le statistiche)
     recalculateDates();
     console.log('📅 Date ricalcolate');
     
     // Aggiorna display del piano corrente
     updateCurrentPlanDisplay();
+    console.log('🖼️ Display piano aggiornato:', {
+        name: currentPlanName,
+        description: currentPlanDescription,
+        titleElement: document.getElementById('appTitle').textContent,
+        descElement: document.getElementById('appDescription').textContent
+    });
     
     // Aggiorna visualizzazione parametri di calcolo
     updateCalculationDisplay();
+    
+    console.log('🎯 Inizializzazione completata:', {
+        totalCourses: courses.length,
+        totalHours: courses.reduce((sum, c) => sum + c.hours, 0),
+        currentPlan: currentPlanName,
+        headerTitle: document.getElementById('appTitle').textContent,
+        headerDesc: document.getElementById('appDescription').textContent
+    });
     
     // Imposta stato iniziale readonly per i campi
     const weeklyHoursInput = document.getElementById('weeklyHours');

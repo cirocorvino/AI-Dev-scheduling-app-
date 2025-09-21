@@ -2,9 +2,10 @@
 
 // Modal Salvataggio Piano
 function showSaveModal() {
-    const currentData = getCurrentPlanData();
-    document.getElementById('planName').value = currentData.metadata.name || '';
-    document.getElementById('planDescription').value = currentData.metadata.description || '';
+    // Usa le variabili globali correnti invece di getCurrentPlanData()
+    document.getElementById('planName').value = currentPlanName === 'Piano Predefinito' ? '' : currentPlanName;
+    document.getElementById('planDescription').value = 
+        currentPlanDescription === 'Percorso completo di certificazione professionale - Ore Effettive Ricalcolate' ? '' : currentPlanDescription;
     document.getElementById('savePlanModal').classList.add('active');
 }
 

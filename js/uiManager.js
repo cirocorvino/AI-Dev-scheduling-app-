@@ -36,11 +36,19 @@ function makeHeaderEditable() {
     const title = document.getElementById('appTitle');
     const description = document.getElementById('appDescription');
     
-    if (title) {
-        title.innerHTML = `<input type="text" value="${title.textContent}" style="background: transparent; border: 2px solid white; color: white; font-size: 2.5em; font-weight: bold; text-align: center; width: 100%;" onchange="updateAppTitle(this.value)">`;
+    if (title && !title.classList.contains('editing')) {
+        title.classList.add('editing');
+        title.contentEditable = true;
+        title.style.border = '2px solid white';
+        title.style.outline = 'none';
+        title.setAttribute('data-original', title.textContent);
     }
-    if (description) {
-        description.innerHTML = `<input type="text" value="${description.textContent}" style="background: transparent; border: 2px solid white; color: white; font-size: 1.2em; text-align: center; width: 100%;" onchange="updateAppDescription(this.value)">`;
+    if (description && !description.classList.contains('editing')) {
+        description.classList.add('editing');
+        description.contentEditable = true;
+        description.style.border = '2px solid white';
+        description.style.outline = 'none';
+        description.setAttribute('data-original', description.textContent);
     }
 }
 
@@ -49,13 +57,58 @@ function makeHeaderReadonly() {
     const title = document.getElementById('appTitle');
     const description = document.getElementById('appDescription');
     
-    if (title) {
-        const titleInput = title.querySelector('input');
-        title.innerHTML = titleInput ? titleInput.value : title.textContent;
+    if (title && title.classList.contains('editing')) {
+        title.classList.remove('editing');
+        title.contentEditable = false;
+        title.style.border = 'none';
+        title.style.outline = 'none';
+        
+        const newTitle = title.textContent;
+        if (newTitle !== title.getAttribute('data-original')) {
+            // Il testo è cambiato
+            currentPlanName = newTitle;
+            console.log('🎯 makeHeaderReadonly - Titolo salvato:', currentPlanName);
+            saveHeaderMetadata();
+            autoSaveCurrentPlan();
+        }
+        title.removeAttribute('data-original');
     }
-    if (description) {
-        const descInput = description.querySelector('input');
-        description.innerHTML = descInput ? descInput.value : description.textContent;
+    
+    if (description && description.classList.contains('editing')) {
+        description.classList.remove('editing');
+        description.contentEditable = false;
+        description.style.border = 'none';
+        description.style.outline = 'none';
+        
+        const newDesc = description.textContent;
+        if (newDesc !== description.getAttribute('data-original')) {
+            // Il testo è cambiato
+            currentPlanDescription = newDesc;
+            console.log('🎯 makeHeaderReadonly - Descrizione salvata:', currentPlanDescription);
+            saveHeaderMetadata();
+            autoSaveCurrentPlan();
+        }
+        description.removeAttribute('data-original');
+    }
+}
+
+// Salva i metadata della testata separatamente
+function saveHeaderMetadata() {
+    if (!currentPlanId) {
+        console.log('⚠️ Nessun piano corrente, skip saveHeaderMetadata');
+        return;
+    }
+    
+    const savedPlans = getSavedPlans();
+    if (savedPlans[currentPlanId]) {
+        savedPlans[currentPlanId].metadata.headerTitle = currentPlanName;
+        savedPlans[currentPlanId].metadata.headerDescription = currentPlanDescription;
+        
+        localStorage.setItem('saved-plans', JSON.stringify(savedPlans));
+        console.log('💾 Metadata testata salvati:', {
+            headerTitle: currentPlanName,
+            headerDescription: currentPlanDescription
+        });
     }
 }
 
@@ -83,10 +136,22 @@ function makeCalculationParamsReadonly() {
 
 // Update functions
 function updateAppTitle(value) {
+    console.log('🎯 updateAppTitle chiamata con:', value);
+    currentPlanName = value;
+    console.log('  currentPlanName aggiornato a:', currentPlanName);
+    
+    // Salva anche nei metadata della testata
+    saveHeaderMetadata();
     autoSaveCurrentPlan();
 }
 
 function updateAppDescription(value) {
+    console.log('🎯 updateAppDescription chiamata con:', value);
+    currentPlanDescription = value;
+    console.log('  currentPlanDescription aggiornato a:', currentPlanDescription);
+    
+    // Salva anche nei metadata della testata
+    saveHeaderMetadata();
     autoSaveCurrentPlan();
 }
 

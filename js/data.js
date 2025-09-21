@@ -191,4 +191,5 @@ let weeklyHours = 15;
 let globalStartDate = '2025-09-08';
 let currentPlanId = null;
 let currentPlanName = 'Piano Predefinito';
+let currentPlanDescription = 'Percorso completo di certificazione professionale - Ore Effettive Ricalcolate';
 let planToDeleteId = null;
