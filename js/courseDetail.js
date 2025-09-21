@@ -15,6 +15,9 @@ function renderCourseDetail() {
     const weeks = getWeeksForCourse(selectedCourse);
     const weekKey = `${selectedCourse.id}-${selectedWeek}`;
     
+    Logger.ui(`Renderizzando dettaglio corso: ${selectedCourse.name}, Settimana ${selectedWeek + 1}`);
+    Logger.calc(`WeekKey: ${weekKey}, Schedule esistente: ${!!weeklySchedules[weekKey]}`);
+    
     let weekTabsHtml = '';
     weeks.forEach((week, index) => {
         weekTabsHtml += `
@@ -25,13 +28,19 @@ function renderCourseDetail() {
         `;
     });
     
+    // Verifica se deve rigenerare lo schedule
+    const shouldRegenerate = shouldRegenerateSchedule(weekKey);
+    Logger.calc(`Deve rigenerare schedule: ${shouldRegenerate}`);
+    
     // IMPORTANTE: Genera sempre lo schedule prima di mostrare gli argomenti
     // per garantire coerenza tra lista e dettaglio giornaliero
-    if (!weeklySchedules[weekKey] || shouldRegenerateSchedule(weekKey)) {
+    if (!weeklySchedules[weekKey] || shouldRegenerate) {
+        Logger.calc('Generazione nuovo schedule settimanale...');
         weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
     }
     
     const modules = getWeekModules(selectedCourse.name, selectedWeek);
+    Logger.calc(`Moduli trovati per settimana ${selectedWeek + 1}:`, modules.map(m => `${m.name} (${calculateModuleEffectiveTime(m)}h)`));
     
     detailSection.innerHTML = `
         <div class="week-header">
@@ -115,7 +124,9 @@ function formatWeekRange(start, end) {
 
 // Rendering del riepilogo ore con feedback visivo
 function renderWeekHoursSummary(modules) {
-    const totalHours = modules.reduce((sum, m) => sum + m.effectiveTime, 0);
+    const weekKey = `${selectedCourse.id}-${selectedWeek}`;
+    // Calcola le ore effettive svolte in questa settimana
+    const totalHours = modules.reduce((sum, m) => sum + calculateModuleWeeklyHours(m.name, weekKey), 0);
     const percentage = (totalHours / weeklyHours) * 100;
     
     let bgColor, textColor, status, icon;
@@ -179,7 +190,8 @@ function getWeekModules(courseName, weekIndex) {
                 weekModules.push({
                     name: module.name,
                     time: module.time,
-                    effectiveTime: timeForThisWeek
+                    effectiveTime: effectiveTime,  // Ore totali del modulo (per calcoli)
+                    weeklyHours: timeForThisWeek   // Ore svolte in questa settimana (per visualizzazione)
                 });
             }
             
@@ -232,7 +244,7 @@ function generateWeekSchedule(courseName, weekIndex) {
     // Distribuisci i moduli nelle sessioni di studio
     let moduleQueue = [...modules];
     let currentModule = moduleQueue.shift();
-    let currentModuleRemaining = currentModule ? currentModule.effectiveTime : 0;
+    let currentModuleRemaining = currentModule ? calculateModuleEffectiveTime(currentModule) : 0;
 
     for (const day of Object.keys(studySchedule)) {
         const dayStudy = studySchedule[day];
@@ -258,7 +270,7 @@ function generateWeekSchedule(courseName, weekIndex) {
                 
                 if (currentModuleRemaining <= 0) {
                     currentModule = moduleQueue.shift();
-                    currentModuleRemaining = currentModule ? currentModule.effectiveTime : 0;
+                    currentModuleRemaining = currentModule ? calculateModuleEffectiveTime(currentModule) : 0;
                 }
             }
             
@@ -301,22 +313,82 @@ function generateWeekSchedule(courseName, weekIndex) {
     return schedule;
 }
 
+// Calcola le ore effettive svolte per modulo in questa settimana
+function calculateModuleWeeklyHours(moduleName, weekKey) {
+    // Uso diretto del campo weeklyHours se disponibile
+    const modules = getWeekModules(selectedCourse.name, selectedWeek);
+    const module = modules.find(m => m.name === moduleName);
+    
+    if (module && module.weeklyHours !== undefined) {
+        return module.weeklyHours;
+    }
+    
+    // Fallback alla logica precedente se weeklyHours non è disponibile
+    const schedule = weeklySchedules[weekKey];
+    if (!schedule) return 0;
+    
+    // Ricostruisci la logica di distribuzione per calcolare le ore precise
+    const moduleHoursMap = new Map();
+    
+    // Inizializza mappa ore per modulo
+    modules.forEach(m => {
+        moduleHoursMap.set(m.name, 0);
+    });
+    
+    // Simulazione della distribuzione originale
+    let moduleQueue = [...modules];
+    let currentModule = moduleQueue.shift();
+    let currentModuleRemaining = currentModule ? calculateModuleEffectiveTime(currentModule) : 0;
+
+    for (const day of Object.keys(studySchedule)) {
+        const dayStudy = studySchedule[day];
+        if (!dayStudy) continue;
+        
+        dayStudy.sessions.forEach(sessionInfo => {
+            let sessionHours = sessionInfo.hours;
+            
+            // Solo se ci sono ancora moduli da studiare
+            while (sessionHours > 0 && currentModule) {
+                const timeToUse = Math.min(currentModuleRemaining, sessionHours);
+                
+                // Aggiungi le ore a questo modulo
+                const currentHours = moduleHoursMap.get(currentModule.name) || 0;
+                moduleHoursMap.set(currentModule.name, currentHours + timeToUse);
+                
+                sessionHours -= timeToUse;
+                currentModuleRemaining -= timeToUse;
+                
+                if (currentModuleRemaining <= 0) {
+                    currentModule = moduleQueue.shift();
+                    currentModuleRemaining = currentModule ? calculateModuleEffectiveTime(currentModule) : 0;
+                }
+            }
+        });
+    }
+    
+    return moduleHoursMap.get(moduleName) || 0;
+}
+
 // Renderizza lista argomenti modificabili con sync
 function renderWeekTopics(modules) {
     let html = '';
     const weekKey = `${selectedCourse.id}-${selectedWeek}`;
     
     modules.forEach((module, index) => {
+        // Calcola le ore effettive svolte in questa settimana specifica
+        const weeklyHours = calculateModuleWeeklyHours(module.name, weekKey);
+        
         if (editMode) {
             html += `
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 8px; background: white; border-radius: 5px; border: 1px solid #e0e0e0;">
                     <input type="text" value="${module.name}" 
                            style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 3px;" 
                            onchange="updateModuleName(${index}, this.value)">
-                    <input type="number" value="${module.effectiveTime}" 
+                    <input type="number" value="${weeklyHours}" 
                            style="width: 70px; padding: 5px; border: 1px solid #ddd; border-radius: 3px;" 
                            step="0.1" min="0"
-                           onchange="updateModuleHours(${index}, this.value)">
+                           onchange="updateModuleWeeklyHours(${index}, this.value, this)"
+                           title="Ore settimanali per questo argomento">
                     <span style="font-size: 0.9em; color: #666; min-width: 15px;">h</span>
                     <button class="delete-btn" onclick="removeWeekTopic(${index})" style="padding: 3px 8px;">🗑️</button>
                 </div>
@@ -328,7 +400,8 @@ function renderWeekTopics(modules) {
             const textColor = isDistributed ? '#000' : '#999';
             const suffix = isDistributed ? '' : ' (non programmato)';
             
-            html += `<div style="line-height: 1.8; padding: 2px 0; color: ${textColor};">• ${module.name} (${module.effectiveTime.toFixed(1)}h effettive)${suffix}</div>`;
+            // In modalità readonly, mostra solo le ore senza possibilità di modifica
+            html += `<div style="line-height: 1.8; padding: 2px 0; color: ${textColor};">• ${module.name} (${weeklyHours.toFixed(1)}h settimanali)${suffix}</div>`;
         }
     });
     
@@ -528,6 +601,59 @@ function updateModuleHours(index, newHours) {
     }
 }
 
+// Aggiorna le ore settimanali specifiche di un modulo
+function updateModuleWeeklyHours(index, newWeeklyHours, inputElement) {
+    const weekKey = `${selectedCourse.id}-${selectedWeek}`;
+    let currentModules = getWeekModules(selectedCourse.name, selectedWeek);
+    
+    if (currentModules[index]) {
+        const weeklyHours = parseFloat(newWeeklyHours) || 0;
+        const moduleName = currentModules[index].name;
+        
+        Logger.ui(`📝 Aggiornamento ore settimanali: ${moduleName} → ${weeklyHours}h`);
+        
+        // Calcola il totale corrente delle ore settimanali
+        const currentTotal = currentModules.reduce((sum, m) => 
+            sum + calculateModuleWeeklyHours(m.name, weekKey), 0
+        );
+        const oldWeeklyHours = calculateModuleWeeklyHours(moduleName, weekKey);
+        const newTotal = currentTotal - oldWeeklyHours + weeklyHours;
+        
+        if (newTotal > weeklyHours && weeklyHours > oldWeeklyHours) {
+            const overflow = newTotal - weeklyHours;
+            const message = `⚠️ ATTENZIONE: Superamento ore settimanali
+            
+Ore settimanali attuali: ${currentTotal.toFixed(1)}h
+Con nuove ore: ${newTotal.toFixed(1)}h
+Limite: ${weeklyHours}h
+Eccedenza: +${overflow.toFixed(1)}h
+
+Continuare comunque?`;
+            
+            if (!confirm(message)) {
+                // L'utente annulla: ripristina il valore precedente nell'input
+                if (inputElement) {
+                    inputElement.value = oldWeeklyHours.toFixed(1);
+                }
+                Logger.ui(`❌ Modifica annullata per ${moduleName}`);
+                return;
+            }
+        }
+        
+        // Aggiorna il campo weeklyHours del modulo
+        currentModules[index].weeklyHours = weeklyHours;
+        
+        // Se non esistevano moduli personalizzati, creali ora
+        courseTopics[weekKey + '_customModules'] = currentModules;
+        
+        // Rigenera lo schedule per ridistribuire le ore
+        weeklySchedules[weekKey] = generateWeekSchedule(selectedCourse.name, selectedWeek);
+        
+        Logger.ui(`✅ Ore settimanali aggiornate per ${moduleName}: ${weeklyHours}h`);
+        renderCourseDetail();
+    }
+}
+
 // Gestione sessioni
 function updateSession(day, index, field, value) {
     const weekKey = `${selectedCourse.id}-${selectedWeek}`;
@@ -598,7 +724,54 @@ function addSession(day) {
 
 function removeSession(day, index) {
     const weekKey = `${selectedCourse.id}-${selectedWeek}`;
-    weeklySchedules[weekKey][day].splice(index, 1);
+    const schedule = weeklySchedules[weekKey];
+    
+    if (!schedule || !schedule[day] || !schedule[day][index]) return;
+    
+    const sessionToRemove = schedule[day][index];
+    Logger.ui(`🗑️ Rimozione sessione: ${day} - ${sessionToRemove.content || 'Sessione vuota'}`);
+    
+    // Se la sessione contiene moduli di studio, aggiorna le ore settimanali
+    if (sessionToRemove.type === 'study' && sessionToRemove.modules) {
+        Logger.calc('📊 Aggiornamento ore settimanali dopo rimozione sessione...');
+        
+        // Trova la durata della sessione
+        const sessionInfo = studySchedule[day]?.sessions.find(s => s.time === sessionToRemove.time);
+        const sessionDuration = sessionInfo ? sessionInfo.hours : 0;
+        
+        // Calcola la riduzione di ore per ogni modulo nella sessione
+        const modulesInSession = sessionToRemove.modules.length;
+        const hoursReductionPerModule = modulesInSession > 0 ? sessionDuration / modulesInSession : 0;
+        
+        if (hoursReductionPerModule > 0) {
+            // Aggiorna i moduli personalizzati
+            let currentModules = getWeekModules(selectedCourse.name, selectedWeek);
+            let hasChanges = false;
+            
+            sessionToRemove.modules.forEach(moduleInSession => {
+                const moduleIndex = currentModules.findIndex(m => m.name === moduleInSession.name);
+                if (moduleIndex !== -1) {
+                    const currentWeeklyHours = currentModules[moduleIndex].weeklyHours || 
+                                             calculateModuleWeeklyHours(moduleInSession.name, weekKey);
+                    const newWeeklyHours = Math.max(0, currentWeeklyHours - hoursReductionPerModule);
+                    
+                    currentModules[moduleIndex].weeklyHours = newWeeklyHours;
+                    hasChanges = true;
+                    
+                    Logger.calc(`📉 ${moduleInSession.name}: ${currentWeeklyHours.toFixed(1)}h → ${newWeeklyHours.toFixed(1)}h`);
+                }
+            });
+            
+            if (hasChanges) {
+                // Salva i moduli personalizzati
+                courseTopics[weekKey + '_customModules'] = currentModules;
+                Logger.calc('✅ Ore settimanali aggiornate dopo rimozione sessione');
+            }
+        }
+    }
+    
+    // Rimuovi la sessione
+    schedule[day].splice(index, 1);
     
     renderCourseDetail();
 }

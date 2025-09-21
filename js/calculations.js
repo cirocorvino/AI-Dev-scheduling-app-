@@ -5,7 +5,8 @@ function calculateModuleEffectiveTime(module) {
     const originalTime = module.time;
     
     if (module.name.startsWith('Progetto:')) {
-        return calculationParams.projectHours;
+        // Usa il maggiore tra ore originali e parametro configurato
+        return Math.max(originalTime, calculationParams.projectHours);
     } else if (module.name.includes('Esercitazione') || module.name.includes('Esercitazioni')) {
         return calculationParams.exerciseHours;
     } else if (module.name.includes('Teoria')) {
@@ -115,21 +116,30 @@ function formatDate(dateStr) {
 
 // Aggiorna parametro di calcolo
 function updateCalculationParam(param, value) {
+    Logger.calc(`🔧 AGGIORNAMENTO PARAMETRO: ${param} = ${value}`);
+    const oldValue = calculationParams[param];
     calculationParams[param] = parseFloat(value) || calculationParams[param];
+    Logger.calc(`🔄 Valore cambiato da ${oldValue} a ${calculationParams[param]}`);
     
     // 1. Ricalcola le ore effettive di tutti i corsi
+    Logger.calc('📊 Step 1: Ricalcolazione ore effettive...');
     recalculateAllEffectiveHours();
     
     // 2. PULISCI la cache delle settimane
+    Logger.calc('🧹 Step 2: Pulizia cache...');
     clearWeekModulesCache();
     
     // 3. Ricalcola le date del Gantt
+    Logger.calc('📅 Step 3: Ricalcolazione date Gantt...');
     recalculateDates();
     
     // 4. Se c'è un dettaglio aperto, rigeneralo
     if (selectedCourse) {
+        Logger.calc(`🔄 Step 4: Rigenerazione dettaglio per corso ${selectedCourse.name}`);
         renderCourseDetail();
     }
+    
+    Logger.calc('✅ Aggiornamento parametro completato');
 }
 
 // Aggiorna la visualizzazione dei parametri di calcolo
@@ -142,10 +152,25 @@ function updateCalculationDisplay() {
 
 // Pulisce la cache delle settimane quando cambiano i parametri
 function clearWeekModulesCache() {
-    // Rimuovi tutti i moduli personalizzati
+    Logger.calc('🧹 PULIZIA CACHE - Inizio cancellazione per ricalcolo parametri');
+    
+    let deletedTopics = 0;
+    let deletedSchedules = 0;
+    
+    // Rimuovi tutti i moduli personalizzati e schedule
     Object.keys(courseTopics).forEach(key => {
-        if (key.includes('_customModules')) {
+        if (key.includes('_customModules') || key.includes('_paramsVersion') || key.includes('_distributed')) {
             delete courseTopics[key];
+            deletedTopics++;
         }
     });
+    
+    // Cancella anche gli schedule settimanali per forzare rigenerazione completa
+    Object.keys(weeklySchedules).forEach(key => {
+        delete weeklySchedules[key];
+        deletedSchedules++;
+    });
+    
+    Logger.calc(`🧹 CACHE CANCELLATA - Topics: ${deletedTopics}, Schedules: ${deletedSchedules}`);
+    Logger.calc('✅ Tutti gli schedule verranno rigenerati con i nuovi parametri');
 }
