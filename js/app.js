@@ -342,13 +342,18 @@ function renderSelectedWeek() {
             }));
 
             const content = createElement('div');
-            const fallback = session.isFocus ? 'Spazio focus libero' : session.category?.label || 'Attività';
             const title = session.blocked
                 ? `⛔ ${session.exceptionLabel}`
                 : session.buffer
                     ? '↻ Recupero / pausa'
-                    : `${session.category?.icon || '📌'} ${session.label || fallback}`;
+                    : `${session.category?.icon || '📌'} ${session.category?.label || 'Attività'}`;
             content.append(createElement('div', { className: 'session__title', text: title }));
+            if (session.label && !session.blocked && !session.buffer) {
+                content.append(createElement('div', {
+                    className: 'session__description',
+                    text: session.label
+                }));
+            }
             if (session.assignments?.length) {
                 const list = createElement('ul', { className: 'session__assignments' });
                 session.assignments.forEach(assignment => {
@@ -357,6 +362,12 @@ function renderSelectedWeek() {
                     }));
                 });
                 content.append(list);
+            }
+            if (session.isFocus && !session.blocked && !session.buffer && session.freeMinutes > 0) {
+                content.append(createElement('div', {
+                    className: 'session__free',
+                    text: `Spazio focus libero · ${formatDuration(session.freeMinutes)}`
+                }));
             }
             sessionNode.append(content);
             dayCard.append(sessionNode);

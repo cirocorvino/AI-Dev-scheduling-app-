@@ -44,9 +44,15 @@ npm test
 2. Aprire **Moduli e argomenti** per comporre il percorso e ordinare le attività.
 3. Consultare il Gantt; selezionare un modulo per vedere la distribuzione settimanale.
 4. Usare **Salva** per scrivere il database nel file aperto o scaricarne una copia.
-5. Usare **Importa piano** per sostituire soltanto il percorso, conservando disponibilità e categorie.
+5. Usare **Importa programma** per sostituire soltanto il percorso, conservando disponibilità e categorie.
 
 All'avvio viene caricato esclusivamente il database fittizio in `data/examples/`. I file personali vanno aperti manualmente.
+
+## Interfaccia
+
+La schermata è composta da barra delle azioni, riepilogo, diagramma di Gantt e dettaglio settimanale. Le finestre **Impostazioni** e **Moduli e argomenti** permettono di personalizzare rispettivamente disponibilità e contenuti del percorso.
+
+La guida [docs/INTERFACCIA.md](docs/INTERFACCIA.md) descrive ogni area, chiarisce la differenza tra **Apri database** e **Importa programma** e spiega cosa viene scritto usando **Salva**.
 
 ## Struttura
 
@@ -61,7 +67,7 @@ data/examples/             database dimostrativo versionato
 data/user/                 database locali ignorati da Git
 data/private/              documenti privati ignorati da Git
 test/                      test automatici del modello e del planner
-docs/                      formato dati, architettura, privacy e roadmap
+docs/                      interfaccia, formato dati, architettura, privacy e roadmap
 ```
 
 ## Formati e privacy

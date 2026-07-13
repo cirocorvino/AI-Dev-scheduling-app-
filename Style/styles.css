@@ -453,6 +453,18 @@ code {
     font-weight: 750;
 }
 
+.session__description,
+.session__free {
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.session__free {
+    color: #047857;
+    font-weight: 650;
+}
+
 .session__assignments {
     margin: 0.35rem 0 0;
     padding-left: 1.1rem;
