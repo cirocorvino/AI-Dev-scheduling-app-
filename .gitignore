@@ -1,19 +1,54 @@
-﻿# Esportazioni e backup locali
-exports/
-backups/
-data/private/
-data/user/
+# IDE e configurazioni locali
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
+# Tooling Node opzionale usato solo per il server locale
+# L'app non usa dipendenze Node né librerie npm.
+node_modules/
+package.json
+package-lock.json
+npm-shrinkwrap.json
+yarn.lock
+pnpm-lock.yaml
+.npm/
+.pnpm-store/
+.yarn/
+.local-dev/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dati personali dell'organizer
+# I file personali possono avere qualunque nome: la protezione è basata
+# sulla cartella, non su un nome di file convenzionale.
+data/user/*
+!data/user/README.md
+data/private/*
+!data/private/README.md
+
+# Esportazioni e backup locali
+exports/*
+!exports/.gitkeep
+backups/*
+!backups/.gitkeep
 *.personal.json
 *.private.json
 *.local.json
+*.secret.json
 organizer-data-*.json
+piano-studio-*.json
 
-# File temporanei
+# Segreti e configurazioni locali
+.env
+.env.*
+!.env.example
+
+# File temporanei del sistema operativo e log
 .DS_Store
 Thumbs.db
 *.log
-/.vs
-/node_modules
-/package-lock.json
-/package.json
