@@ -26,72 +26,71 @@ const activityLabels = {
     altro: 'Altro'
 };
 
-// Template settimanale base
+// Template settimanale base.
+// Vincoli fissi: lavoro lun-ven 09:00-18:00; palestra lun-mer-ven 18:30-20:00.
+// Le altre attività già presenti nel piano originale vengono mantenute.
 const weekTemplate = {
     'Lunedì': [
         { time: '06:30-07:45', content: '', type: 'prayer' },
         { time: '09:00-18:00', content: '', type: 'work' },
-        { time: '21:00-23:00', content: '', type: 'study' }
+        { time: '18:30-20:00', content: '', type: 'gym' },
+        { time: '20:45-21:30', content: '', type: 'study' }
     ],
     'Martedì': [
         { time: '06:30-07:45', content: '', type: 'prayer' },
         { time: '09:00-18:00', content: '', type: 'work' },
+        { time: '18:30-20:00', content: '', type: 'study' },
         { time: '21:00-23:00', content: '', type: 'community' }
     ],
     'Mercoledì': [
         { time: '06:30-07:45', content: '', type: 'prayer' },
         { time: '09:00-18:00', content: '', type: 'work' },
-        { time: '18:15-19:30', content: '', type: 'gym' },
-        { time: '21:00-23:00', content: '', type: 'study' }
+        { time: '18:30-20:00', content: '', type: 'gym' },
+        { time: '20:45-21:30', content: '', type: 'study' }
     ],
     'Giovedì': [
         { time: '06:30-07:45', content: '', type: 'prayer' },
         { time: '09:00-18:00', content: '', type: 'work' },
-        { time: '18:15-19:00', content: '', type: 'gym' },
-        { time: '21:00-23:00', content: '', type: 'study' }
+        { time: '20:30-22:30', content: '', type: 'study' }
     ],
     'Venerdì': [
         { time: '06:30-07:45', content: '', type: 'prayer' },
         { time: '09:00-18:00', content: '', type: 'work' },
-        { time: '18:15-19:30', content: '', type: 'gym' },
-        { time: '21:00-22:30', content: '', type: 'study' }
+        { time: '18:30-20:00', content: '', type: 'gym' }
     ],
     'Sabato': [
         { time: '07:00-07:45', content: '', type: 'prayer' },
         { time: '09:00-12:00', content: '', type: 'study' },
-        { time: '14:00-16:00', content: '', type: 'study' },
-        { time: '17:00-18:15', content: '', type: 'gym' },
+        { time: '14:30-16:00', content: '', type: 'study' },
         { time: '21:00-23:00', content: '', type: 'community' }
     ],
     'Domenica': [
         { time: '07:30-08:45', content: '', type: 'prayer' },
-        { time: '11:00-13:00', content: '', type: 'study' },
-        { time: '21:00-22:30', content: '', type: 'study' }
+        { time: '10:30-12:00', content: '', type: 'study' }
     ]
 };
 
-// Mappa delle sessioni di studio con le loro durate
+// 11 ore settimanali: due sessioni leggere dopo la palestra,
+// due sessioni focalizzate infrasettimanali e tre blocchi nel weekend.
 const studySchedule = {
-    'Lunedì': { sessions: [{ time: '21:00-23:00', hours: 2 }] },
-    'Mercoledì': { sessions: [{ time: '21:00-23:00', hours: 2 }] },
-    'Giovedì': { sessions: [{ time: '21:00-23:00', hours: 2 }] },
-    'Venerdì': { sessions: [{ time: '21:00-22:30', hours: 1.5 }] },
+    'Lunedì': { sessions: [{ time: '20:45-21:30', hours: 0.75 }] },
+    'Martedì': { sessions: [{ time: '18:30-20:00', hours: 1.5 }] },
+    'Mercoledì': { sessions: [{ time: '20:45-21:30', hours: 0.75 }] },
+    'Giovedì': { sessions: [{ time: '20:30-22:30', hours: 2 }] },
     'Sabato': { sessions: [
         { time: '09:00-12:00', hours: 3 },
-        { time: '14:00-16:00', hours: 2 }
+        { time: '14:30-16:00', hours: 1.5 }
     ]},
-    'Domenica': { sessions: [
-        { time: '11:00-13:00', hours: 2 },
-        { time: '21:00-22:30', hours: 1.5 }
-    ]}
+    'Domenica': { sessions: [{ time: '10:30-12:00', hours: 1.5 }] }
 };
 
-// Parametri modificabili per il calcolo ore effettive
+// Le ore dei moduli sono già stime effettive comprensive di studio,
+// pratica, consolidamento e produzione dei deliverable.
 let calculationParams = {
-    theoryMultiplier: 1.5,
-    practiceMultiplier: 1.2,
-    exerciseHours: 3,      // Ore fisse per esercitazioni
-    projectHours: 5        // Ore fisse per progetti
+    theoryMultiplier: 1,
+    practiceMultiplier: 1,
+    exerciseHours: 3,
+    projectHours: 8
 };
 
 // Nomi dei mesi

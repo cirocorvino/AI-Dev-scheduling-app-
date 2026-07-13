@@ -1,7 +1,7 @@
 {
-  "name": "Piano di Studio AI Development",
-  "short_name": "AI StudyPlan",
-  "description": "Sistema completo per la pianificazione di studi in AI e sviluppo software",
+  "name": "Corso .NET e Architettura Applicazioni Web",
+  "short_name": ".NET StudyPlan",
+  "description": "Pianificazione locale del percorso professionale .NET e application architecture",
   "icons": [
     {
       "src": "favicon.svg",
