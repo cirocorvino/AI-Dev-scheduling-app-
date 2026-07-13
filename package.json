@@ -1,0 +1,14 @@
+{
+  "name": "learning-path-planner",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Planner local-first e personalizzabile per percorsi di apprendimento.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

@@ -6,14 +6,8 @@
 *.userosscache
 *.sln.docstates
 
-# Tooling Node opzionale usato solo per il server locale
-# L'app non usa dipendenze Node né librerie npm.
+# Dipendenze e cache di sviluppo
 node_modules/
-package.json
-package-lock.json
-npm-shrinkwrap.json
-yarn.lock
-pnpm-lock.yaml
 .npm/
 .pnpm-store/
 .yarn/
@@ -23,9 +17,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Dati personali dell'organizer
-# I file personali possono avere qualunque nome: la protezione è basata
-# sulla cartella, non su un nome di file convenzionale.
+# Dati personali: tutto il contenuto resta locale
 data/user/*
 !data/user/README.md
 data/private/*
@@ -52,3 +44,7 @@ piano-studio-*.json
 .DS_Store
 Thumbs.db
 *.log
+
+# Output di test e copertura
+coverage/
+test-results/

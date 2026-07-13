@@ -1,144 +1,131 @@
-# Database JSON e programmi di studio
+# Formato JSON v2
 
-## Database organizer
+Ogni file viene validato integralmente prima di entrare nello stato dell'app. Date e orari usano rispettivamente `YYYY-MM-DD` e `HH:MM`; durate e stime sono minuti interi positivi.
 
-Il database completo usa questo involucro:
+## Database completo
 
 ```json
 {
-  "kind": "organizer-database",
-  "schemaVersion": 1,
-  "metadata": {},
-  "settings": {},
-  "categories": [],
-  "weekTemplate": {},
-  "studyProgram": {},
+  "kind": "learning-planner-database",
+  "schemaVersion": 2,
+  "metadata": {
+    "id": "my-database",
+    "name": "Il mio planner",
+    "description": "",
+    "locale": "it-IT",
+    "timeZone": "Europe/Rome",
+    "createdAt": "2026-07-13T00:00:00.000Z",
+    "updatedAt": "2026-07-13T00:00:00.000Z"
+  },
+  "settings": {
+    "weekStartsOn": 1,
+    "planningMode": "sequential",
+    "estimationMultipliers": {
+      "theory": 1,
+      "practice": 1,
+      "exercise": 1,
+      "project": 1,
+      "other": 1
+    },
+    "calendarExceptions": [
+      {
+        "id": "holiday-1",
+        "date": "2026-08-11",
+        "label": "Indisponibile",
+        "focusAvailable": false
+      }
+    ]
+  },
+  "categories": [
+    {
+      "id": "focus",
+      "label": "Apprendimento",
+      "icon": "📚",
+      "color": "#2563eb",
+      "role": "focus"
+    }
+  ],
+  "weekTemplate": {
+    "monday": [],
+    "tuesday": [
+      {
+        "id": "tue-focus",
+        "start": "18:30",
+        "end": "20:00",
+        "label": "",
+        "categoryId": "focus"
+      }
+    ],
+    "wednesday": [],
+    "thursday": [],
+    "friday": [],
+    "saturday": [],
+    "sunday": []
+  },
+  "plan": {
+    "kind": "learning-plan",
+    "schemaVersion": 2,
+    "id": "my-plan",
+    "title": "Il mio percorso",
+    "description": "",
+    "startDate": "2026-08-03",
+    "weeklyTargetMinutes": 300,
+    "modules": []
+  },
   "state": {
-    "weeklySchedules": {},
-    "courseTopics": {}
+    "progress": {}
   }
 }
 ```
 
-### `categories`
+Deve esistere almeno una categoria con ruolo `focus`. Solo gli slot collegati a queste categorie costituiscono capacità pianificabile. Gli slot `busy` e `neutral` appaiono nell'agenda ma non ricevono argomenti.
+
+Le chiavi ammesse per `weekTemplate` sono `monday` … `sunday`. Un'eccezione con `focusAvailable: false` blocca tutti gli slot focus di quella data; il Gantt si estende se la capacità residua non basta.
+
+## Piano importabile
+
+**Importa piano** accetta un database completo oppure il solo oggetto `learning-plan`:
 
 ```json
 {
-  "id": "study",
-  "label": "Studio",
-  "icon": "📚"
-}
-```
-
-L'identificatore viene usato nel campo `type` delle sessioni settimanali.
-
-### `weekTemplate`
-
-```json
-{
-  "Lunedì": [
-    {
-      "time": "09:00-17:00",
-      "content": "Attività ricorrente",
-      "type": "work"
-    },
-    {
-      "time": "20:00-21:30",
-      "content": "",
-      "type": "study"
-    }
-  ]
-}
-```
-
-Gli intervalli di tipo `study` diventano automaticamente slot disponibili. La durata viene calcolata dal campo `time`.
-
-## Programma con moduli raggruppati
-
-```json
-{
-  "kind": "study-program",
-  "schemaVersion": 1,
-  "id": "dotnet-course",
-  "title": "Corso .NET",
-  "description": "Percorso dimostrativo",
+  "kind": "learning-plan",
+  "schemaVersion": 2,
+  "id": "frontend-path",
+  "title": "Percorso frontend",
+  "description": "",
   "startDate": "2026-08-03",
-  "weeklyHours": 6,
-  "courses": [
+  "weeklyTargetMinutes": 300,
+  "modules": [
     {
-      "id": 1,
-      "name": "Fondamenti",
-      "color": "#5B8FF9",
-      "modules": [
+      "id": "foundations",
+      "title": "Fondamenti",
+      "color": "#2563eb",
+      "mode": "work",
+      "topics": [
         {
-          "name": "Hosting model - Teoria",
-          "time": 2
+          "id": "html-basics",
+          "title": "Struttura semantica",
+          "kind": "theory",
+          "estimatedMinutes": 90
         }
       ]
-    }
-  ]
-}
-```
-
-Per una pausa di calendario:
-
-```json
-{
-  "id": 2,
-  "name": "Pausa",
-  "color": "#A0A7B4",
-  "fixedWeeks": 1,
-  "isBuffer": true,
-  "modules": []
-}
-```
-
-## Programma in formato piatto
-
-È il formato più semplice da generare o convertire da un foglio di calcolo:
-
-```json
-{
-  "kind": "study-program",
-  "schemaVersion": 1,
-  "id": "web-study",
-  "title": "Sviluppo web",
-  "startDate": "2026-08-03",
-  "weeklyTargetMinutes": 360,
-  "units": [
-    {
-      "module": "Fondamenti",
-      "order": 10,
-      "title": "Introduzione - Teoria",
-      "estimatedMinutes": 60
     },
     {
-      "module": "Fondamenti",
-      "order": 20,
-      "title": "Primo laboratorio - Pratica",
-      "estimatedMinutes": 120
+      "id": "buffer",
+      "title": "Recupero",
+      "color": "#94a3b8",
+      "mode": "buffer",
+      "fixedWeeks": 1,
+      "topics": []
     }
   ]
 }
 ```
 
-Sono accettati anche `hours`, `estimatedHours` oppure `time` al posto di `estimatedMinutes`.
+`mode` può essere `work` o `buffer`. I tipi di argomento sono `theory`, `practice`, `exercise`, `project` e `other`. Gli ID devono essere univoci e usare lettere, numeri, punto, trattino, underscore o due punti.
 
-## Regole di importazione
+## Compatibilità v1
 
-- `kind` deve essere `study-program`;
-- `schemaVersion` corrente: `1`;
-- deve essere presente `courses` oppure `units`;
-- ogni attività deve avere `name` o `title`;
-- la durata deve essere un numero non negativo;
-- l'importazione azzera il dettaglio settimanale generato per il programma precedente;
-- attività ricorrenti, categorie e slot di studio restano invariati;
-- il database deve essere salvato dopo l'importazione.
+Sono riconosciuti i database `organizer-database` e i programmi `study-program` con `courses` o `units`. La migrazione converte giorni italiani, ore in minuti, corsi in moduli e attività in argomenti. Le vecchie cache `weeklySchedules` e `courseTopics` non vengono mantenute: il planner rigenera la schedulazione e segnala l'operazione. Il file originale non viene sovrascritto finché l'utente non sceglie **Salva**.
 
-## Backup
-
-Il file JSON è autosufficiente. Per un backup è sufficiente copiarlo con una data nel nome, per esempio:
-
-```text
-organizer-data-2026-08-31.json
-```
+Gli esempi canonici sono `data/examples/organizer-example.json` e `data/study-program-example.json`.

@@ -1,0 +1,82 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import test from 'node:test';
+
+import { normalizeDatabase, updateDatabase } from '../js/model.js';
+import {
+    buildPlanSchedule,
+    getModuleWeekAllocations,
+    getWeekAgenda,
+    getWeeklyCapacity,
+    minutesBetween
+} from '../js/planner.js';
+
+const exampleUrl = new URL('../data/examples/organizer-example.json', import.meta.url);
+const example = JSON.parse(await readFile(exampleUrl, 'utf8'));
+
+function database() {
+    return normalizeDatabase(example).database;
+}
+
+test('calcola intervalli e capacità focus ignorando gli impegni', () => {
+    const value = database();
+
+    assert.equal(minutesBetween('18:30', '20:00'), 90);
+    assert.equal(getWeeklyCapacity(value), 300);
+});
+
+test('costruisce un Gantt sequenziale con una settimana buffer', () => {
+    const schedule = buildPlanSchedule(database());
+
+    assert.equal(schedule.totalMinutes, 480);
+    assert.equal(schedule.totalWeeks, 3);
+    assert.equal(schedule.startDate, '2026-08-03');
+    assert.equal(schedule.endDate, '2026-08-23');
+    assert.deepEqual(schedule.modules.map(module => module.weeks), [1, 1, 1]);
+});
+
+test('un target oltre la capacità viene limitato e segnalato', () => {
+    const value = updateDatabase(database(), draft => { draft.plan.weeklyTargetMinutes = 600; });
+    const schedule = buildPlanSchedule(value);
+
+    assert.equal(schedule.effectiveWeeklyTargetMinutes, 300);
+    assert.match(schedule.warnings[0], /supera la capacità settimanale/i);
+});
+
+test('le eccezioni riducono la capacità ed estendono il Gantt', () => {
+    const value = updateDatabase(database(), draft => {
+        draft.settings.calendarExceptions = [
+            { id: 'blocked-tue', date: '2026-08-11', label: 'Assente', focusAvailable: false },
+            { id: 'blocked-thu', date: '2026-08-13', label: 'Assente', focusAvailable: false }
+        ];
+    });
+    const schedule = buildPlanSchedule(value);
+
+    assert.deepEqual(schedule.modules.map(module => module.weeks), [1, 2, 1]);
+    assert.equal(schedule.totalWeeks, 4);
+    assert.equal(schedule.endDate, '2026-08-30');
+});
+
+test('spezza gli argomenti sul confine della settimana', () => {
+    const value = updateDatabase(database(), draft => {
+        draft.plan.weeklyTargetMinutes = 120;
+    });
+    const firstWeek = getModuleWeekAllocations(value, 'foundations', 0);
+    const secondWeek = getModuleWeekAllocations(value, 'foundations', 1);
+
+    assert.deepEqual(firstWeek.map(item => item.minutes), [60, 60]);
+    assert.deepEqual(secondWeek.map(item => item.minutes), [60]);
+});
+
+test("distribuisce l'agenda soltanto negli slot focus disponibili", () => {
+    const agenda = getWeekAgenda(database(), 'foundations', 0);
+    const focusSessions = agenda.days.flatMap(day => day.sessions).filter(session => session.isFocus);
+    const assignedMinutes = focusSessions
+        .flatMap(session => session.assignments)
+        .reduce((total, assignment) => total + assignment.minutes, 0);
+
+    assert.equal(agenda.plannedMinutes, 300);
+    assert.equal(agenda.allocations.reduce((total, item) => total + item.minutes, 0), 180);
+    assert.equal(assignedMinutes, 180);
+    assert.equal(agenda.days.flatMap(day => day.sessions).filter(session => !session.isFocus).flatMap(session => session.assignments).length, 0);
+});

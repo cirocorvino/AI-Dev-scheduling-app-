@@ -1,113 +1,75 @@
-# Personal Organizer & Study Planner
+# Learning Path Planner
 
-Applicazione **local-first** in HTML, CSS e JavaScript per combinare attività ricorrenti e programmi di studio in un calendario settimanale e in un diagramma di Gantt.
+Applicazione web **local-first** per progettare un percorso di apprendimento, stimarne la durata e distribuirne gli argomenti negli slot disponibili della settimana.
 
-> Questo repository è privato perché il database predefinito contiene configurazioni personali. La futura versione pubblica verrà creata in un repository nuovo, con cronologia Git pulita e soli dati dimostrativi.
+Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come agenda operativa con argomenti, tempi e indisponibilità. Non richiede backend, account o servizi cloud: database e programmi sono file JSON scelti esplicitamente dall'utente.
 
-## Caratteristiche
+## Funzioni principali
 
-- nessun backend e nessun database server;
-- database portabile in un singolo file JSON;
-- attività ricorrenti e slot di studio configurabili;
-- importazione di programmi di studio JSON;
-- supporto sia a moduli raggruppati sia a una lista piatta di unità;
-- distribuzione automatica delle attività negli slot di studio;
-- Gantt, dettaglio settimanale e modifica manuale;
-- salvataggio diretto del file quando il browser lo consente;
-- fallback universale tramite importazione ed esportazione JSON.
+- moduli sequenziali, argomenti tipizzati e settimane di recupero;
+- stime in minuti e moltiplicatori configurabili per teoria, pratica, esercizi e progetti;
+- categorie personalizzabili con ruoli `focus`, `busy` e `neutral`;
+- template settimanale con più slot per giorno;
+- target settimanale e date eccezionali che riducono la capacità reale;
+- Gantt calcolato sulla disponibilità effettiva e dettaglio di ogni settimana;
+- apertura e salvataggio locale, con fallback tramite download JSON;
+- importazione di piani v2 e migrazione automatica dei precedenti file organizer v1;
+- nessun caricamento automatico di file personali.
 
 ## Avvio locale
 
+Il progetto usa moduli JavaScript nativi, quindi va servito via HTTP:
+
 ```bash
-git clone https://github.com/cirocorvino/AI-Dev-scheduling-app-.git
-cd AI-Dev-scheduling-app-
 python -m http.server 3001
 ```
 
-Aprire:
-
-```text
-http://localhost:3001
-```
-
-In alternativa:
+oppure:
 
 ```bash
-npx http-server . -p 3001
+php -S localhost:3001
 ```
 
-L'app può essere aperta anche direttamente tramite `index.html`; in quel caso il browser potrebbe non caricare automaticamente il database predefinito. È comunque possibile usare **Apri database** e selezionare il file manualmente.
+Aprire `http://localhost:3001`. Non sono necessarie dipendenze runtime o una fase di build.
 
-## Flusso principale
+Per eseguire i test serve Node.js 20 o successivo:
 
-1. L'app tenta di caricare `data/organizer-data.json`.
-2. **Apri database** permette di scegliere un altro file JSON.
-3. **Importa programma** sostituisce il programma di studio attivo mantenendo il template settimanale.
-4. Le attività vengono distribuite negli slot di tipo `study`.
-5. **Salva database** aggiorna il file aperto oppure propone il salvataggio di una copia.
+```bash
+npm test
+```
 
-Il file JSON è la fonte ufficiale dei dati. `localStorage` resta presente soltanto per compatibilità con la versione precedente e non viene più caricato automaticamente.
+## Uso
 
-## File principali
+1. Aprire **Impostazioni** per definire categorie, disponibilità ricorrenti, target ed eccezioni.
+2. Aprire **Moduli e argomenti** per comporre il percorso e ordinare le attività.
+3. Consultare il Gantt; selezionare un modulo per vedere la distribuzione settimanale.
+4. Usare **Salva** per scrivere il database nel file aperto o scaricarne una copia.
+5. Usare **Importa piano** per sostituire soltanto il percorso, conservando disponibilità e categorie.
+
+All'avvio viene caricato esclusivamente il database fittizio in `data/examples/`. I file personali vanno aperti manualmente.
+
+## Struttura
 
 ```text
-index.html
-js/
-  config.js          fallback generici e costanti UI
-  data.js            stato applicativo iniziale
-  fileStore.js       apertura, validazione, importazione e salvataggio JSON
-  calculations.js    calcolo ore e date
-  courseDetail.js    dettaglio e distribuzione settimanale
-  ganttChart.js      Gantt e gestione moduli
-data/
-  organizer-data.json          database personale predefinito
-  study-program-example.json   esempio generico importabile
-docs/
-  JSON-DATABASE.md             formato dei file e istruzioni di importazione
-COURSE-DOTNET.md                configurazione del corso corrente
+index.html                 interfaccia e dialog di modifica
+Style/                     foglio di stile, manifest e icona
+js/model.js                schema, validazione e migrazione v1
+js/planner.js              capacità, Gantt e agenda settimanale
+js/store.js                stato e I/O locale dei file JSON
+js/app.js                  rendering e interazioni UI
+data/examples/             database dimostrativo versionato
+data/user/                 database locali ignorati da Git
+data/private/              documenti privati ignorati da Git
+test/                      test automatici del modello e del planner
+docs/                      formato dati, architettura, privacy e roadmap
 ```
 
-## Programmi di studio
+## Formati e privacy
 
-Un programma può contenere una struttura `courses` completa oppure una lista piatta `units`. Il formato piatto minimo è:
+Il formato v2 è documentato in [docs/JSON-DATABASE.md](docs/JSON-DATABASE.md). Un piano importabile è disponibile in [data/study-program-example.json](data/study-program-example.json).
 
-```json
-{
-  "kind": "study-program",
-  "schemaVersion": 1,
-  "id": "my-program",
-  "title": "Il mio programma",
-  "startDate": "2026-08-03",
-  "weeklyTargetMinutes": 360,
-  "units": [
-    {
-      "module": "Fondamenti",
-      "order": 10,
-      "title": "Prima attività - Teoria",
-      "estimatedMinutes": 60
-    }
-  ]
-}
-```
-
-Vedere [`docs/JSON-DATABASE.md`](docs/JSON-DATABASE.md) e [`data/study-program-example.json`](data/study-program-example.json).
-
-## Privacy e backup
-
-Il database può contenere orari, attività e piani personali. Prima di copiare codice o file in un repository pubblico:
-
-- non copiare `data/organizer-data.json`;
-- non copiare esportazioni o backup;
-- usare soltanto dati fittizi;
-- inizializzare una nuova cronologia Git;
-- controllare README, screenshot, manifest e file JSON.
-
-È consigliato salvare una copia del database al termine di ogni checkpoint mensile.
-
-## Documentazione del corso
-
-Il programma personale attuale riguarda il percorso **.NET e Architettura Applicazioni Web**. Date, carico settimanale e struttura sono descritti in [`COURSE-DOTNET.md`](COURSE-DOTNET.md).
+`data/user/` e `data/private/` sono esclusi da Git salvo i rispettivi README. Prima di rendere pubblico un repository che in passato ha contenuto dati personali, cancellare i file dal ramo corrente **non basta**: occorre pubblicare da una cronologia nuova o riscrivere e sostituire l'intera cronologia. La procedura è in [docs/PRIVACY.md](docs/PRIVACY.md).
 
 ## Licenza
 
-MIT. La licenza riguarda il codice; i dati personali e la configurazione privata non sono materiale dimostrativo da pubblicare.
+Codice distribuito con licenza MIT.
