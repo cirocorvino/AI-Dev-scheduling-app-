@@ -1,82 +1,97 @@
 {
-  "kind": "organizer-database",
-  "schemaVersion": 1,
+  "kind": "learning-planner-database",
+  "schemaVersion": 2,
   "metadata": {
-    "name": "Organizer dimostrativo",
+    "id": "example-organizer",
+    "name": "Planner dimostrativo",
+    "description": "Esempio fittizio privo di dati personali",
+    "locale": "it-IT",
+    "timeZone": "Europe/Rome",
     "createdAt": "2026-07-13T00:00:00.000Z",
     "updatedAt": "2026-07-13T00:00:00.000Z"
   },
   "settings": {
-    "defaultSessionMinutes": 90,
-    "calculationParams": {
-      "theoryMultiplier": 1,
-      "practiceMultiplier": 1,
-      "exerciseHours": 2,
-      "projectHours": 4
-    }
+    "weekStartsOn": 1,
+    "planningMode": "sequential",
+    "estimationMultipliers": {
+      "theory": 1,
+      "practice": 1,
+      "exercise": 1,
+      "project": 1,
+      "other": 1
+    },
+    "calendarExceptions": []
   },
   "categories": [
-    { "id": "study", "label": "Studio", "icon": "📚" },
-    { "id": "work", "label": "Lavoro", "icon": "💼" },
-    { "id": "fitness", "label": "Fitness", "icon": "🏃" },
-    { "id": "personal", "label": "Personale", "icon": "📌" },
-    { "id": "other", "label": "Altro", "icon": "🗓️" }
+    { "id": "focus", "label": "Studio", "icon": "📚", "color": "#2563eb", "role": "focus" },
+    { "id": "work", "label": "Lavoro", "icon": "💼", "color": "#f97316", "role": "busy" },
+    { "id": "wellbeing", "label": "Benessere", "icon": "🌿", "color": "#16a34a", "role": "busy" },
+    { "id": "other", "label": "Altro", "icon": "📌", "color": "#64748b", "role": "neutral" }
   ],
   "weekTemplate": {
-    "Lunedì": [
-      { "time": "09:00-17:00", "content": "Attività lavorativa", "type": "work" },
-      { "time": "19:00-20:00", "content": "Attività fisica", "type": "fitness" }
+    "monday": [
+      { "id": "mon-work", "start": "09:00", "end": "17:00", "label": "Attività lavorativa", "categoryId": "work" },
+      { "id": "mon-wellbeing", "start": "18:30", "end": "19:30", "label": "Tempo personale", "categoryId": "wellbeing" }
     ],
-    "Martedì": [
-      { "time": "09:00-17:00", "content": "Attività lavorativa", "type": "work" },
-      { "time": "18:30-20:00", "content": "", "type": "study" }
+    "tuesday": [
+      { "id": "tue-work", "start": "09:00", "end": "17:00", "label": "Attività lavorativa", "categoryId": "work" },
+      { "id": "tue-focus", "start": "18:30", "end": "20:00", "label": "", "categoryId": "focus" }
     ],
-    "Mercoledì": [
-      { "time": "09:00-17:00", "content": "Attività lavorativa", "type": "work" }
+    "wednesday": [
+      { "id": "wed-work", "start": "09:00", "end": "17:00", "label": "Attività lavorativa", "categoryId": "work" }
     ],
-    "Giovedì": [
-      { "time": "09:00-17:00", "content": "Attività lavorativa", "type": "work" },
-      { "time": "18:30-20:00", "content": "", "type": "study" }
+    "thursday": [
+      { "id": "thu-work", "start": "09:00", "end": "17:00", "label": "Attività lavorativa", "categoryId": "work" },
+      { "id": "thu-focus", "start": "18:30", "end": "20:00", "label": "", "categoryId": "focus" }
     ],
-    "Venerdì": [
-      { "time": "09:00-17:00", "content": "Attività lavorativa", "type": "work" }
+    "friday": [
+      { "id": "fri-work", "start": "09:00", "end": "17:00", "label": "Attività lavorativa", "categoryId": "work" }
     ],
-    "Sabato": [
-      { "time": "09:00-11:00", "content": "", "type": "study" }
+    "saturday": [
+      { "id": "sat-focus", "start": "09:00", "end": "11:00", "label": "", "categoryId": "focus" }
     ],
-    "Domenica": []
+    "sunday": []
   },
-  "studyProgram": {
-    "kind": "study-program",
-    "schemaVersion": 1,
-    "id": "example-study-program",
-    "title": "Programma di studio dimostrativo",
-    "description": "Esempio fittizio privo di dati personali",
+  "plan": {
+    "kind": "learning-plan",
+    "schemaVersion": 2,
+    "id": "example-web-path",
+    "title": "Percorso dimostrativo di sviluppo web",
+    "description": "Un esempio generico modificabile dall'interfaccia",
     "startDate": "2026-08-03",
-    "weeklyHours": 5,
-    "courses": [
+    "weeklyTargetMinutes": 300,
+    "modules": [
       {
-        "id": 1,
-        "name": "Fondamenti",
-        "color": "#5B8FF9",
-        "modules": [
-          { "name": "Definizione degli obiettivi - Teoria", "time": 1 },
-          { "name": "Preparazione dell'ambiente - Pratica", "time": 2 }
+        "id": "foundations",
+        "title": "Fondamenti",
+        "color": "#2563eb",
+        "mode": "work",
+        "topics": [
+          { "id": "goals", "title": "Definire obiettivi e risultati attesi", "kind": "theory", "estimatedMinutes": 60 },
+          { "id": "environment", "title": "Preparare ambiente e repository", "kind": "practice", "estimatedMinutes": 120 }
         ]
       },
       {
-        "id": 2,
-        "name": "Applicazione",
-        "color": "#61DDAA",
-        "modules": [
-          { "name": "Prima funzionalità - Pratica", "time": 3 },
-          { "name": "Test e revisione - Esercitazione", "time": 2 }
+        "id": "application",
+        "title": "Applicazione",
+        "color": "#059669",
+        "mode": "work",
+        "topics": [
+          { "id": "first-feature", "title": "Realizzare la prima funzionalità", "kind": "practice", "estimatedMinutes": 180 },
+          { "id": "review", "title": "Test e revisione", "kind": "exercise", "estimatedMinutes": 120 }
         ]
+      },
+      {
+        "id": "buffer",
+        "title": "Recupero e consolidamento",
+        "color": "#94a3b8",
+        "mode": "buffer",
+        "fixedWeeks": 1,
+        "topics": []
       }
     ]
   },
   "state": {
-    "weeklySchedules": {},
-    "courseTopics": {}
+    "progress": {}
   }
 }

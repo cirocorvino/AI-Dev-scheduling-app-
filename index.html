@@ -1,205 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer locale e planner di studio</title>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Planner local-first per percorsi di apprendimento personalizzabili">
+    <title>Learning Path Planner</title>
     <link rel="icon" type="image/svg+xml" href="Style/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="Style/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="Style/favicon.svg">
     <link rel="manifest" href="Style/manifest.json">
-    <meta name="theme-color" content="#6C5CE7">
     <link rel="stylesheet" href="Style/styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 id="appTitle">📅 Organizer locale e planner di studio</h1>
-            <p id="appDescription">Attività ricorrenti, programmi di studio e calendario in un semplice file JSON</p>
-        </div>
-
-        <div class="calculation-info">
-            <h3>ℹ️ Calcolo ore effettive</h3>
-            <ul id="calculationDisplay">
-                <li><strong>Teoria:</strong> ore originali × <span id="theoryMultiplier">1</span></li>
-                <li><strong>Pratica:</strong> ore originali × <span id="practiceMultiplier">1</span></li>
-                <li><strong>Esercitazioni:</strong> <span id="exerciseHours">3</span> ore per esercitazione</li>
-                <li><strong>Progetti:</strong> <span id="projectHours">8</span> ore per progetto</li>
-            </ul>
-        </div>
-
-        <div class="settings-bar">
-            <div class="setting-group">
-                <span class="setting-label">Ore settimanali:</span>
-                <input type="number" id="weeklyHours" class="setting-input" value="10" onchange="updateWeeklyHours()" readonly>
-            </div>
-            <div class="setting-group">
-                <span class="setting-label">Data inizio:</span>
-                <input type="date" id="startDate" class="setting-input" style="width: 150px;" onchange="recalculateDates()" readonly>
-            </div>
-            <div class="setting-group" style="min-width: 280px;">
-                <span class="setting-label">Database:</span>
-                <span id="databaseStatus" style="font-size: 0.9em; font-weight: 600;">Inizializzazione…</span>
-            </div>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value" id="totalHours">0</div>
-                <div class="stat-label">Ore totali effettive</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalWeeks">0</div>
-                <div class="stat-label">Settimane</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="totalCourses">0</div>
-                <div class="stat-label">Moduli</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="weeklyHoursDisplay">10</div>
-                <div class="stat-label">Ore/sett.</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="startDateDisplay">-</div>
-                <div class="stat-label">Inizio</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="endDateDisplay">-</div>
-                <div class="stat-label">Fine</div>
-            </div>
-        </div>
-
-        <div class="toolbar">
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                <button class="btn btn-primary" onclick="toggleEditMode()">
-                    ✏️ <span id="editBtnText">Modifica</span>
-                </button>
-                <button class="btn btn-warning" onclick="showAddCourseModal()">
-                    ➕ Aggiungi modulo
-                </button>
-                <button class="btn btn-info" onclick="FileStore.openDatabase()">
-                    📂 Apri database
-                </button>
-                <button class="btn btn-success" onclick="FileStore.saveDatabase()">
-                    💾 Salva database
-                </button>
-                <button class="btn btn-primary" onclick="FileStore.selectStudyProgram()">
-                    📚 Importa programma
-                </button>
-                <input type="file" id="databaseFileInput" class="hidden" accept="application/json,.json"
-                       onchange="FileStore.handleDatabaseFileInput(event)">
-                <input type="file" id="studyProgramFileInput" class="hidden" accept="application/json,.json"
-                       onchange="FileStore.handleStudyProgramFileInput(event)">
-            </div>
-            <div>
-                <span id="currentPlanName" style="color: #667eea; font-weight: 600;"></span>
-            </div>
-        </div>
-
-        <div class="gantt-container">
-            <h2 style="color: #667eea; margin-bottom: 20px;">Diagramma di Gantt - Programma di studio</h2>
-            <p style="color: #666; margin-bottom: 20px;">
-                💡 Apri un modulo per vedere e modificare la distribuzione settimanale delle attività.
-            </p>
-
-            <div id="timelineMonths" class="timeline-months"></div>
-
-            <table class="gantt-table">
-                <thead>
-                    <tr>
-                        <th style="width: 20%;">Modulo</th>
-                        <th style="width: 8%;">Ore eff.</th>
-                        <th style="width: 8%;">Sett.</th>
-                        <th style="width: 12%;">Periodo</th>
-                        <th style="width: 52%;" id="timelineHeader">Timeline</th>
-                    </tr>
-                </thead>
-                <tbody id="ganttBody"></tbody>
-            </table>
-        </div>
-
-        <div id="scheduleDetail" class="schedule-detail"></div>
-    </div>
-
-    <div id="addCourseModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Aggiungi modulo</div>
-            <div class="form-group">
-                <label class="form-label">Nome del modulo:</label>
-                <input type="text" id="newCourseName" class="form-input" placeholder="Es: Testing e qualità">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Ore totali:</label>
-                <input type="number" id="newCourseHours" class="form-input" placeholder="Es: 20">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Colore:</label>
-                <input type="color" id="newCourseColor" class="form-input" value="#667eea">
-            </div>
-            <div class="form-buttons">
-                <button class="btn btn-success" onclick="addNewCourse()">Aggiungi</button>
-                <button class="btn btn-primary" onclick="closeAddCourseModal()">Annulla</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modali legacy mantenute per compatibilità con i piani localStorage esistenti. -->
-    <div id="savePlanModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Salva piano legacy</div>
-            <div class="form-group">
-                <label class="form-label">Nome del piano:</label>
-                <input type="text" id="planName" class="form-input">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Descrizione:</label>
-                <input type="text" id="planDescription" class="form-input">
-            </div>
-            <div class="form-buttons">
-                <button class="btn btn-success" onclick="savePlan()">Salva</button>
-                <button class="btn btn-primary" onclick="closeSaveModal()">Annulla</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="loadPlanModal" class="modal">
-        <div class="modal-content" style="max-width: 700px;">
-            <div class="modal-header">Piani legacy</div>
-            <div style="margin-bottom: 20px;">
-                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                    <strong>Piano corrente:</strong> <span id="currentPlanDisplay">Nessun piano caricato</span>
+    <header class="hero">
+        <div class="hero__inner">
+            <div class="eyebrow">Local-first · JSON portabile · Nessun account</div>
+            <div class="hero__title-row">
+                <div>
+                    <h1 id="appTitle">Learning Path Planner</h1>
+                    <p id="appDescription">Organizza moduli, argomenti e disponibilità in un percorso sostenibile.</p>
+                </div>
+                <div id="databaseStatus" class="status" data-level="info" aria-live="polite">
+                    Inizializzazione…
                 </div>
             </div>
-            <div id="savedPlansList" style="max-height: 400px; overflow-y: auto;"></div>
-            <div class="form-buttons">
-                <button class="btn btn-primary" onclick="closeLoadModal()">Chiudi</button>
-            </div>
         </div>
-    </div>
+    </header>
 
-    <div id="deletePlanModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
-            <div class="modal-header">Conferma eliminazione</div>
-            <p>Eliminare il piano “<span id="planToDelete"></span>”?</p>
-            <div class="form-buttons">
-                <button class="btn btn-warning" onclick="confirmDeletePlan()">Elimina</button>
-                <button class="btn btn-primary" onclick="closeDeleteModal()">Annulla</button>
+    <main class="layout">
+        <section class="toolbar card" aria-label="Azioni database">
+            <div class="toolbar__group">
+                <button id="newDatabaseButton" class="button button--ghost" type="button">Nuovo</button>
+                <button id="openDatabaseButton" class="button button--secondary" type="button">Apri database</button>
+                <button id="saveDatabaseButton" class="button button--primary" type="button">Salva</button>
+                <button id="importPlanButton" class="button button--secondary" type="button">Importa programma</button>
             </div>
-        </div>
-    </div>
+            <div class="toolbar__group">
+                <button id="settingsButton" class="button button--ghost" type="button">Impostazioni</button>
+                <button id="editPlanButton" class="button button--ghost" type="button">Moduli e argomenti</button>
+            </div>
+            <input id="databaseFileInput" class="visually-hidden" type="file" accept="application/json,.json">
+            <input id="planFileInput" class="visually-hidden" type="file" accept="application/json,.json">
+        </section>
 
-    <script src="js/logger.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/calculations.js"></script>
-    <script src="js/planManager.js"></script>
-    <script src="js/ganttChart.js"></script>
-    <script src="js/courseDetail.js"></script>
-    <script src="js/modalManager.js"></script>
-    <script src="js/uiManager.js"></script>
-    <script src="js/fileStore.js"></script>
-    <script src="js/main.js"></script>
+        <section class="metrics" aria-label="Riepilogo del piano">
+            <article class="metric card">
+                <span class="metric__label">Impegno totale</span>
+                <strong id="totalDuration" class="metric__value">—</strong>
+            </article>
+            <article class="metric card">
+                <span class="metric__label">Durata</span>
+                <strong id="totalWeeks" class="metric__value">—</strong>
+            </article>
+            <article class="metric card">
+                <span class="metric__label">Moduli</span>
+                <strong id="moduleCount" class="metric__value">—</strong>
+            </article>
+            <article class="metric card">
+                <span class="metric__label">Capacità settimanale</span>
+                <strong id="weeklyCapacity" class="metric__value">—</strong>
+            </article>
+            <article class="metric card">
+                <span class="metric__label">Conclusione stimata</span>
+                <strong id="endDate" class="metric__value">—</strong>
+            </article>
+        </section>
+
+        <div id="plannerWarnings" class="notice hidden" role="status"></div>
+
+        <section class="card gantt-card" aria-labelledby="ganttTitle">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow eyebrow--dark">Piano sequenziale</span>
+                    <h2 id="ganttTitle">Diagramma di Gantt</h2>
+                </div>
+                <p id="planPeriod" class="muted"></p>
+            </div>
+            <div id="ganttEmpty" class="empty hidden">
+                Il piano non contiene ancora moduli. Usa “Moduli e argomenti” per iniziare.
+            </div>
+            <div id="ganttTable" class="gantt" role="table" aria-label="Moduli del percorso">
+                <div class="gantt__header" role="row">
+                    <span role="columnheader">Modulo</span>
+                    <span role="columnheader">Impegno</span>
+                    <span role="columnheader">Periodo</span>
+                    <span role="columnheader">Timeline</span>
+                </div>
+                <div id="ganttRows" class="gantt__rows"></div>
+            </div>
+        </section>
+
+        <section id="weekDetail" class="card week-detail hidden" aria-live="polite"></section>
+    </main>
+
+    <dialog id="settingsDialog" class="dialog">
+        <form id="settingsForm" method="dialog">
+            <div class="dialog__header">
+                <div>
+                    <span class="eyebrow eyebrow--dark">Personalizzazione</span>
+                    <h2>Impostazioni e disponibilità</h2>
+                </div>
+                <button class="icon-button" type="button" data-close-dialog="settingsDialog" aria-label="Chiudi">×</button>
+            </div>
+
+            <div class="form-grid">
+                <label>Nome database
+                    <input id="databaseNameInput" required maxlength="160">
+                </label>
+                <label>Titolo del percorso
+                    <input id="planTitleInput" required maxlength="240">
+                </label>
+                <label class="form-grid__wide">Descrizione
+                    <textarea id="planDescriptionInput" rows="2" maxlength="2000"></textarea>
+                </label>
+                <label>Data di inizio
+                    <input id="planStartDateInput" type="date" required>
+                </label>
+                <label>Target settimanale (ore)
+                    <input id="weeklyTargetInput" type="number" min="0.25" step="0.25" placeholder="Usa tutta la capacità">
+                </label>
+                <label>Lingua e formato
+                    <input id="localeInput" required placeholder="it-IT">
+                </label>
+                <label>Fuso orario
+                    <input id="timeZoneInput" required placeholder="Europe/Rome">
+                </label>
+            </div>
+
+            <section class="editor-section">
+                <div class="editor-section__heading">
+                    <div>
+                        <h3>Coefficienti di stima</h3>
+                        <p>Moltiplicano le stime originali senza dipendere dal titolo dell’argomento.</p>
+                    </div>
+                </div>
+                <div id="multiplierEditor" class="multiplier-grid"></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="editor-section__heading">
+                    <div>
+                        <h3>Categorie</h3>
+                        <p>Le categorie “focus” forniscono capacità al motore di pianificazione.</p>
+                    </div>
+                    <button id="addCategoryButton" class="button button--small button--ghost" type="button">Aggiungi categoria</button>
+                </div>
+                <div id="categoryEditor" class="stack"></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="editor-section__heading">
+                    <div>
+                        <h3>Settimana tipo</h3>
+                        <p>Definisci attività ricorrenti e slot disponibili.</p>
+                    </div>
+                </div>
+                <div id="weekTemplateEditor" class="week-editor"></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="editor-section__heading">
+                    <div>
+                        <h3>Eccezioni di calendario</h3>
+                        <p>Una riga per data: <code>YYYY-MM-DD | descrizione</code>. Gli slot focus di quel giorno non saranno usati.</p>
+                    </div>
+                </div>
+                <textarea id="exceptionsInput" rows="4" placeholder="2026-12-25 | Festività"></textarea>
+            </section>
+
+            <p id="settingsError" class="form-error hidden" role="alert"></p>
+            <div class="dialog__actions">
+                <button class="button button--ghost" type="button" data-close-dialog="settingsDialog">Annulla</button>
+                <button class="button button--primary" type="submit" value="save">Applica impostazioni</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="planDialog" class="dialog dialog--wide">
+        <form id="planForm" method="dialog">
+            <div class="dialog__header">
+                <div>
+                    <span class="eyebrow eyebrow--dark">Contenuto</span>
+                    <h2>Moduli e argomenti</h2>
+                </div>
+                <button class="icon-button" type="button" data-close-dialog="planDialog" aria-label="Chiudi">×</button>
+            </div>
+            <p class="muted">L’ordine dei moduli determina il Gantt. Le date sono calcolate dalla capacità reale e dalle eccezioni.</p>
+            <div id="moduleEditor" class="module-editor"></div>
+            <button id="addModuleButton" class="button button--secondary" type="button">Aggiungi modulo</button>
+            <p id="planError" class="form-error hidden" role="alert"></p>
+            <div class="dialog__actions">
+                <button class="button button--ghost" type="button" data-close-dialog="planDialog">Annulla</button>
+                <button class="button button--primary" type="submit" value="save">Aggiorna il piano</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

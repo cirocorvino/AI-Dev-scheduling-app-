@@ -1,21 +1,7 @@
 # Dati utente locali
 
-Questa cartella è destinata ai database personali dell'organizer.
+Questa cartella è destinata ai database personali aperti manualmente nell'app.
 
-Tutto il contenuto della cartella, eccetto questo file, è escluso da Git. Il database può quindi avere qualunque nome, per esempio:
+Tutto il contenuto, eccetto questo README, è escluso da Git. Il nome del file è libero, per esempio `mio-percorso.json`.
 
-```text
-organizer-data.json
-mio-calendario.json
-studio-e-attivita-2026.json
-```
-
-Per il caricamento automatico locale si può usare il nome convenzionale:
-
-```text
-data/user/organizer-data.json
-```
-
-Qualsiasi altro file può essere aperto tramite il pulsante **Apri database**.
-
-Non collocare dati personali in `data/examples/`, perché quella cartella è versionata e destinata esclusivamente a esempi fittizi.
+L'app non carica automaticamente questa cartella: usa **Apri database** e seleziona il file desiderato. Non collocare dati personali in `data/examples/`, che contiene esclusivamente esempi fittizi e versionati.

@@ -1,35 +1,31 @@
 {
-  "kind": "study-program",
-  "schemaVersion": 1,
-  "id": "example-web-development",
-  "title": "Programma dimostrativo di sviluppo web",
-  "description": "Esempio generico importabile; può essere sostituito con il proprio programma.",
-  "startDate": "2026-08-03",
+  "kind": "learning-plan",
+  "schemaVersion": 2,
+  "id": "example-data-path",
+  "title": "Percorso dimostrativo di analisi dati",
+  "description": "Programma generico importabile nel planner",
+  "startDate": "2026-09-07",
   "weeklyTargetMinutes": 360,
-  "units": [
+  "modules": [
     {
-      "module": "Fondamenti",
-      "order": 10,
-      "title": "Definire obiettivi e risultati attesi - Teoria",
-      "estimatedMinutes": 60
+      "id": "data-foundations",
+      "title": "Fondamenti",
+      "color": "#7c3aed",
+      "mode": "work",
+      "topics": [
+        { "id": "objectives", "title": "Obiettivi e risultati attesi", "kind": "theory", "estimatedMinutes": 60 },
+        { "id": "workspace", "title": "Preparazione dell'ambiente", "kind": "practice", "estimatedMinutes": 120 }
+      ]
     },
     {
-      "module": "Fondamenti",
-      "order": 20,
-      "title": "Preparare ambiente e repository - Pratica",
-      "estimatedMinutes": 120
-    },
-    {
-      "module": "Applicazione",
-      "order": 30,
-      "title": "Realizzare la prima funzionalità - Pratica",
-      "estimatedMinutes": 180
-    },
-    {
-      "module": "Applicazione",
-      "order": 40,
-      "title": "Test e revisione - Esercitazione",
-      "estimatedMinutes": 120
+      "id": "data-project",
+      "title": "Progetto guidato",
+      "color": "#db2777",
+      "mode": "work",
+      "topics": [
+        { "id": "implementation", "title": "Implementazione incrementale", "kind": "project", "estimatedMinutes": 240 },
+        { "id": "retrospective", "title": "Verifica e retrospettiva", "kind": "exercise", "estimatedMinutes": 120 }
+      ]
     }
   ]
 }
