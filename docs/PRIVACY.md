@@ -1,6 +1,6 @@
 # Privacy e pubblicazione
 
-Un database può rivelare nomi, impegni, orari, assenze e programmi personali. Per questo l'app carica soltanto un esempio fittizio e non legge automaticamente percorsi locali.
+Un database può rivelare nomi, impegni, orari, assenze e programmi personali. L'app prova a caricare automaticamente soltanto il percorso convenzionale `data/user/organizer-data.json`, servito dalla stessa istanza HTTP locale; in sua assenza usa un esempio fittizio.
 
 ## Regole del repository
 

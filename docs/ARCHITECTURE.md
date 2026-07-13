@@ -1,6 +1,6 @@
 # Architettura
 
-Learning Path Planner è una single-page application statica, senza framework e senza backend. Il browser è l'unico runtime; il file JSON scelto dall'utente è la fonte dei dati.
+Learning Path Planner è una single-page application statica, senza framework e senza backend. Il browser è l'unico runtime; la fonte dei dati è il database convenzionale `data/user/organizer-data.json`, l'esempio di fallback oppure un file scelto dall'utente.
 
 ## Componenti
 
@@ -12,7 +12,7 @@ Learning Path Planner è una single-page application statica, senza framework e 
 ## Flusso dei dati
 
 ```text
-file JSON / esempio fittizio
+database utente / esempio fittizio / file scelto
           │
           ▼
  validazione + migrazione ──► stato normalizzato v2

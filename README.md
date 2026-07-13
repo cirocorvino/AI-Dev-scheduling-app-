@@ -14,7 +14,7 @@ Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come age
 - Gantt calcolato sulla disponibilità effettiva e dettaglio di ogni settimana;
 - apertura e salvataggio locale, con fallback tramite download JSON;
 - importazione di piani v2 e migrazione automatica dei precedenti file organizer v1;
-- nessun caricamento automatico di file personali.
+- caricamento automatico del database locale convenzionale, con fallback sull'esempio fittizio.
 
 ## Avvio locale
 
@@ -43,10 +43,12 @@ npm test
 1. Aprire **Impostazioni** per definire categorie, disponibilità ricorrenti, target ed eccezioni.
 2. Aprire **Moduli e argomenti** per comporre il percorso e ordinare le attività.
 3. Consultare il Gantt; selezionare un modulo per vedere la distribuzione settimanale.
-4. Usare **Salva** per scrivere il database nel file aperto o scaricarne una copia.
+4. Usare **Salva** per scrivere il database nel file aperto o scaricarne una copia; per caricarlo automaticamente all'avvio successivo, spostarlo in `data/user/` e rinominarlo `organizer-data.json`.
 5. Usare **Importa programma** per sostituire soltanto il percorso, conservando disponibilità e categorie.
 
-All'avvio viene caricato esclusivamente il database fittizio in `data/examples/`. I file personali vanno aperti manualmente.
+All'avvio l'app prova a caricare `data/user/organizer-data.json`. Se il file non è presente o non è utilizzabile, carica `data/examples/organizer-example.json` come fallback.
+
+Dopo aver salvato o scaricato un database, collocare il file nella cartella `data/user/` e rinominarlo esattamente `organizer-data.json` per renderlo il database predefinito dell'avvio successivo. Il file viene ignorato da Git, ma è comunque servito via HTTP dall'istanza locale dell'app.
 
 ## Interfaccia
 

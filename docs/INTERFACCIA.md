@@ -12,6 +12,12 @@ L'intestazione mostra il titolo e la descrizione del percorso attivo. Sulla dest
 
 Chiudendo o ricaricando la pagina con modifiche pendenti, il browser chiede conferma.
 
+## Caricamento automatico all'avvio
+
+All'avvio l'app cerca `data/user/organizer-data.json`. Se il file esiste ed è valido, diventa il database corrente; se è assente o non è utilizzabile, viene caricato l'esempio fittizio `data/examples/organizer-example.json`.
+
+Il caricamento HTTP non collega il database al file sul disco. Dopo aver premuto **Salva**, spostare il file salvato o scaricato nella cartella `data/user/` e rinominarlo esattamente `organizer-data.json`; l'app userà quella copia al successivo avvio.
+
 ## Barra delle azioni
 
 ### Nuovo
@@ -33,6 +39,8 @@ I database organizer v1 vengono migrati in memoria al formato v2. Il file origin
 ### Salva
 
 Scrive l'intero database corrente in formato JSON v2. Se il database è stato aperto con un browser che supporta l'accesso diretto ai file, viene aggiornato quel file. Negli altri casi viene chiesto dove creare il file oppure ne viene scaricata una copia.
+
+Per fare in modo che il database venga caricato automaticamente all'avvio successivo, dopo il salvataggio collocare il file in `data/user/` e rinominarlo `organizer-data.json`. Questo passaggio è necessario anche quando il database iniziale era stato caricato automaticamente, perché il caricamento via HTTP non concede all'app il permesso di sovrascrivere il file sorgente.
 
 Dopo **Importa programma**, il salvataggio registra il programma importato all'interno del database corrente.
 
