@@ -2,204 +2,6 @@
 (() => {
     'use strict';
 
-    globalThis.LearningPlannerRuntime = Object.freeze({
-        embeddedExampleDatabase: {
-                "kind": "learning-planner-database",
-                "schemaVersion": 2,
-                "metadata": {
-                        "id": "example-organizer",
-                        "name": "Planner dimostrativo",
-                        "description": "Esempio fittizio privo di dati personali",
-                        "locale": "it-IT",
-                        "timeZone": "Europe/Rome",
-                        "createdAt": "2026-07-13T00:00:00.000Z",
-                        "updatedAt": "2026-07-13T00:00:00.000Z"
-                },
-                "settings": {
-                        "weekStartsOn": 1,
-                        "planningMode": "sequential",
-                        "estimationMultipliers": {
-                                "theory": 1,
-                                "practice": 1,
-                                "exercise": 1,
-                                "project": 1,
-                                "other": 1
-                        },
-                        "calendarExceptions": []
-                },
-                "categories": [
-                        {
-                                "id": "focus",
-                                "label": "Studio",
-                                "icon": "📚",
-                                "color": "#2563eb",
-                                "role": "focus"
-                        },
-                        {
-                                "id": "work",
-                                "label": "Lavoro",
-                                "icon": "💼",
-                                "color": "#f97316",
-                                "role": "busy"
-                        },
-                        {
-                                "id": "wellbeing",
-                                "label": "Benessere",
-                                "icon": "🌿",
-                                "color": "#16a34a",
-                                "role": "busy"
-                        },
-                        {
-                                "id": "other",
-                                "label": "Altro",
-                                "icon": "📌",
-                                "color": "#64748b",
-                                "role": "neutral"
-                        }
-                ],
-                "weekTemplate": {
-                        "monday": [
-                                {
-                                        "id": "mon-work",
-                                        "start": "09:00",
-                                        "end": "17:00",
-                                        "label": "Attività lavorativa",
-                                        "categoryId": "work"
-                                },
-                                {
-                                        "id": "mon-wellbeing",
-                                        "start": "18:30",
-                                        "end": "19:30",
-                                        "label": "Tempo personale",
-                                        "categoryId": "wellbeing"
-                                }
-                        ],
-                        "tuesday": [
-                                {
-                                        "id": "tue-work",
-                                        "start": "09:00",
-                                        "end": "17:00",
-                                        "label": "Attività lavorativa",
-                                        "categoryId": "work"
-                                },
-                                {
-                                        "id": "tue-focus",
-                                        "start": "18:30",
-                                        "end": "20:00",
-                                        "label": "",
-                                        "categoryId": "focus"
-                                }
-                        ],
-                        "wednesday": [
-                                {
-                                        "id": "wed-work",
-                                        "start": "09:00",
-                                        "end": "17:00",
-                                        "label": "Attività lavorativa",
-                                        "categoryId": "work"
-                                }
-                        ],
-                        "thursday": [
-                                {
-                                        "id": "thu-work",
-                                        "start": "09:00",
-                                        "end": "17:00",
-                                        "label": "Attività lavorativa",
-                                        "categoryId": "work"
-                                },
-                                {
-                                        "id": "thu-focus",
-                                        "start": "18:30",
-                                        "end": "20:00",
-                                        "label": "",
-                                        "categoryId": "focus"
-                                }
-                        ],
-                        "friday": [
-                                {
-                                        "id": "fri-work",
-                                        "start": "09:00",
-                                        "end": "17:00",
-                                        "label": "Attività lavorativa",
-                                        "categoryId": "work"
-                                }
-                        ],
-                        "saturday": [
-                                {
-                                        "id": "sat-focus",
-                                        "start": "09:00",
-                                        "end": "11:00",
-                                        "label": "",
-                                        "categoryId": "focus"
-                                }
-                        ],
-                        "sunday": []
-                },
-                "plan": {
-                        "kind": "learning-plan",
-                        "schemaVersion": 2,
-                        "id": "example-web-path",
-                        "title": "Percorso dimostrativo di sviluppo web",
-                        "description": "Un esempio generico modificabile dall'interfaccia",
-                        "startDate": "2026-08-03",
-                        "weeklyTargetMinutes": 300,
-                        "modules": [
-                                {
-                                        "id": "foundations",
-                                        "title": "Fondamenti",
-                                        "color": "#2563eb",
-                                        "mode": "work",
-                                        "topics": [
-                                                {
-                                                        "id": "goals",
-                                                        "title": "Definire obiettivi e risultati attesi",
-                                                        "kind": "theory",
-                                                        "estimatedMinutes": 60
-                                                },
-                                                {
-                                                        "id": "environment",
-                                                        "title": "Preparare ambiente e repository",
-                                                        "kind": "practice",
-                                                        "estimatedMinutes": 120
-                                                }
-                                        ]
-                                },
-                                {
-                                        "id": "application",
-                                        "title": "Applicazione",
-                                        "color": "#059669",
-                                        "mode": "work",
-                                        "topics": [
-                                                {
-                                                        "id": "first-feature",
-                                                        "title": "Realizzare la prima funzionalità",
-                                                        "kind": "practice",
-                                                        "estimatedMinutes": 180
-                                                },
-                                                {
-                                                        "id": "review",
-                                                        "title": "Test e revisione",
-                                                        "kind": "exercise",
-                                                        "estimatedMinutes": 120
-                                                }
-                                        ]
-                                },
-                                {
-                                        "id": "buffer",
-                                        "title": "Recupero e consolidamento",
-                                        "color": "#94a3b8",
-                                        "mode": "buffer",
-                                        "fixedWeeks": 1,
-                                        "topics": []
-                                }
-                        ]
-                },
-                "state": {
-                        "progress": {}
-                }
-        }
-    });
-
     const modelApi = (() => {
         const DATABASE_KIND = 'learning-planner-database';
         const PLAN_KIND = 'learning-plan';
@@ -303,6 +105,10 @@
                     progress: {}
                 }
             };
+        }
+
+        function databaseHasContent(database) {
+            return Array.isArray(database?.plan?.modules) && database.plan.modules.length > 0;
         }
 
         function requireObject(value, path) {
@@ -837,7 +643,7 @@
             });
         }
 
-        return { DATABASE_KIND, PLAN_KIND, SCHEMA_VERSION, DAY_KEYS, TOPIC_KINDS, CATEGORY_ROLES, MODULE_MODES, createId, createEmptyWeekTemplate, createEmptyDatabase, normalizeDatabase, normalizePlanInput, updateDatabase, snapshotDatabase, replacePlan };
+        return { DATABASE_KIND, PLAN_KIND, SCHEMA_VERSION, DAY_KEYS, TOPIC_KINDS, CATEGORY_ROLES, MODULE_MODES, createId, createEmptyWeekTemplate, createEmptyDatabase, databaseHasContent, normalizeDatabase, normalizePlanInput, updateDatabase, snapshotDatabase, replacePlan };
     })();
 
     const plannerApi = (() => {
@@ -1304,13 +1110,153 @@
         return { DATABASE_CONFIGURATION_KIND, DATABASE_CONFIGURATION_VERSION, DATABASE_CONFIGURATION_FILE, DATABASE_CONFIGURATION_URL, DEFAULT_DATABASE_PATH, normalizeDatabasePath, emptyDatabaseConfiguration, createDatabaseConfiguration, normalizeDatabaseConfiguration, databaseUrlFromConfiguration, databaseFileNameFromPath };
     })();
 
+    const localDatabaseApi = (() => {
+        const LOCAL_DATABASE_NAME = 'learning-path-planner';
+        const LOCAL_DATABASE_VERSION = 1;
+        const LOCAL_DATABASE_STORE = 'application-state';
+        const LOCAL_DATABASE_KEY = 'active-database';
+        const LOCAL_DATABASE_KIND = 'learning-planner-local-state';
+        const LOCAL_DATABASE_SCHEMA_VERSION = 1;
+
+        function storageError(message, cause) {
+            return new Error(`Archivio locale non disponibile: ${message}`, { cause });
+        }
+
+        function requestResult(request) {
+            return new Promise((resolve, reject) => {
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error || storageError('operazione IndexedDB non riuscita'));
+            });
+        }
+
+        function transactionCompleted(transaction) {
+            return new Promise((resolve, reject) => {
+                transaction.oncomplete = () => resolve();
+                transaction.onabort = () => reject(transaction.error || storageError('transazione IndexedDB annullata'));
+                transaction.onerror = () => reject(transaction.error || storageError('transazione IndexedDB non riuscita'));
+            });
+        }
+
+        function isDirectFileMode() {
+            return globalThis.location?.protocol === 'file:';
+        }
+
+        function createLocalDatabaseRecord({
+            database,
+            fileName,
+            dirty,
+            activeDatabasePath,
+            databaseConfiguration
+        }) {
+            return {
+                kind: LOCAL_DATABASE_KIND,
+                schemaVersion: LOCAL_DATABASE_SCHEMA_VERSION,
+                database,
+                fileName,
+                dirty: Boolean(dirty),
+                activeDatabasePath,
+                databaseConfiguration,
+                savedAt: new Date().toISOString()
+            };
+        }
+
+        function normalizeLocalDatabaseRecord(input) {
+            if (input === undefined || input === null) return null;
+            if (!input || typeof input !== 'object' || Array.isArray(input)) {
+                throw storageError('il contenuto salvato non è un oggetto valido');
+            }
+            if (input.kind !== LOCAL_DATABASE_KIND || input.schemaVersion !== LOCAL_DATABASE_SCHEMA_VERSION) {
+                throw storageError('formato della copia locale non supportato');
+            }
+            if (!input.database || typeof input.database !== 'object' || Array.isArray(input.database)) {
+                throw storageError('database salvato mancante o non valido');
+            }
+
+            return {
+                ...input,
+                fileName: String(input.fileName || 'organizer-data.json'),
+                dirty: Boolean(input.dirty)
+            };
+        }
+
+        class IndexedDbDatabaseCache {
+            #indexedDb;
+
+            constructor(indexedDb = globalThis.indexedDB) {
+                this.#indexedDb = indexedDb;
+            }
+
+            async #open() {
+                if (!this.#indexedDb?.open) {
+                    throw storageError('IndexedDB non è supportato o è stato disabilitato');
+                }
+
+                return new Promise((resolve, reject) => {
+                    let request;
+                    try {
+                        request = this.#indexedDb.open(LOCAL_DATABASE_NAME, LOCAL_DATABASE_VERSION);
+                    } catch (error) {
+                        reject(storageError(error.message, error));
+                        return;
+                    }
+
+                    request.onupgradeneeded = () => {
+                        const database = request.result;
+                        if (!database.objectStoreNames.contains(LOCAL_DATABASE_STORE)) {
+                            database.createObjectStore(LOCAL_DATABASE_STORE);
+                        }
+                    };
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(storageError(request.error?.message || 'apertura non riuscita', request.error));
+                    request.onblocked = () => reject(storageError('aggiornamento bloccato da un’altra scheda aperta'));
+                });
+            }
+
+            async load() {
+                const database = await this.#open();
+                try {
+                    const transaction = database.transaction(LOCAL_DATABASE_STORE, 'readonly');
+                    return await requestResult(transaction.objectStore(LOCAL_DATABASE_STORE).get(LOCAL_DATABASE_KEY));
+                } finally {
+                    database.close();
+                }
+            }
+
+            async save(record) {
+                const database = await this.#open();
+                try {
+                    const transaction = database.transaction(LOCAL_DATABASE_STORE, 'readwrite');
+                    transaction.objectStore(LOCAL_DATABASE_STORE).put(record, LOCAL_DATABASE_KEY);
+                    await transactionCompleted(transaction);
+                } finally {
+                    database.close();
+                }
+            }
+
+            async clear() {
+                const database = await this.#open();
+                try {
+                    const transaction = database.transaction(LOCAL_DATABASE_STORE, 'readwrite');
+                    transaction.objectStore(LOCAL_DATABASE_STORE).delete(LOCAL_DATABASE_KEY);
+                    await transactionCompleted(transaction);
+                } finally {
+                    database.close();
+                }
+            }
+        }
+
+        return { LOCAL_DATABASE_NAME, LOCAL_DATABASE_VERSION, LOCAL_DATABASE_STORE, LOCAL_DATABASE_KEY, LOCAL_DATABASE_KIND, LOCAL_DATABASE_SCHEMA_VERSION, isDirectFileMode, createLocalDatabaseRecord, normalizeLocalDatabaseRecord, IndexedDbDatabaseCache };
+    })();
+
     const storeApi = (() => {
         const { createEmptyDatabase, normalizeDatabase, replacePlan, snapshotDatabase, updateDatabase } = modelApi;
         const { DATABASE_CONFIGURATION_FILE, DATABASE_CONFIGURATION_URL, DEFAULT_DATABASE_PATH, createDatabaseConfiguration, databaseFileNameFromPath, databaseUrlFromConfiguration, emptyDatabaseConfiguration, normalizeDatabaseConfiguration } = configurationApi;
+        const { IndexedDbDatabaseCache, createLocalDatabaseRecord, isDirectFileMode, normalizeLocalDatabaseRecord } = localDatabaseApi;
 
         const USER_DATABASE_URL = DEFAULT_DATABASE_PATH;
         const EXAMPLE_DATABASE_URL = 'data/examples/organizer-example.json';
         const CONFIGURATION_WARNING_PREFIX = 'Configurazione database:';
+        const LOCAL_DATABASE_WARNING_PREFIX = 'Archivio locale:';
 
         function clone(value) {
             return JSON.parse(JSON.stringify(value));
@@ -1347,10 +1293,6 @@
 
         async function fetchJson(url) {
             if (globalThis.location?.protocol === 'file:') {
-                if (url === EXAMPLE_DATABASE_URL && globalThis.LearningPlannerRuntime?.embeddedExampleDatabase) {
-                    return clone(globalThis.LearningPlannerRuntime.embeddedExampleDatabase);
-                }
-
                 const error = new Error('lettura automatica non consentita in modalità file locale');
                 error.status = 404;
                 throw error;
@@ -1375,11 +1317,18 @@
             #dirty = false;
             #fileName = 'learning-planner.json';
             #isDemo = false;
+            #hasActiveDatabase = false;
             #databaseConfiguration = emptyDatabaseConfiguration();
             #activeDatabasePath = USER_DATABASE_URL;
             #listeners = new Set();
             #status = { message: 'Inizializzazione…', level: 'info' };
             #warnings = [];
+            #localDatabaseCache;
+            #localPersistenceQueue = Promise.resolve();
+
+            constructor({ localDatabaseCache } = {}) {
+                this.#localDatabaseCache = localDatabaseCache || new IndexedDbDatabaseCache();
+            }
 
             get database() {
                 return this.#database ? clone(this.#database) : null;
@@ -1397,8 +1346,16 @@
                 return this.#isDemo;
             }
 
+            get hasActiveDatabase() {
+                return this.#hasActiveDatabase;
+            }
+
             get databaseConfiguration() {
                 return clone(this.#databaseConfiguration);
+            }
+
+            get usesLocalDatabase() {
+                return isDirectFileMode();
             }
 
             get status() {
@@ -1416,6 +1373,7 @@
                     dirty: this.#dirty,
                     fileName: this.#fileName,
                     isDemo: this.#isDemo,
+                    hasActiveDatabase: this.#hasActiveDatabase,
                     databaseConfiguration: this.databaseConfiguration,
                     status: this.status
                 };
@@ -1424,6 +1382,94 @@
 
             #setStatus(message, level = 'info') {
                 this.#status = { message, level };
+            }
+
+            #removeLocalDatabaseWarnings() {
+                this.#warnings = this.#warnings.filter(warning => !warning.startsWith(LOCAL_DATABASE_WARNING_PREFIX));
+            }
+
+            #handleLocalDatabaseError(error) {
+                this.#removeLocalDatabaseWarnings();
+                this.#warnings.push(`${LOCAL_DATABASE_WARNING_PREFIX} ${error.message || String(error)}`);
+                this.#setStatus('Copia locale non aggiornata; esporta un JSON per non perdere le modifiche', 'warning');
+                this.#emit();
+            }
+
+            #localDatabaseRecord() {
+                return createLocalDatabaseRecord({
+                    database: this.#database,
+                    fileName: this.#fileName,
+                    dirty: this.#dirty,
+                    activeDatabasePath: this.#activeDatabasePath,
+                    databaseConfiguration: this.#databaseConfiguration
+                });
+            }
+
+            #queueLocalPersistence() {
+                if (!this.usesLocalDatabase || !this.#database) return Promise.resolve();
+                const record = this.#localDatabaseRecord();
+                this.#localPersistenceQueue = this.#localPersistenceQueue
+                    .catch(() => undefined)
+                    .then(() => this.#localDatabaseCache.save(record))
+                    .then(() => {
+                        const hadWarnings = this.#warnings.some(warning => warning.startsWith(LOCAL_DATABASE_WARNING_PREFIX));
+                        this.#removeLocalDatabaseWarnings();
+                        if (hadWarnings) this.#emit();
+                    })
+                    .catch(error => this.#handleLocalDatabaseError(error));
+                return this.#localPersistenceQueue;
+            }
+
+            async flushLocalPersistence() {
+                await this.#localPersistenceQueue;
+            }
+
+            #useEmptyLocalDatabase(extraWarnings = []) {
+                this.#database = createEmptyDatabase();
+                this.#dirty = false;
+                this.#fileName = 'organizer-data.json';
+                this.#isDemo = false;
+                this.#hasActiveDatabase = false;
+                this.#databaseConfiguration = emptyDatabaseConfiguration();
+                this.#activeDatabasePath = USER_DATABASE_URL;
+                this.#warnings = [...extraWarnings];
+                this.#setStatus('Nessun database locale: apri un JSON oppure configura il planner vuoto', extraWarnings.length ? 'warning' : 'info');
+                this.#emit();
+            }
+
+            async #initializeLocalDatabase() {
+                try {
+                    const record = normalizeLocalDatabaseRecord(await this.#localDatabaseCache.load());
+                    if (!record) {
+                        this.#useEmptyLocalDatabase();
+                        return;
+                    }
+
+                    const startupWarnings = [];
+                    let databaseConfiguration = emptyDatabaseConfiguration();
+                    try {
+                        databaseConfiguration = normalizeDatabaseConfiguration(
+                            record.databaseConfiguration || emptyDatabaseConfiguration()
+                        );
+                    } catch (error) {
+                        startupWarnings.push(`${LOCAL_DATABASE_WARNING_PREFIX} configurazione ignorata (${error.message})`);
+                    }
+
+                    const activeDatabasePath = databaseConfiguration.defaultDatabase || USER_DATABASE_URL;
+                    const result = this.#apply(record.database, {
+                        fileName: record.fileName,
+                        dirty: record.dirty,
+                        message: 'Database locale ripristinato da IndexedDB',
+                        level: startupWarnings.length ? 'warning' : (record.dirty ? 'warning' : 'success'),
+                        isDemo: false,
+                        extraWarnings: startupWarnings,
+                        activeDatabasePath,
+                        databaseConfiguration
+                    });
+                    if (result.migrated) await this.#queueLocalPersistence();
+                } catch (error) {
+                    this.#useEmptyLocalDatabase([`${LOCAL_DATABASE_WARNING_PREFIX} ${error.message || String(error)}`]);
+                }
             }
 
             #apply(input, {
@@ -1438,6 +1484,7 @@
             } = {}) {
                 const result = normalizeDatabase(input);
                 this.#database = result.database;
+                this.#hasActiveDatabase = true;
                 this.#warnings = [...(result.warnings || []), ...extraWarnings];
                 this.#fileName = fileName || safeFileName(result.database.metadata.name);
                 this.#isDemo = isDemo;
@@ -1455,6 +1502,11 @@
             }
 
             async initialize() {
+                if (this.usesLocalDatabase) {
+                    await this.#initializeLocalDatabase();
+                    return;
+                }
+
                 const startupWarnings = [];
                 let configurationPayload = null;
 
@@ -1518,12 +1570,9 @@
 
                 try {
                     const payload = await fetchJson(EXAMPLE_DATABASE_URL);
-                    const isDirectFileMode = globalThis.location?.protocol === 'file:';
                     this.#apply(payload, {
                         fileName: 'learning-planner-example.json',
-                        message: isDirectFileMode
-                            ? 'Modalità locale: esempio caricato; usa Apri database per scegliere il tuo JSON'
-                            : 'Nessun database utente: esempio generico caricato',
+                        message: 'Nessun database utente: esempio generico caricato',
                         level: startupWarnings.length === 0 ? 'success' : 'warning',
                         isDemo: true,
                         extraWarnings: startupWarnings,
@@ -1531,6 +1580,7 @@
                     });
                 } catch (exampleError) {
                     this.#database = createEmptyDatabase();
+                    this.#hasActiveDatabase = true;
                     this.#dirty = true;
                     this.#fileName = 'learning-planner.json';
                     this.#isDemo = false;
@@ -1564,6 +1614,7 @@
                     'warning'
                 );
                 this.#emit();
+                void this.#queueLocalPersistence();
             }
 
             useConventionalDatabaseFallback(reason) {
@@ -1580,18 +1631,26 @@
                     'warning'
                 );
                 this.#emit();
+                void this.#queueLocalPersistence();
             }
 
             createNew() {
                 this.#database = createEmptyDatabase();
+                this.#hasActiveDatabase = true;
                 this.#dirty = true;
                 this.#fileName = 'organizer-data.json';
                 this.#isDemo = false;
                 this.#databaseConfiguration = emptyDatabaseConfiguration();
                 this.#activeDatabasePath = USER_DATABASE_URL;
                 this.#warnings = [];
-                this.#setStatus('Nuovo database non ancora salvato', 'warning');
+                this.#setStatus(
+                    this.usesLocalDatabase
+                        ? 'Nuovo database conservato localmente; premi Salva per esportare il JSON'
+                        : 'Nuovo database non ancora salvato',
+                    'warning'
+                );
                 this.#emit();
+                void this.#queueLocalPersistence();
             }
 
             openDatabase(fileInput) {
@@ -1608,26 +1667,48 @@
                     : createDatabaseConfiguration(activeDatabasePath);
                 this.#apply(payload, {
                     fileName: file.name,
+                    message: this.usesLocalDatabase
+                        ? `Aperto ${file.name} e impostato come database locale`
+                        : undefined,
                     activeDatabasePath,
                     databaseConfiguration
                 });
+                await this.#queueLocalPersistence();
             }
 
             update(updater, message = 'Modifiche non salvate') {
                 this.#database = updateDatabase(this.#database, updater);
+                this.#hasActiveDatabase = true;
                 this.#dirty = true;
-                this.#warnings = this.#warnings.filter(warning => warning.startsWith(CONFIGURATION_WARNING_PREFIX));
-                this.#setStatus(message, 'warning');
+                this.#warnings = this.#warnings.filter(warning =>
+                    warning.startsWith(CONFIGURATION_WARNING_PREFIX)
+                    || warning.startsWith(LOCAL_DATABASE_WARNING_PREFIX)
+                );
+                this.#setStatus(
+                    this.usesLocalDatabase ? `${message}; copia locale aggiornata automaticamente` : message,
+                    'warning'
+                );
                 this.#emit();
+                void this.#queueLocalPersistence();
             }
 
             async importPlanFile(file) {
                 const payload = await readJsonFile(file);
                 this.#database = replacePlan(this.#database, payload);
+                this.#hasActiveDatabase = true;
                 this.#dirty = true;
-                this.#warnings = this.#warnings.filter(warning => warning.startsWith(CONFIGURATION_WARNING_PREFIX));
-                this.#setStatus(`Programma importato da ${file.name}: salva il database`, 'warning');
+                this.#warnings = this.#warnings.filter(warning =>
+                    warning.startsWith(CONFIGURATION_WARNING_PREFIX)
+                    || warning.startsWith(LOCAL_DATABASE_WARNING_PREFIX)
+                );
+                this.#setStatus(
+                    this.usesLocalDatabase
+                        ? `Programma importato da ${file.name} e salvato nella copia locale`
+                        : `Programma importato da ${file.name}: salva il database`,
+                    'warning'
+                );
                 this.#emit();
+                await this.#queueLocalPersistence();
             }
 
             async save() {
@@ -1640,22 +1721,33 @@
                 this.#databaseConfiguration = usesConventionalDatabase
                     ? emptyDatabaseConfiguration()
                     : createDatabaseConfiguration(targetPath);
-                if (!usesConventionalDatabase) {
+                if (!this.usesLocalDatabase && !usesConventionalDatabase) {
                     downloadJson(this.#databaseConfiguration, DATABASE_CONFIGURATION_FILE);
                 }
 
                 this.#database = snapshot;
+                this.#hasActiveDatabase = true;
                 this.#fileName = targetName;
                 this.#dirty = false;
                 this.#isDemo = false;
                 this.#removeConfigurationWarnings();
                 this.#setStatus(
-                    usesConventionalDatabase
-                        ? 'Scaricato organizer-data.json: copialo in data/user'
-                        : `Scaricati ${targetName} e ${DATABASE_CONFIGURATION_FILE}: copiali nei percorsi configurati`,
+                    this.usesLocalDatabase
+                        ? `Scaricato ${targetName}; la copia di lavoro resta salvata in IndexedDB`
+                        : (usesConventionalDatabase
+                            ? 'Scaricato organizer-data.json: copialo in data/user'
+                            : `Scaricati ${targetName} e ${DATABASE_CONFIGURATION_FILE}: copiali nei percorsi configurati`),
                     'success'
                 );
                 this.#emit();
+                await this.#queueLocalPersistence();
+            }
+
+            async clearLocalDatabase() {
+                if (!this.usesLocalDatabase) return;
+                await this.#localPersistenceQueue;
+                await this.#localDatabaseCache.clear();
+                this.#useEmptyLocalDatabase();
             }
         }
 
@@ -1665,7 +1757,7 @@
     })();
 
     (() => {
-        const { CATEGORY_ROLES, DAY_KEYS, MODULE_MODES, TOPIC_KINDS, createId } = modelApi;
+        const { CATEGORY_ROLES, DAY_KEYS, MODULE_MODES, TOPIC_KINDS, createId, databaseHasContent } = modelApi;
         const { buildPlanSchedule, daysBetween, formatDate, formatDayName, formatDuration, getModuleWeekAllocations, getTimelineMonths, getWeekAgenda } = plannerApi;
         const { normalizeDatabasePath } = configurationApi;
         const { plannerStore } = storeApi;
@@ -1703,9 +1795,12 @@
             'weeklyTargetInput',
             'localeInput',
             'timeZoneInput',
+            'databaseStorageTitle',
+            'databaseStorageDescription',
             'defaultDatabasePathLabel',
             'defaultDatabasePathInput',
             'defaultDatabasePathHint',
+            'clearLocalDatabaseButton',
             'multiplierEditor',
             'categoryEditor',
             'addCategoryButton',
@@ -1810,6 +1905,9 @@
             elements.databaseStatus.textContent = `${snapshot.dirty ? '● ' : '✓ '}${snapshot.status.message}`;
             elements.databaseStatus.dataset.level = snapshot.status.level;
             setHidden(elements.demoEyebrow, !snapshot.isDemo);
+            const newDatabaseDisabled = !snapshot.hasActiveDatabase || !databaseHasContent(currentDatabase);
+            elements.newDatabaseButton.disabled = newDatabaseDisabled;
+            elements.newDatabaseButton.title = newDatabaseDisabled ? 'Il database è già vuoto' : '';
             elements.saveDatabaseButton.disabled = false;
 
             renderOverview();
@@ -2085,9 +2183,14 @@
             elements.defaultDatabasePathInput.value = currentDatabaseConfiguration?.defaultDatabase || '';
             elements.defaultDatabasePathInput.disabled = isDirectFileMode;
             elements.defaultDatabasePathLabel.classList.toggle('field-disabled', isDirectFileMode);
+            elements.databaseStorageTitle.textContent = isDirectFileMode ? 'Database locale' : 'Database predefinito';
+            elements.databaseStorageDescription.textContent = isDirectFileMode
+                ? 'La copia di lavoro viene salvata automaticamente in IndexedDB.'
+                : 'Indica il percorso relativo da scrivere in db-configuration.json.';
             elements.defaultDatabasePathHint.textContent = isDirectFileMode
-                ? 'In modalità file locale il browser non può collegare automaticamente questo percorso. Usa Apri database per scegliere il JSON.'
+                ? 'Apri database importa un JSON nella copia locale. Salva esporta un backup JSON, ma non è necessario per conservare le modifiche nel browser.'
                 : 'Lascia vuoto per usare il fallback convenzionale data/user/organizer-data.json. Il file di configurazione viene scaricato soltanto premendo Salva.';
+            setHidden(elements.clearLocalDatabaseButton, !isDirectFileMode);
             elements.exceptionsInput.value = settingsDraft.settings.calendarExceptions
                 .map(exception => `${exception.date} | ${exception.label}`)
                 .join('\n');
@@ -2416,10 +2519,12 @@
 
         function bindEvents() {
             elements.newDatabaseButton.addEventListener('click', () => {
-                if (confirmDiscard()) {
-                    selectedModuleId = null;
-                    plannerStore.createNew();
-                }
+                const message = plannerStore.usesLocalDatabase
+                    ? 'Creare un nuovo database? Il database locale attivo verrà sostituito. Esporta prima un JSON se vuoi conservarne una copia.'
+                    : 'Creare un nuovo database? Le eventuali modifiche non salvate verranno perse.';
+                if (!window.confirm(message)) return;
+                selectedModuleId = null;
+                plannerStore.createNew();
             });
 
             elements.openDatabaseButton.addEventListener('click', async () => {
@@ -2473,6 +2578,16 @@
             elements.settingsForm.addEventListener('submit', applySettings);
             elements.planForm.addEventListener('submit', applyPlan);
 
+            elements.clearLocalDatabaseButton.addEventListener('click', async () => {
+                if (!window.confirm('Rimuovere il database locale? Esporta prima un JSON se vuoi conservarne una copia.')) return;
+                try {
+                    await plannerStore.clearLocalDatabase();
+                    elements.settingsDialog.close();
+                } catch (error) {
+                    showFormError(elements.settingsError, error);
+                }
+            });
+
             elements.addCategoryButton.addEventListener('click', () => {
                 settingsDraft.categories.push({
                     id: `category-${settingsDraft.categories.length + 1}`,
@@ -2503,7 +2618,7 @@
             });
 
             window.addEventListener('beforeunload', event => {
-                if (!plannerStore.dirty) return;
+                if (!plannerStore.dirty || plannerStore.usesLocalDatabase) return;
                 event.preventDefault();
                 event.returnValue = '';
             });

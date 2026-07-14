@@ -4,7 +4,7 @@ Ogni file viene validato integralmente prima di entrare nello stato dell'app. Da
 
 ## Configurazione del database predefinito
 
-Il file `data/user/db-configuration.json` usa uno schema separato dal database:
+Il file opzionale `data/user/db-configuration.json` usa uno schema separato dal database ed è consultato soltanto quando l'app è servita via HTTP:
 
 ```json
 {
@@ -14,7 +14,7 @@ Il file `data/user/db-configuration.json` usa uno schema separato dal database:
 }
 ```
 
-`defaultDatabase` deve essere un percorso relativo alla root del progetto, non può contenere `..`, deve terminare in `.json` e non può indicare `db-configuration.json`. I percorsi assoluti del sistema operativo non sono caricabili dalla SPA.
+`defaultDatabase` deve essere un percorso relativo alla root pubblicata dal server, non può contenere `..`, deve terminare in `.json` e non può indicare `db-configuration.json`. I percorsi assoluti del sistema operativo non sono caricabili dalla SPA. Il file indicato deve essere raggiungibile dallo stesso server dell'app.
 
 Quando non è definito alcun database predefinito, il file resta valido senza la proprietà `defaultDatabase`:
 
@@ -25,11 +25,13 @@ Quando non è definito alcun database predefinito, il file resta valido senza la
 }
 ```
 
-Via HTTP, la priorità di caricamento è: database configurato, `data/user/organizer-data.json`, `data/examples/organizer-example.json`. Via `file://`, il browser non permette la lettura automatica dei file adiacenti: viene usato l'esempio incorporato e il database personale può essere selezionato con **Apri database**.
+Via HTTP, la priorità di caricamento è: database configurato, `data/user/organizer-data.json`, `data/examples/organizer-example.json`. L'ultimo viene presentato in modalità DEMO. Via `file://`, il browser non permette la lettura automatica dei file adiacenti: `db-configuration.json` viene ignorato e viene ripristinata la copia IndexedDB oppure mostrato un database vuoto. La DEMO non è incorporata nel codice dell'app.
 
 L'assenza del file di configurazione, una configurazione vuota e il normale passaggio ai fallback non generano avvisi. Una configurazione non utilizzabile, un percorso non valido o un database indicato ma non caricabile producono un avviso non bloccante; il fallback successivo viene comunque caricato immediatamente.
 
-Il file è opzionale e non viene scritto direttamente dall'app. Con un database personalizzato, **Salva** lo genera come download insieme al database; con il fallback `data/user/organizer-data.json` non viene generato perché non è necessario.
+Il file non viene scritto direttamente dall'app. Via HTTP è possibile impostare il percorso nelle **Impostazioni**: **Applica impostazioni** aggiorna lo stato corrente, mentre **Salva** genera `db-configuration.json` come download insieme al database personalizzato. L'utente deve copiare entrambi i file nelle posizioni previste. Con il nome convenzionale `data/user/organizer-data.json` la configurazione non viene generata perché non è necessaria.
+
+Per il flusso completo, compresi `file://`, server e passaggio tra le modalità, vedere [GESTIONE-DATABASE.md](GESTIONE-DATABASE.md).
 
 ## Database completo
 
@@ -155,6 +157,6 @@ Le chiavi ammesse per `weekTemplate` sono `monday` … `sunday`. Un'eccezione co
 
 ## Compatibilità v1
 
-Sono riconosciuti i database `organizer-database` e i programmi `study-program` con `courses` o `units`. La migrazione converte giorni italiani, ore in minuti, corsi in moduli e attività in argomenti. Le vecchie cache `weeklySchedules` e `courseTopics` non vengono mantenute: il planner rigenera la schedulazione e segnala l'operazione. Il file originale non viene sovrascritto finché l'utente non sceglie **Salva**.
+Sono riconosciuti i database `organizer-database` e i programmi `study-program` con `courses` o `units`. La migrazione converte giorni italiani, ore in minuti, corsi in moduli e attività in argomenti. Le vecchie cache `weeklySchedules` e `courseTopics` non vengono mantenute: il planner rigenera la schedulazione e segnala l'operazione. Il file originale non viene mai sovrascritto direttamente: **Salva** scarica una nuova copia JSON v2.
 
 Gli esempi canonici sono `data/examples/organizer-example.json` e `data/study-program-example.json`.

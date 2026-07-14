@@ -569,12 +569,32 @@ code {
     font-size: 0.82rem;
 }
 
+#clearLocalDatabaseButton {
+    margin-top: 0.8rem;
+}
+
 label {
     display: grid;
     gap: 0.35rem;
     color: #334155;
     font-size: 0.82rem;
     font-weight: 750;
+}
+
+.button:disabled,
+.icon-button:disabled {
+    border-color: #e2e8f0;
+    background: #f1f5f9;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.72;
+}
+
+.button:disabled:hover,
+.icon-button:disabled:hover {
+    background: #f1f5f9;
+    transform: none;
 }
 
 input,
