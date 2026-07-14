@@ -2499,10 +2499,12 @@
 
         function bindEvents() {
             elements.newDatabaseButton.addEventListener('click', () => {
-                if (confirmDiscard()) {
-                    selectedModuleId = null;
-                    plannerStore.createNew();
-                }
+                const message = plannerStore.usesLocalDatabase
+                    ? 'Creare un nuovo database? Il database locale attivo verrà sostituito. Esporta prima un JSON se vuoi conservarne una copia.'
+                    : 'Creare un nuovo database? Le eventuali modifiche non salvate verranno perse.';
+                if (!window.confirm(message)) return;
+                selectedModuleId = null;
+                plannerStore.createNew();
             });
 
             elements.openDatabaseButton.addEventListener('click', async () => {
