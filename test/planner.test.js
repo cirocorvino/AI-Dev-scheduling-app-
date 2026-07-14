@@ -6,6 +6,7 @@ import { normalizeDatabase, updateDatabase } from '../js/model.js';
 import {
     buildPlanSchedule,
     getModuleWeekAllocations,
+    getTimelineMonths,
     getWeekAgenda,
     getWeeklyCapacity,
     minutesBetween
@@ -23,6 +24,25 @@ test('calcola intervalli e capacità focus ignorando gli impegni', () => {
 
     assert.equal(minutesBetween('18:30', '20:00'), 90);
     assert.equal(getWeeklyCapacity(value), 300);
+});
+
+test('suddivide la timeline in segmenti mensili proporzionali', () => {
+    const months = getTimelineMonths('2026-10-28', '2026-11-10', 'it-IT');
+
+    assert.deepEqual(months.map(month => ({
+        id: month.id,
+        offsetDays: month.offsetDays,
+        durationDays: month.durationDays
+    })), [
+        { id: '2026-10', offsetDays: 0, durationDays: 4 },
+        { id: '2026-11', offsetDays: 4, durationDays: 10 }
+    ]);
+    assert.equal(months[0].label, 'ott');
+    assert.equal(months[1].fullLabel, 'novembre 2026');
+    assert.deepEqual(months.map(month => month.displayLabel), ['ott', 'nov']);
+
+    const newYear = getTimelineMonths('2026-12-30', '2027-01-02', 'it-IT');
+    assert.deepEqual(newYear.map(month => month.displayLabel), ['dic', 'gen 2027']);
 });
 
 test('costruisce un Gantt sequenziale con una settimana buffer', () => {

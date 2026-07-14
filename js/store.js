@@ -62,6 +62,7 @@ export class PlannerStore {
     #dirty = false;
     #fileHandle = null;
     #fileName = 'learning-planner.json';
+    #isDemo = false;
     #listeners = new Set();
     #status = { message: 'Inizializzazione…', level: 'info' };
     #warnings = [];
@@ -78,6 +79,10 @@ export class PlannerStore {
         return this.#fileName;
     }
 
+    get isDemo() {
+        return this.#isDemo;
+    }
+
     get status() {
         return { ...this.#status, dirty: this.#dirty, warnings: [...this.#warnings] };
     }
@@ -92,6 +97,7 @@ export class PlannerStore {
             database: this.database,
             dirty: this.#dirty,
             fileName: this.#fileName,
+            isDemo: this.#isDemo,
             status: this.status
         };
         this.#listeners.forEach(listener => listener(snapshot));
@@ -101,12 +107,13 @@ export class PlannerStore {
         this.#status = { message, level };
     }
 
-    #apply(input, { fileName, fileHandle = null, dirty = false, message, level } = {}) {
+    #apply(input, { fileName, fileHandle = null, dirty = false, message, level, isDemo = false } = {}) {
         const result = normalizeDatabase(input);
         this.#database = result.database;
         this.#warnings = result.warnings || [];
         this.#fileHandle = fileHandle;
         this.#fileName = fileName || safeFileName(result.database.metadata.name);
+        this.#isDemo = isDemo;
         this.#dirty = dirty || result.migrated;
         this.#setStatus(
             message || (result.migrated
@@ -139,12 +146,14 @@ export class PlannerStore {
                 message: userDatabaseMissing
                     ? 'Nessun database utente: esempio generico caricato'
                     : `Database utente non disponibile: esempio generico caricato (${userDatabaseError.message})`,
-                level: userDatabaseMissing ? 'success' : 'warning'
+                level: userDatabaseMissing ? 'success' : 'warning',
+                isDemo: true
             });
         } catch (exampleError) {
             this.#database = createEmptyDatabase();
             this.#dirty = true;
             this.#fileName = 'learning-planner.json';
+            this.#isDemo = false;
             this.#setStatus(
                 `Database utente ed esempio non disponibili: ${exampleError.message}`,
                 'warning'
@@ -158,6 +167,7 @@ export class PlannerStore {
         this.#dirty = true;
         this.#fileHandle = null;
         this.#fileName = 'learning-planner.json';
+        this.#isDemo = false;
         this.#warnings = [];
         this.#setStatus('Nuovo database non ancora salvato', 'warning');
         this.#emit();

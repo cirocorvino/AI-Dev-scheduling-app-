@@ -76,7 +76,8 @@ code {
 }
 
 .hero {
-    background: #0f172a;
+    position: relative;
+    background: linear-gradient(125deg, #0f766e 0%, #0e7490 62%, #2563eb 135%);
     color: white;
     overflow: hidden;
 }
@@ -88,7 +89,7 @@ code {
     width: 28rem;
     height: 28rem;
     border-radius: 999px;
-    background: rgba(37, 99, 235, 0.28);
+    background: rgba(186, 230, 253, 0.22);
     filter: blur(70px);
     pointer-events: none;
 }
@@ -111,13 +112,13 @@ code {
 .hero p {
     max-width: 48rem;
     margin-bottom: 0;
-    color: #cbd5e1;
+    color: #ecfeff;
     font-size: 1.05rem;
 }
 
 .eyebrow {
     margin-bottom: 1rem;
-    color: #93c5fd;
+    color: #ccfbf1;
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.14em;
@@ -130,6 +131,8 @@ code {
 }
 
 .layout {
+    position: relative;
+    z-index: 1;
     width: min(1280px, calc(100% - 2rem));
     margin: -1.5rem auto 4rem;
 }
@@ -341,10 +344,35 @@ code {
     position: relative;
     height: 2.2rem;
     border-radius: 999px;
-    background:
-        repeating-linear-gradient(90deg, transparent 0, transparent calc(12.5% - 1px), rgba(148, 163, 184, 0.18) calc(12.5% - 1px), rgba(148, 163, 184, 0.18) 12.5%),
-        #f1f5f9;
+    background: #f1f5f9;
     overflow: hidden;
+}
+
+.gantt__month-label {
+    position: absolute;
+    inset-block: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 0.25rem;
+    color: rgba(71, 85, 105, 0.3);
+    font-size: 0.62rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.gantt__month-line {
+    position: absolute;
+    inset-block: 0;
+    width: 1px;
+    background: rgba(148, 163, 184, 0.5);
+    pointer-events: none;
 }
 
 .gantt__bar {
@@ -356,6 +384,7 @@ code {
     border-radius: 999px;
     color: white;
     box-shadow: 0 5px 12px rgba(15, 23, 42, 0.17);
+    z-index: 2;
 }
 
 .gantt__bar:focus-visible {

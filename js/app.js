@@ -12,6 +12,7 @@ import {
     formatDayName,
     formatDuration,
     getModuleWeekAllocations,
+    getTimelineMonths,
     getWeekAgenda
 } from './planner.js';
 import { plannerStore } from './store.js';
@@ -19,6 +20,7 @@ import { plannerStore } from './store.js';
 const elements = Object.fromEntries([
     'appTitle',
     'appDescription',
+    'demoEyebrow',
     'databaseStatus',
     'newDatabaseButton',
     'openDatabaseButton',
@@ -149,6 +151,7 @@ function renderStoreState(snapshot) {
 
     elements.databaseStatus.textContent = `${snapshot.dirty ? '● ' : '✓ '}${snapshot.status.message}`;
     elements.databaseStatus.dataset.level = snapshot.status.level;
+    setHidden(elements.demoEyebrow, !snapshot.isDemo);
     elements.saveDatabaseButton.disabled = false;
 
     renderOverview();
@@ -191,6 +194,7 @@ function renderGantt() {
 
     const totalDays = Math.max(1, daysBetween(currentSchedule.startDate, currentSchedule.endDate) + 1);
     const locale = currentDatabase.metadata.locale;
+    const months = getTimelineMonths(currentSchedule.startDate, currentSchedule.endDate, locale);
 
     modules.forEach(module => {
         const row = createElement('div', {
@@ -222,6 +226,24 @@ function renderGantt() {
         const track = createElement('div', {
             className: 'gantt__track',
             attributes: { role: 'cell' }
+        });
+        months.forEach(month => {
+            const label = createElement('span', {
+                className: 'gantt__month-label',
+                text: month.displayLabel,
+                attributes: { 'aria-hidden': 'true' }
+            });
+            label.style.left = `${month.offsetDays / totalDays * 100}%`;
+            label.style.width = `${month.durationDays / totalDays * 100}%`;
+            track.append(label);
+        });
+        months.slice(1).forEach(month => {
+            const line = createElement('span', {
+                className: 'gantt__month-line',
+                attributes: { 'aria-hidden': 'true' }
+            });
+            line.style.left = `${month.offsetDays / totalDays * 100}%`;
+            track.append(line);
         });
         if (module.weeks > 0) {
             const left = daysBetween(currentSchedule.startDate, module.startDate) / totalDays * 100;

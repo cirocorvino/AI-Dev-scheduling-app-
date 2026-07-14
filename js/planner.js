@@ -33,6 +33,48 @@ export function daysBetween(start, end) {
     return Math.round((parseIsoDate(end) - parseIsoDate(start)) / 86_400_000);
 }
 
+export function getTimelineMonths(startDate, endDate, locale = 'it-IT') {
+    const start = parseIsoDate(startDate);
+    const end = parseIsoDate(endDate);
+    if (end < start) return [];
+
+    const shortFormatter = new Intl.DateTimeFormat(locale, {
+        month: 'short',
+        timeZone: 'UTC'
+    });
+    const longFormatter = new Intl.DateTimeFormat(locale, {
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC'
+    });
+    const segments = [];
+    let cursor = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1));
+
+    while (cursor <= end) {
+        const nextMonth = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1));
+        const visibleStart = cursor < start ? start : cursor;
+        const monthEnd = addDays(nextMonth, -1);
+        const visibleEnd = monthEnd > end ? end : monthEnd;
+        const year = cursor.getUTCFullYear();
+        const month = cursor.getUTCMonth() + 1;
+        const label = shortFormatter.format(cursor).replace(/\.$/, '');
+
+        segments.push({
+            id: `${year}-${String(month).padStart(2, '0')}`,
+            label,
+            displayLabel: month === 1 ? `${label} ${year}` : label,
+            fullLabel: longFormatter.format(cursor),
+            year,
+            month,
+            offsetDays: daysBetween(startDate, toIsoDate(visibleStart)),
+            durationDays: daysBetween(toIsoDate(visibleStart), toIsoDate(visibleEnd)) + 1
+        });
+        cursor = nextMonth;
+    }
+
+    return segments;
+}
+
 export function minutesBetween(start, end) {
     const [startHours, startMinutes] = start.split(':').map(Number);
     const [endHours, endMinutes] = end.split(':').map(Number);

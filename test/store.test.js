@@ -20,6 +20,7 @@ function jsonResponse(payload) {
 test('carica prima il database convenzionale dell’utente', async t => {
     const originalFetch = globalThis.fetch;
     const requestedUrls = [];
+    let snapshot;
     t.after(() => { globalThis.fetch = originalFetch; });
 
     globalThis.fetch = async url => {
@@ -28,17 +29,21 @@ test('carica prima il database convenzionale dell’utente', async t => {
     };
 
     const store = new PlannerStore();
+    store.subscribe(value => { snapshot = value; });
     await store.initialize();
 
     assert.deepEqual(requestedUrls, ['data/user/organizer-data.json']);
     assert.equal(store.fileName, 'organizer-data.json');
     assert.match(store.status.message, /aperto organizer-data\.json/i);
+    assert.equal(store.isDemo, false);
+    assert.equal(snapshot.isDemo, false);
     assert.equal(store.dirty, false);
 });
 
 test('usa l’esempio quando il database utente non è presente', async t => {
     const originalFetch = globalThis.fetch;
     const requestedUrls = [];
+    let snapshot;
     t.after(() => { globalThis.fetch = originalFetch; });
 
     globalThis.fetch = async url => {
@@ -50,6 +55,7 @@ test('usa l’esempio quando il database utente non è presente', async t => {
     };
 
     const store = new PlannerStore();
+    store.subscribe(value => { snapshot = value; });
     await store.initialize();
 
     assert.deepEqual(requestedUrls, [
@@ -58,5 +64,10 @@ test('usa l’esempio quando il database utente non è presente', async t => {
     ]);
     assert.equal(store.fileName, 'learning-planner-example.json');
     assert.match(store.status.message, /esempio generico caricato/i);
+    assert.equal(store.isDemo, true);
+    assert.equal(snapshot.isDemo, true);
     assert.equal(store.dirty, false);
+
+    store.createNew();
+    assert.equal(store.isDemo, false);
 });
