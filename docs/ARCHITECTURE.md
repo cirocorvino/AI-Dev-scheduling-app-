@@ -7,8 +7,9 @@ Learning Path Planner è una single-page application statica, senza framework e 
 - `model.js` definisce invarianti, normalizza ogni input e migra il formato organizer v1 al formato v2.
 - `db-configuration.js` valida la configurazione, limita i percorsi alla root del progetto e costruisce l'URL del database predefinito.
 - `planner.js` è un motore puro: calcola capacità, date del Gantt, allocazioni degli argomenti e agenda della settimana.
-- `store.js` gestisce lo stato in memoria, il caricamento HTTP e il download dei file JSON.
+- `store.js` gestisce lo stato in memoria, il caricamento HTTP, il fallback incorporato per `file://` e il download dei file JSON.
 - `app.js` costruisce la UI con API DOM e `textContent`, senza eseguire HTML proveniente dai file importati.
+- `app.bundle.js` è l'artefatto classico generato dai moduli sorgente e permette al browser di avviare l'app direttamente da disco.
 
 ## Flusso dei dati
 
@@ -32,13 +33,15 @@ db-configuration.json ──► database predefinito ──┐
 
 Ogni modifica attraversa nuovamente la normalizzazione. Il planner non muta il database e può quindi essere testato separatamente dalla UI.
 
+Il flusso automatico mostrato sopra è disponibile via HTTP. Con `file://`, le regole di sicurezza del browser impediscono la lettura silenziosa dei JSON adiacenti: il bundle usa una copia incorporata dell'esempio e **Apri database** acquisisce il file personale tramite selezione esplicita dell'utente.
+
 ## Scelte intenzionali
 
 - **Local-first:** nessuna chiamata remota, nessun accesso diretto al filesystem e nessun dato persistito in `localStorage` o IndexedDB.
 - **Modello esplicito:** i tipi degli argomenti e i ruoli delle categorie sostituiscono inferenze basate sui nomi.
 - **Piano sequenziale:** un modulo inizia dopo la fine del precedente; le eccezioni possono estendere la durata.
 - **Date senza orario:** i calcoli usano date ISO in UTC per evitare scarti dovuti all'ora legale.
-- **Zero build:** i moduli ES nativi rendono il progetto distribuibile come sito statico.
+- **Distribuzione statica:** il bundle classico versionato non richiede build per l'utilizzatore; `npm run build` serve soltanto dopo una modifica ai moduli sorgente o all'esempio incorporato.
 
 ## Confini attuali
 

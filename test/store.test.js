@@ -192,6 +192,55 @@ test('una configurazione vuota usa i fallback senza errore di configurazione', a
     assert.deepEqual(store.status.warnings, []);
 });
 
+test('in modalità file usa l\'esempio incorporato senza tentare richieste HTTP', async t => {
+    const originalFetch = globalThis.fetch;
+    const originalLocation = globalThis.location;
+    const originalRuntime = globalThis.LearningPlannerRuntime;
+    t.after(() => {
+        globalThis.fetch = originalFetch;
+        if (originalLocation === undefined) delete globalThis.location;
+        else globalThis.location = originalLocation;
+        if (originalRuntime === undefined) delete globalThis.LearningPlannerRuntime;
+        else globalThis.LearningPlannerRuntime = originalRuntime;
+    });
+
+    globalThis.location = { protocol: 'file:' };
+    globalThis.LearningPlannerRuntime = { embeddedExampleDatabase: example };
+    globalThis.fetch = async () => {
+        assert.fail('fetch non deve essere invocato in modalità file');
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+
+    assert.equal(store.isDemo, true);
+    assert.equal(store.fileName, 'learning-planner-example.json');
+    assert.match(store.status.message, /modalità locale/i);
+    assert.deepEqual(store.status.warnings, []);
+});
+
+test('un percorso non valido applicato dalle impostazioni attiva un fallback non bloccante', async t => {
+    const originalFetch = globalThis.fetch;
+    t.after(() => { globalThis.fetch = originalFetch; });
+
+    globalThis.fetch = async url => {
+        if (url === 'data/user/db-configuration.json') return notFoundResponse();
+        return jsonResponse(example);
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+    store.useConventionalDatabaseFallback(
+        new Error('Configurazione database non valida: il percorso deve essere relativo alla root del progetto')
+    );
+
+    assert.equal(store.dirty, true);
+    assert.equal(store.databaseConfiguration.defaultDatabase, undefined);
+    assert.equal(store.status.level, 'warning');
+    assert.match(store.status.message, /fallback convenzionale attivo/i);
+    assert.match(store.status.warnings[0], /percorso deve essere relativo/i);
+});
+
 test('Salva scarica database e configurazione soltanto per un percorso personalizzato', async t => {
     const originalFetch = globalThis.fetch;
     const downloads = recordDownloads(t);

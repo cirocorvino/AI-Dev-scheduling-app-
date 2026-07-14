@@ -18,7 +18,9 @@ Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come age
 
 ## Avvio locale
 
-Il progetto usa moduli JavaScript nativi, quindi va servito via HTTP:
+Per usare l'app senza server, aprire direttamente `index.html` con il browser. In modalità `file://` l'interfaccia parte con l'esempio dimostrativo incorporato; usare **Apri database** per scegliere il proprio file JSON. Tutte le funzioni di modifica e salvataggio restano disponibili.
+
+I browser non consentono a una pagina `file://` di leggere automaticamente altri file dal disco. Per applicare automaticamente la catena `db-configuration.json` → `organizer-data.json` → esempio, avviare facoltativamente un server statico:
 
 ```bash
 python -m http.server 3001
@@ -30,7 +32,13 @@ oppure:
 php -S localhost:3001
 ```
 
-Aprire `http://localhost:3001`. Non sono necessarie dipendenze runtime o una fase di build.
+Aprire `http://localhost:3001`. Non sono necessarie dipendenze runtime.
+
+Il bundle classico `js/app.bundle.js` è già incluso. Chi modifica i sorgenti in `js/` o l'esempio deve rigenerarlo con:
+
+```bash
+npm run build
+```
 
 Per eseguire i test serve Node.js 20 o successivo:
 
@@ -46,13 +54,15 @@ npm test
 4. Usare **Salva** per scaricare il database corrente e, quando serve, la relativa configurazione; sarà poi responsabilità dell'utente collocare i file nei percorsi indicati.
 5. Usare **Importa programma** per sostituire soltanto il percorso, conservando disponibilità e categorie.
 
-All'avvio l'app applica questo ordine di priorità:
+Quando è aperta via HTTP, all'avvio l'app applica questo ordine di priorità:
 
 1. database indicato da `data/user/db-configuration.json`;
 2. `data/user/organizer-data.json`;
 3. `data/examples/organizer-example.json`.
 
 Se la configurazione manca o è vuota, l'app passa ai fallback in modo trasparente. Un percorso non valido, una configurazione non utilizzabile o un database esplicitamente indicato ma non caricabile producono invece un avviso non bloccante, seguito immediatamente dal fallback. In **Impostazioni** è possibile specificare un percorso relativo, per esempio `data/user/corso-dotnet.json`, oppure lasciare il campo vuoto per usare il database convenzionale.
+
+In modalità `file://` questi tentativi automatici vengono evitati perché il browser li bloccherebbe: viene caricato l'esempio incorporato e il database personale si seleziona con **Apri database**.
 
 **Applica impostazioni** aggiorna soltanto lo stato in memoria. **Salva** scarica `organizer-data.json` quando è attivo il fallback convenzionale; per un percorso personalizzato scarica invece sia il database sia `db-configuration.json`. L'app non richiede autorizzazioni di scrittura al browser e non usa `localStorage`.
 
@@ -72,6 +82,8 @@ js/db-configuration.js     schema e validazione della configurazione predefinita
 js/planner.js              capacità, Gantt e agenda settimanale
 js/store.js                stato e I/O locale dei file JSON
 js/app.js                  rendering e interazioni UI
+js/app.bundle.js           versione classica pronta per l'apertura file://
+scripts/build-classic.mjs  generazione e verifica del bundle classico
 data/examples/             database dimostrativo versionato
 data/user/                 database locali ignorati da Git
 data/private/              documenti privati ignorati da Git

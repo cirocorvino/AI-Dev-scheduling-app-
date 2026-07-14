@@ -54,6 +54,16 @@ async function readJsonFile(file) {
 }
 
 async function fetchJson(url) {
+    if (globalThis.location?.protocol === 'file:') {
+        if (url === EXAMPLE_DATABASE_URL && globalThis.LearningPlannerRuntime?.embeddedExampleDatabase) {
+            return clone(globalThis.LearningPlannerRuntime.embeddedExampleDatabase);
+        }
+
+        const error = new Error('lettura automatica non consentita in modalità file locale');
+        error.status = 404;
+        throw error;
+    }
+
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) {
         const error = new Error(`HTTP ${response.status}`);
@@ -216,9 +226,12 @@ export class PlannerStore {
 
         try {
             const payload = await fetchJson(EXAMPLE_DATABASE_URL);
+            const isDirectFileMode = globalThis.location?.protocol === 'file:';
             this.#apply(payload, {
                 fileName: 'learning-planner-example.json',
-                message: 'Nessun database utente: esempio generico caricato',
+                message: isDirectFileMode
+                    ? 'Modalità locale: esempio caricato; usa Apri database per scegliere il tuo JSON'
+                    : 'Nessun database utente: esempio generico caricato',
                 level: startupWarnings.length === 0 ? 'success' : 'warning',
                 isDemo: true,
                 extraWarnings: startupWarnings,
@@ -256,6 +269,22 @@ export class PlannerStore {
             configuration.defaultDatabase
                 ? `Percorso database aggiornato: premi Salva per scaricare ${DATABASE_CONFIGURATION_FILE}`
                 : `Database convenzionale ripristinato: al salvataggio verrà scaricato organizer-data.json`,
+            'warning'
+        );
+        this.#emit();
+    }
+
+    useConventionalDatabaseFallback(reason) {
+        const message = reason?.message || String(reason || 'percorso non valido');
+        this.#databaseConfiguration = emptyDatabaseConfiguration();
+        this.#activeDatabasePath = USER_DATABASE_URL;
+        this.#dirty = true;
+        this.#removeConfigurationWarnings();
+        this.#warnings.push(
+            `${CONFIGURATION_WARNING_PREFIX} ${message}; verrà usato ${USER_DATABASE_URL}.`
+        );
+        this.#setStatus(
+            'Impostazioni applicate; percorso database non valido, fallback convenzionale attivo',
             'warning'
         );
         this.#emit();

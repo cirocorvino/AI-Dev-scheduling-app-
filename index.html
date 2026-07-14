@@ -133,10 +133,10 @@
                         <p>Indica il percorso relativo da scrivere in <code>db-configuration.json</code>.</p>
                     </div>
                 </div>
-                <label>Percorso database
+                <label id="defaultDatabasePathLabel">Percorso database
                     <input id="defaultDatabasePathInput" placeholder="data/user/percorso-personale.json" autocomplete="off">
                 </label>
-                <p class="muted settings-hint">Lascia vuoto per usare il fallback convenzionale <code>data/user/organizer-data.json</code>. Il file di configurazione viene scaricato soltanto premendo <strong>Salva</strong>.</p>
+                <p id="defaultDatabasePathHint" class="muted settings-hint">Lascia vuoto per usare il fallback convenzionale <code>data/user/organizer-data.json</code>. Il file di configurazione viene scaricato soltanto premendo <strong>Salva</strong>.</p>
             </section>
 
             <section class="editor-section">
@@ -208,6 +208,6 @@
         </form>
     </dialog>
 
-    <script type="module" src="js/app.js"></script>
+    <script defer src="js/app.bundle.js"></script>
 </body>
 </html>

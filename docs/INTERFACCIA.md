@@ -14,7 +14,9 @@ Chiudendo o ricaricando la pagina con modifiche pendenti, il browser chiede conf
 
 ## Caricamento automatico all'avvio
 
-All'avvio l'app cerca prima `data/user/db-configuration.json`. Se la proprietà `defaultDatabase` indica un file valido, quel database viene caricato con la priorità più alta. Seguono `data/user/organizer-data.json` e l'esempio fittizio `data/examples/organizer-example.json`.
+All'avvio via HTTP l'app cerca prima `data/user/db-configuration.json`. Se la proprietà `defaultDatabase` indica un file valido, quel database viene caricato con la priorità più alta. Seguono `data/user/organizer-data.json` e l'esempio fittizio `data/examples/organizer-example.json`.
+
+Aprendo direttamente `index.html` (`file://`), l'app usa l'esempio incorporato nel bundle perché il browser non autorizza la lettura automatica dei JSON adiacenti. Il pulsante **Apri database** consente di scegliere il proprio JSON e lavorare normalmente senza avviare un server.
 
 Una configurazione mancante o vuota attiva i fallback in modo trasparente. Se il file non è utilizzabile, contiene un percorso non valido oppure indica un database che non può essere caricato, l'app mostra un avviso non bloccante e apre immediatamente il fallback successivo.
 
@@ -66,7 +68,7 @@ Apre l'editor del database e della disponibilità. Da qui si modificano:
 - attività ricorrenti e slot disponibili per ogni giorno;
 - eccezioni del calendario.
 
-La sezione **Database predefinito** contiene un solo percorso relativo, per esempio `data/user/corso-dotnet.json`. **Applica impostazioni** valida il valore e aggiorna soltanto lo stato in memoria, insieme agli altri parametri: non scrive file e non usa `localStorage`. La finestra si chiude e l'app segnala modifiche non salvate.
+La sezione **Database predefinito** contiene un solo percorso relativo, per esempio `data/user/corso-dotnet.json`. **Applica impostazioni** aggiorna lo stato in memoria insieme agli altri parametri: non scrive file e non usa `localStorage`. Un percorso non valido non blocca le altre impostazioni, ripristina il fallback convenzionale e genera un avviso nella pagina. In modalità `file://` il campo è disabilitato e il database si sceglie con **Apri database**.
 
 Il successivo **Salva** scarica database e configurazione. Svuotando il campo si ripristina `data/user/organizer-data.json`: in questo caso viene scaricato soltanto il database convenzionale e non viene generato `db-configuration.json`.
 

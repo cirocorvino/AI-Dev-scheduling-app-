@@ -595,6 +595,15 @@ textarea:focus {
     outline: 3px solid rgba(37, 99, 235, 0.13);
 }
 
+.field-disabled {
+    opacity: 0.72;
+}
+
+.field-disabled input:disabled {
+    cursor: not-allowed;
+    background: #f1f5f9;
+}
+
 .editor-section {
     margin-top: 1.2rem;
     padding-top: 1.2rem;

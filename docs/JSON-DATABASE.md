@@ -25,7 +25,7 @@ Quando non è definito alcun database predefinito, il file resta valido senza la
 }
 ```
 
-La priorità di caricamento è: database configurato, `data/user/organizer-data.json`, `data/examples/organizer-example.json`.
+Via HTTP, la priorità di caricamento è: database configurato, `data/user/organizer-data.json`, `data/examples/organizer-example.json`. Via `file://`, il browser non permette la lettura automatica dei file adiacenti: viene usato l'esempio incorporato e il database personale può essere selezionato con **Apri database**.
 
 L'assenza del file di configurazione, una configurazione vuota e il normale passaggio ai fallback non generano avvisi. Una configurazione non utilizzabile, un percorso non valido o un database indicato ma non caricabile producono un avviso non bloccante; il fallback successivo viene comunque caricato immediatamente.
 
