@@ -15,6 +15,7 @@ import {
     getTimelineMonths,
     getWeekAgenda
 } from './planner.js';
+import { normalizeDatabasePath } from './db-configuration.js';
 import { plannerStore } from './store.js';
 
 const elements = Object.fromEntries([
@@ -50,6 +51,7 @@ const elements = Object.fromEntries([
     'weeklyTargetInput',
     'localeInput',
     'timeZoneInput',
+    'defaultDatabasePathInput',
     'multiplierEditor',
     'categoryEditor',
     'addCategoryButton',
@@ -79,6 +81,7 @@ const ROLE_LABELS = {
 
 let currentDatabase = null;
 let currentSchedule = null;
+let currentDatabaseConfiguration = null;
 let selectedModuleId = null;
 let selectedWeekIndex = 0;
 let settingsDraft = null;
@@ -146,6 +149,7 @@ function dayLabels(locale) {
 
 function renderStoreState(snapshot) {
     currentDatabase = snapshot.database;
+    currentDatabaseConfiguration = snapshot.databaseConfiguration;
     if (!currentDatabase) return;
     currentSchedule = buildPlanSchedule(currentDatabase);
 
@@ -423,6 +427,7 @@ function openSettingsDialog() {
         : '';
     elements.localeInput.value = settingsDraft.metadata.locale;
     elements.timeZoneInput.value = settingsDraft.metadata.timeZone;
+    elements.defaultDatabasePathInput.value = currentDatabaseConfiguration?.defaultDatabase || '';
     elements.exceptionsInput.value = settingsDraft.settings.calendarExceptions
         .map(exception => `${exception.date} | ${exception.label}`)
         .join('\n');
@@ -568,7 +573,7 @@ function parseExceptions(value) {
         });
 }
 
-function applySettings(event) {
+async function applySettings(event) {
     event.preventDefault();
     clearFormError(elements.settingsError);
     try {
@@ -583,6 +588,10 @@ function applySettings(event) {
             : null;
         settingsDraft.settings.calendarExceptions = parseExceptions(elements.exceptionsInput.value);
 
+        const nextDefaultDatabase = elements.defaultDatabasePathInput.value.trim();
+        const currentDefaultDatabase = currentDatabaseConfiguration?.defaultDatabase || '';
+        if (nextDefaultDatabase) normalizeDatabasePath(nextDefaultDatabase);
+
         plannerStore.update(draft => {
             draft.metadata = settingsDraft.metadata;
             draft.settings = settingsDraft.settings;
@@ -593,6 +602,9 @@ function applySettings(event) {
             draft.plan.startDate = settingsDraft.plan.startDate;
             draft.plan.weeklyTargetMinutes = settingsDraft.plan.weeklyTargetMinutes;
         }, 'Impostazioni aggiornate');
+        if (nextDefaultDatabase !== currentDefaultDatabase) {
+            plannerStore.setDefaultDatabaseConfiguration(nextDefaultDatabase);
+        }
         elements.settingsDialog.close();
     } catch (error) {
         showFormError(elements.settingsError, error);

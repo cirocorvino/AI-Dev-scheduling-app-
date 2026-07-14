@@ -564,6 +564,11 @@ code {
     grid-column: 1 / -1;
 }
 
+.settings-hint {
+    margin: 0.65rem 0 0;
+    font-size: 0.82rem;
+}
+
 label {
     display: grid;
     gap: 0.35rem;
@@ -808,4 +813,5 @@ textarea:focus {
     .dialog form {
         padding: 1rem;
     }
+
 }

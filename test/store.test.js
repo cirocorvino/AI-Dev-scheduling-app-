@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
+import { createDatabaseConfiguration, emptyDatabaseConfiguration } from '../js/db-configuration.js';
 import { PlannerStore } from '../js/store.js';
 
 const exampleUrl = new URL('../data/examples/organizer-example.json', import.meta.url);
@@ -17,30 +18,73 @@ function jsonResponse(payload) {
     };
 }
 
-test('carica prima il database convenzionale dell’utente', async t => {
+function notFoundResponse() {
+    return { ok: false, status: 404 };
+}
+
+function recordDownloads(t) {
+    const originalDocument = globalThis.document;
+    const originalUrl = globalThis.URL;
+    const blobs = new Map();
+    const downloads = [];
+    let nextBlobId = 0;
+
+    globalThis.URL = {
+        createObjectURL(blob) {
+            const url = `blob:test-${nextBlobId += 1}`;
+            blobs.set(url, blob);
+            return url;
+        },
+        revokeObjectURL() {}
+    };
+    globalThis.document = {
+        createElement(tagName) {
+            assert.equal(tagName, 'a');
+            return {
+                href: '',
+                download: '',
+                click() {
+                    downloads.push({ fileName: this.download, blob: blobs.get(this.href) });
+                }
+            };
+        }
+    };
+    t.after(() => {
+        globalThis.URL = originalUrl;
+        if (originalDocument === undefined) delete globalThis.document;
+        else globalThis.document = originalDocument;
+    });
+    return downloads;
+}
+
+test('carica con priorità il database indicato dalla configurazione', async t => {
     const originalFetch = globalThis.fetch;
     const requestedUrls = [];
-    let snapshot;
     t.after(() => { globalThis.fetch = originalFetch; });
 
     globalThis.fetch = async url => {
         requestedUrls.push(url);
-        return jsonResponse(example);
+        if (url === 'data/user/db-configuration.json') {
+            return jsonResponse(createDatabaseConfiguration('data/user/percorso-ufficiale.json'));
+        }
+        if (url === 'data/user/percorso-ufficiale.json') return jsonResponse(example);
+        return notFoundResponse();
     };
 
     const store = new PlannerStore();
-    store.subscribe(value => { snapshot = value; });
     await store.initialize();
 
-    assert.deepEqual(requestedUrls, ['data/user/organizer-data.json']);
-    assert.equal(store.fileName, 'organizer-data.json');
-    assert.match(store.status.message, /aperto organizer-data\.json/i);
-    assert.equal(store.isDemo, false);
-    assert.equal(snapshot.isDemo, false);
-    assert.equal(store.dirty, false);
+    assert.deepEqual(requestedUrls, [
+        'data/user/db-configuration.json',
+        'data/user/percorso-ufficiale.json'
+    ]);
+    assert.equal(store.fileName, 'percorso-ufficiale.json');
+    assert.equal(store.databaseConfiguration.defaultDatabase, 'data/user/percorso-ufficiale.json');
+    assert.match(store.status.message, /database predefinito caricato/i);
+    assert.deepEqual(store.status.warnings, []);
 });
 
-test('usa l’esempio quando il database utente non è presente', async t => {
+test('se la configurazione manca carica organizer-data.json senza avvisi', async t => {
     const originalFetch = globalThis.fetch;
     const requestedUrls = [];
     let snapshot;
@@ -48,9 +92,7 @@ test('usa l’esempio quando il database utente non è presente', async t => {
 
     globalThis.fetch = async url => {
         requestedUrls.push(url);
-        if (url === 'data/user/organizer-data.json') {
-            return { ok: false, status: 404 };
-        }
+        if (url === 'data/user/db-configuration.json') return notFoundResponse();
         return jsonResponse(example);
     };
 
@@ -59,15 +101,130 @@ test('usa l’esempio quando il database utente non è presente', async t => {
     await store.initialize();
 
     assert.deepEqual(requestedUrls, [
+        'data/user/db-configuration.json',
+        'data/user/organizer-data.json'
+    ]);
+    assert.equal(store.fileName, 'organizer-data.json');
+    assert.deepEqual(store.status.warnings, []);
+    assert.equal(store.status.level, 'success');
+    assert.equal(snapshot.isDemo, false);
+});
+
+test('se la configurazione contiene un percorso non valido avvisa e usa i fallback', async t => {
+    const originalFetch = globalThis.fetch;
+    const requestedUrls = [];
+    t.after(() => { globalThis.fetch = originalFetch; });
+
+    globalThis.fetch = async url => {
+        requestedUrls.push(url);
+        if (url === 'data/user/db-configuration.json') {
+            return jsonResponse({
+                kind: 'learning-planner-db-configuration',
+                schemaVersion: 1,
+                defaultDatabase: '../database.json'
+            });
+        }
+        return jsonResponse(example);
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+
+    assert.deepEqual(requestedUrls, [
+        'data/user/db-configuration.json',
+        'data/user/organizer-data.json'
+    ]);
+    assert.equal(store.fileName, 'organizer-data.json');
+    assert.match(store.status.warnings[0], /percorso contiene segmenti non consentiti/i);
+    assert.equal(store.status.level, 'warning');
+});
+
+test('se il database configurato manca passa al fallback con un avviso', async t => {
+    const originalFetch = globalThis.fetch;
+    const requestedUrls = [];
+    t.after(() => { globalThis.fetch = originalFetch; });
+
+    globalThis.fetch = async url => {
+        requestedUrls.push(url);
+        if (url === 'data/user/db-configuration.json') {
+            return jsonResponse(createDatabaseConfiguration('data/user/database-assente.json'));
+        }
+        if (url === 'data/user/database-assente.json') return notFoundResponse();
+        return jsonResponse(example);
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+
+    assert.deepEqual(requestedUrls, [
+        'data/user/db-configuration.json',
+        'data/user/database-assente.json',
+        'data/user/organizer-data.json'
+    ]);
+    assert.equal(store.fileName, 'organizer-data.json');
+    assert.match(store.status.warnings[0], /impossibile caricare.*database-assente\.json/i);
+});
+
+test('una configurazione vuota usa i fallback senza errore di configurazione', async t => {
+    const originalFetch = globalThis.fetch;
+    const requestedUrls = [];
+    t.after(() => { globalThis.fetch = originalFetch; });
+
+    globalThis.fetch = async url => {
+        requestedUrls.push(url);
+        if (url === 'data/user/db-configuration.json') {
+            return jsonResponse(emptyDatabaseConfiguration());
+        }
+        if (url === 'data/user/organizer-data.json') return notFoundResponse();
+        return jsonResponse(example);
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+
+    assert.deepEqual(requestedUrls, [
+        'data/user/db-configuration.json',
         'data/user/organizer-data.json',
         'data/examples/organizer-example.json'
     ]);
-    assert.equal(store.fileName, 'learning-planner-example.json');
-    assert.match(store.status.message, /esempio generico caricato/i);
     assert.equal(store.isDemo, true);
-    assert.equal(snapshot.isDemo, true);
-    assert.equal(store.dirty, false);
+    assert.equal(store.databaseConfiguration.defaultDatabase, undefined);
+    assert.deepEqual(store.status.warnings, []);
+});
 
-    store.createNew();
-    assert.equal(store.isDemo, false);
+test('Salva scarica database e configurazione soltanto per un percorso personalizzato', async t => {
+    const originalFetch = globalThis.fetch;
+    const downloads = recordDownloads(t);
+    t.after(() => { globalThis.fetch = originalFetch; });
+
+    globalThis.fetch = async url => {
+        if (url === 'data/user/db-configuration.json') return notFoundResponse();
+        return jsonResponse(example);
+    };
+
+    const store = new PlannerStore();
+    await store.initialize();
+    store.setDefaultDatabaseConfiguration('data/user/database-ufficiale.json');
+    await store.save();
+
+    assert.equal(store.fileName, 'database-ufficiale.json');
+    assert.equal(store.dirty, false);
+    assert.deepEqual(downloads.map(download => download.fileName), [
+        'database-ufficiale.json',
+        'db-configuration.json'
+    ]);
+    assert.equal(JSON.parse(await downloads[0].blob.text()).kind, 'learning-planner-database');
+    assert.deepEqual(JSON.parse(await downloads[1].blob.text()), {
+        kind: 'learning-planner-db-configuration',
+        schemaVersion: 1,
+        defaultDatabase: 'data/user/database-ufficiale.json'
+    });
+
+    downloads.length = 0;
+    store.setDefaultDatabaseConfiguration('');
+    await store.save();
+
+    assert.deepEqual(downloads.map(download => download.fileName), ['organizer-data.json']);
+    assert.equal(store.databaseConfiguration.defaultDatabase, undefined);
+    assert.deepEqual(store.databaseConfiguration, emptyDatabaseConfiguration());
 });

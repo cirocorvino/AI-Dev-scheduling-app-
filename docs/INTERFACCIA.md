@@ -14,9 +14,9 @@ Chiudendo o ricaricando la pagina con modifiche pendenti, il browser chiede conf
 
 ## Caricamento automatico all'avvio
 
-All'avvio l'app cerca `data/user/organizer-data.json`. Se il file esiste ed è valido, diventa il database corrente; se è assente o non è utilizzabile, viene caricato l'esempio fittizio `data/examples/organizer-example.json`.
+All'avvio l'app cerca prima `data/user/db-configuration.json`. Se la proprietà `defaultDatabase` indica un file valido, quel database viene caricato con la priorità più alta. Seguono `data/user/organizer-data.json` e l'esempio fittizio `data/examples/organizer-example.json`.
 
-Il caricamento HTTP non collega il database al file sul disco. Dopo aver premuto **Salva**, spostare il file salvato o scaricato nella cartella `data/user/` e rinominarlo esattamente `organizer-data.json`; l'app userà quella copia al successivo avvio.
+Una configurazione mancante o vuota attiva i fallback in modo trasparente. Se il file non è utilizzabile, contiene un percorso non valido oppure indica un database che non può essere caricato, l'app mostra un avviso non bloccante e apre immediatamente il fallback successivo.
 
 ## Barra delle azioni
 
@@ -38,9 +38,9 @@ I database organizer v1 vengono migrati in memoria al formato v2. Il file origin
 
 ### Salva
 
-Scrive l'intero database corrente in formato JSON v2. Se il database è stato aperto con un browser che supporta l'accesso diretto ai file, viene aggiornato quel file. Negli altri casi viene chiesto dove creare il file oppure ne viene scaricata una copia.
+Serializza l'intero database corrente in formato JSON v2 e lo scarica senza richiedere autorizzazioni di scrittura al filesystem.
 
-Per fare in modo che il database venga caricato automaticamente all'avvio successivo, dopo il salvataggio collocare il file in `data/user/` e rinominarlo `organizer-data.json`. Questo passaggio è necessario anche quando il database iniziale era stato caricato automaticamente, perché il caricamento via HTTP non concede all'app il permesso di sovrascrivere il file sorgente.
+Se è attivo il percorso convenzionale, viene scaricato soltanto `organizer-data.json`, da copiare in `data/user`. Se è configurato un percorso personalizzato, vengono scaricati il database con il nome indicato e `db-configuration.json`; l'utente deve collocarli rispettivamente nel percorso configurato e in `data/user`.
 
 Dopo **Importa programma**, il salvataggio registra il programma importato all'interno del database corrente.
 
@@ -60,10 +60,15 @@ Apre l'editor del database e della disponibilità. Da qui si modificano:
 
 - nome del database, titolo e descrizione del percorso;
 - data iniziale, target settimanale, lingua e fuso orario;
+- percorso relativo del database predefinito;
 - coefficienti applicati alle stime dei diversi tipi di argomento;
 - categorie, icone, colori e ruoli;
 - attività ricorrenti e slot disponibili per ogni giorno;
 - eccezioni del calendario.
+
+La sezione **Database predefinito** contiene un solo percorso relativo, per esempio `data/user/corso-dotnet.json`. **Applica impostazioni** valida il valore e aggiorna soltanto lo stato in memoria, insieme agli altri parametri: non scrive file e non usa `localStorage`. La finestra si chiude e l'app segnala modifiche non salvate.
+
+Il successivo **Salva** scarica database e configurazione. Svuotando il campo si ripristina `data/user/organizer-data.json`: in questo caso viene scaricato soltanto il database convenzionale e non viene generato `db-configuration.json`.
 
 Le eccezioni usano una riga per data nel formato:
 

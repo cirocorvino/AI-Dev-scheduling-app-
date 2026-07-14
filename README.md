@@ -14,7 +14,7 @@ Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come age
 - Gantt calcolato sulla disponibilità effettiva e dettaglio di ogni settimana;
 - apertura e salvataggio locale, con fallback tramite download JSON;
 - importazione di piani;
-- caricamento manuale e automatico del database locale convenzionale (con fallback sull'esempio fittizio).
+- database predefinito configurabile, con fallback automatici e avvisi non bloccanti.
 
 ## Avvio locale
 
@@ -43,12 +43,18 @@ npm test
 1. Aprire **Impostazioni** per definire categorie, disponibilità ricorrenti, target ed eccezioni.
 2. Aprire **Moduli e argomenti** per comporre il percorso e ordinare le attività.
 3. Consultare il Gantt; selezionare un modulo per vedere la distribuzione settimanale.
-4. Usare **Salva** per scrivere il database nel file aperto o scaricarne una copia; per caricarlo automaticamente all'avvio successivo, spostarlo in `data/user/` e rinominarlo `organizer-data.json`.
+4. Usare **Salva** per scaricare il database corrente e, quando serve, la relativa configurazione; sarà poi responsabilità dell'utente collocare i file nei percorsi indicati.
 5. Usare **Importa programma** per sostituire soltanto il percorso, conservando disponibilità e categorie.
 
-All'avvio l'app prova a caricare `data/user/organizer-data.json`. Se il file non è presente o non è utilizzabile, carica `data/examples/organizer-example.json` come fallback.
+All'avvio l'app applica questo ordine di priorità:
 
-Dopo aver salvato o scaricato un database, collocare il file nella cartella `data/user/` e rinominarlo esattamente `organizer-data.json` per renderlo il database predefinito dell'avvio successivo. Il file viene ignorato da Git, ma è comunque servito via HTTP dall'istanza locale dell'app.
+1. database indicato da `data/user/db-configuration.json`;
+2. `data/user/organizer-data.json`;
+3. `data/examples/organizer-example.json`.
+
+Se la configurazione manca o è vuota, l'app passa ai fallback in modo trasparente. Un percorso non valido, una configurazione non utilizzabile o un database esplicitamente indicato ma non caricabile producono invece un avviso non bloccante, seguito immediatamente dal fallback. In **Impostazioni** è possibile specificare un percorso relativo, per esempio `data/user/corso-dotnet.json`, oppure lasciare il campo vuoto per usare il database convenzionale.
+
+**Applica impostazioni** aggiorna soltanto lo stato in memoria. **Salva** scarica `organizer-data.json` quando è attivo il fallback convenzionale; per un percorso personalizzato scarica invece sia il database sia `db-configuration.json`. L'app non richiede autorizzazioni di scrittura al browser e non usa `localStorage`.
 
 ## Interfaccia
 
@@ -62,6 +68,7 @@ La guida [docs/INTERFACCIA.md](docs/INTERFACCIA.md) descrive ogni area, chiarisc
 index.html                 interfaccia e dialog di modifica
 Style/                     foglio di stile, manifest e icona
 js/model.js                schema, validazione e migrazione v1
+js/db-configuration.js     schema e validazione della configurazione predefinita
 js/planner.js              capacità, Gantt e agenda settimanale
 js/store.js                stato e I/O locale dei file JSON
 js/app.js                  rendering e interazioni UI
