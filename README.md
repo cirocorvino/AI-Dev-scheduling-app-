@@ -2,7 +2,7 @@
 
 Applicazione web **local-first** per progettare un percorso di apprendimento, stimarne la durata e distribuirne gli argomenti negli slot disponibili della settimana.
 
-Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come agenda operativa con argomenti, tempi e indisponibilità. Non richiede backend, account o servizi cloud: database e programmi sono file JSON scelti esplicitamente dall'utente.
+Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come agenda operativa con argomenti, tempi e indisponibilità. Non richiede backend, account o servizi cloud: i dati restano nel browser oppure in file JSON gestiti esplicitamente dall'utente.
 
 ## Funzioni principali
 
@@ -12,15 +12,26 @@ Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come age
 - template settimanale con più slot per giorno;
 - target settimanale e date eccezionali che riducono la capacità reale;
 - Gantt calcolato sulla disponibilità effettiva e dettaglio di ogni settimana;
-- apertura e salvataggio locale, con fallback tramite download JSON;
+- copia di lavoro IndexedDB in modalità `file://` ed esportazione JSON portabile;
 - importazione di piani;
 - database predefinito configurabile, con fallback automatici e avvisi non bloccanti.
 
-## Avvio locale
+## Scegliere come avviare l'app
 
-Per usare l'app senza server, aprire direttamente `index.html` con il browser. In modalità `file://` la copia di lavoro viene conservata automaticamente in IndexedDB. Al primo avvio non viene caricata alcuna DEMO: usare **Apri database** per importare un JSON oppure **Nuovo** per iniziare da un database vuoto.
+Learning Path Planner supporta due modalità con comportamenti intenzionalmente diversi:
 
-I browser non consentono a una pagina `file://` di leggere automaticamente altri file dal disco. Per applicare automaticamente la catena `db-configuration.json` → `organizer-data.json` → esempio, avviare facoltativamente un server statico:
+| | Apertura diretta `file://` | Server HTTP o GitHub Pages |
+|---|---|---|
+| Database all'avvio | Copia IndexedDB del browser | File JSON presenti nel progetto |
+| Primo avvio senza dati | Planner vuoto, senza DEMO | Database di esempio in modalità DEMO |
+| Modifiche | Autosalvate in IndexedDB | Conservate nella pagina fino al download |
+| **Salva** | Esporta un backup JSON | Scarica database e configurazione opzionale |
+
+Per l'uso personale più semplice, aprire direttamente `index.html`. Non servono installazione o server. Al primo avvio il planner vuoto è già modificabile: configurarlo tramite **Impostazioni** e aggiungere i contenuti da **Moduli e argomenti**. In alternativa, **Apri database** importa un JSON esistente. **Nuovo** resta disabilitato finché il piano è già vuoto.
+
+In `file://`, ogni modifica applicata viene conservata automaticamente in IndexedDB. Il file eventualmente scelto con **Apri database** non viene modificato e non resta collegato all'app; **Salva** esporta una nuova copia JSON da usare come backup.
+
+Per caricare automaticamente un database collocato nel progetto o mostrare la DEMO, avviare invece un server statico dalla root:
 
 ```bash
 python -m http.server 3001
@@ -33,6 +44,50 @@ php -S localhost:3001
 ```
 
 Aprire `http://localhost:3001`. Non sono necessarie dipendenze runtime.
+
+La guida completa [docs/GESTIONE-DATABASE.md](docs/GESTIONE-DATABASE.md) descrive i flussi consigliati, il passaggio tra le due modalità e la gestione dei backup.
+
+## Gestire il proprio database
+
+### Uso diretto senza server
+
+1. Aprire `index.html`.
+2. Configurare il planner vuoto oppure importare un JSON con **Apri database**.
+3. Lavorare normalmente: **Applica impostazioni**, **Aggiorna il piano** e le importazioni aggiornano IndexedDB.
+4. Premere periodicamente **Salva** per esportare un backup portabile.
+
+Il pallino `●` segnala che lo stato corrente non è ancora stato esportato; in questa modalità non indica una mancata persistenza nel browser. **Rimuovi database locale**, disponibile nelle Impostazioni, elimina la copia IndexedDB ma non i JSON già scaricati.
+
+### Server con il nome convenzionale
+
+1. Collocare il database in `data/user/organizer-data.json`.
+2. Non creare `db-configuration.json`, oppure lasciarlo senza `defaultDatabase`.
+3. Avviare il server: il database viene caricato automaticamente.
+4. Dopo le modifiche, premere **Salva** e sostituire manualmente `data/user/organizer-data.json` con il file scaricato.
+
+### Server con un nome personalizzato
+
+1. In **Impostazioni**, indicare un percorso relativo come `data/user/corso-dotnet.json`.
+2. Premere **Applica impostazioni**, quindi **Salva**.
+3. Copiare il database scaricato nel percorso dichiarato.
+4. Copiare anche `db-configuration.json` in `data/user/`.
+5. Ricaricare la pagina e verificare il database aperto.
+
+Il percorso deve essere relativo alla root servita: un valore assoluto come `C:\Users\nome\Documenti\database.json` non è accessibile alla SPA. **Salva** produce download e non sovrascrive direttamente i file del progetto.
+
+### Priorità e fallback HTTP
+
+Quando è aperta via HTTP, l'app prova nell'ordine:
+
+1. il database indicato da `data/user/db-configuration.json`;
+2. `data/user/organizer-data.json`;
+3. `data/examples/organizer-example.json` in modalità DEMO.
+
+Una configurazione assente o vuota e il normale passaggio ai fallback sono trasparenti. Una configurazione invalida o un database esplicitamente indicato ma non caricabile generano un avviso non bloccante, seguito dal fallback successivo.
+
+Le copie IndexedDB di `file://` e i database caricati via HTTP sono indipendenti. Per passare da una modalità all'altra, esportare con **Salva** e importare o collocare il JSON secondo il flusso di destinazione. L'app non usa `localStorage`.
+
+## Sviluppo e test
 
 Il bundle classico `js/app.bundle.js` è già incluso e non incorpora dati dimostrativi. Chi modifica i sorgenti in `js/` deve rigenerarlo con:
 
@@ -51,26 +106,14 @@ npm test
 1. Aprire **Impostazioni** per definire categorie, disponibilità ricorrenti, target ed eccezioni.
 2. Aprire **Moduli e argomenti** per comporre il percorso e ordinare le attività.
 3. Consultare il Gantt; selezionare un modulo per vedere la distribuzione settimanale.
-4. Usare **Salva** per esportare il database corrente come JSON. Via HTTP può essere scaricata anche la relativa configurazione.
+4. Usare **Salva** per esportare il database corrente come JSON; via HTTP può essere scaricata anche la relativa configurazione.
 5. Usare **Importa programma** per sostituire soltanto il percorso, conservando disponibilità e categorie.
-
-Quando è aperta via HTTP, all'avvio l'app applica questo ordine di priorità:
-
-1. database indicato da `data/user/db-configuration.json`;
-2. `data/user/organizer-data.json`;
-3. `data/examples/organizer-example.json`.
-
-Se la configurazione manca o è vuota, l'app passa ai fallback in modo trasparente. Un percorso non valido, una configurazione non utilizzabile o un database esplicitamente indicato ma non caricabile producono invece un avviso non bloccante, seguito immediatamente dal fallback. In **Impostazioni** è possibile specificare un percorso relativo, per esempio `data/user/corso-dotnet.json`, oppure lasciare il campo vuoto per usare il database convenzionale.
-
-In modalità `file://` questi tentativi automatici vengono evitati perché il browser li bloccherebbe. L'app cerca esclusivamente la copia IndexedDB associata a `index.html`; se manca, mostra un planner vuoto senza attivare la DEMO. **Apri database**, **Nuovo**, **Applica impostazioni** e **Aggiorna il piano** aggiornano automaticamente IndexedDB.
-
-In `file://`, **Salva** serve soltanto a esportare un backup JSON e non è necessario per conservare le modifiche nel browser. Via HTTP scarica `organizer-data.json` quando è attivo il fallback convenzionale; per un percorso personalizzato scarica invece sia il database sia `db-configuration.json`. L'app non usa `localStorage`.
 
 ## Interfaccia
 
 La schermata è composta da barra delle azioni, riepilogo, diagramma di Gantt e dettaglio settimanale. Le finestre **Impostazioni** e **Moduli e argomenti** permettono di personalizzare rispettivamente disponibilità e contenuti del percorso.
 
-La guida [docs/INTERFACCIA.md](docs/INTERFACCIA.md) descrive ogni area, chiarisce la differenza tra **Apri database** e **Importa programma** e spiega cosa viene scritto usando **Salva**.
+La guida [docs/INTERFACCIA.md](docs/INTERFACCIA.md) descrive ogni area e chiarisce la differenza tra **Apri database** e **Importa programma**. La guida [docs/GESTIONE-DATABASE.md](docs/GESTIONE-DATABASE.md) raccoglie tutti i casi di caricamento, persistenza, esportazione e fallback.
 
 ## Struttura
 
@@ -89,7 +132,7 @@ data/examples/             database dimostrativo versionato
 data/user/                 database locali ignorati da Git
 data/private/              documenti privati ignorati da Git
 test/                      test automatici del modello e del planner
-docs/                      interfaccia, formato dati, architettura, privacy e roadmap
+docs/                      gestione database, interfaccia, formato dati, architettura, privacy e roadmap
 ```
 
 ## Formati e privacy

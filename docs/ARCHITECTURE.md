@@ -14,31 +14,52 @@ Learning Path Planner è una single-page application statica, senza framework e 
 
 ## Flusso dei dati
 
+### Avvio HTTP
+
 ```text
-db-configuration.json ──► database predefinito ──┐
-          │ assente/vuoto/non valido             │
-          ▼                                      │
- organizer-data.json ────────────────────────────┤
-          │ assente/errore                       │
-          ▼                                      │
-   esempio fittizio ─────────────────────────────┘
-                                                 │
-                                                 ▼
- validazione + migrazione ──► stato normalizzato v2
-          │                          │
-          │                          ├──► calcolo Gantt e settimane
-          │                          └──► rendering interfaccia
+data/user/db-configuration.json
           │
-          └─────────────────────────────► download database JSON v2 + configurazione opzionale
+          ├── defaultDatabase ──► database personalizzato
+          │
+          └── assente/vuoto/errore
+                         ▼
+           data/user/organizer-data.json
+                         │ assente/errore
+                         ▼
+           data/examples/organizer-example.json (DEMO)
+                         │
+                         ▼
+              validazione e migrazione
+                         │
+                         ▼
+                stato normalizzato v2
+                  │             │
+                  ├──► Gantt    └──► interfaccia
+                  │
+                  └──► download JSON e configurazione opzionale
 ```
 
-Ogni modifica attraversa nuovamente la normalizzazione. Il planner non muta il database e può quindi essere testato separatamente dalla UI.
+Via HTTP lo stato modificato resta in memoria. Il download prodotto da **Salva** non scrive nella directory servita: la sostituzione dei file è un'operazione esplicita dell'utente.
 
-Il flusso automatico mostrato sopra è disponibile solo via HTTP e comprende il fallback DEMO. Con `file://`, le regole di sicurezza del browser impediscono la lettura silenziosa dei JSON adiacenti: l'app ripristina il record attivo da IndexedDB oppure presenta un database vuoto. **Apri database** importa un JSON in IndexedDB; ogni modifica applicata aggiorna la copia locale e **Salva** esporta soltanto un backup JSON.
+### Avvio diretto `file://`
+
+```text
+IndexedDB ── record presente ──► validazione ──► stato normalizzato v2
+     │
+     └── record assente ───────► planner vuoto, senza DEMO
+
+Apri database ──► copia importata ──► IndexedDB
+modifiche UI ────────────────────────► IndexedDB
+Salva ───────────────────────────────► download del solo database JSON
+```
+
+`db-configuration.json`, `organizer-data.json` e il file DEMO non vengono letti automaticamente da `file://`. IndexedDB è la copia operativa, mentre il JSON scaricato è il formato portabile e di backup. Il flag `dirty` indica modifiche successive all'ultima apertura o esportazione e non l'esito della persistenza IndexedDB.
+
+Ogni modifica attraversa nuovamente la normalizzazione. Il planner non muta il database e può quindi essere testato separatamente dalla UI. I flussi utente completi sono descritti in [GESTIONE-DATABASE.md](GESTIONE-DATABASE.md).
 
 ## Scelte intenzionali
 
-- **Local-first:** nessuna chiamata remota e nessun accesso diretto al filesystem; in `file://` il database operativo è persistito in IndexedDB, mai in `localStorage`.
+- **Local-first:** nessun backend, account o servizio esterno e nessun accesso diretto in scrittura al filesystem; in `file://` il database operativo è persistito in IndexedDB, mai in `localStorage`.
 - **Modello esplicito:** i tipi degli argomenti e i ruoli delle categorie sostituiscono inferenze basate sui nomi.
 - **Piano sequenziale:** un modulo inizia dopo la fine del precedente; le eccezioni possono estendere la durata.
 - **Date senza orario:** i calcoli usano date ISO in UTC per evitare scarti dovuti all'ora legale.

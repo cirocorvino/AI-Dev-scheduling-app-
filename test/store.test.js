@@ -242,6 +242,7 @@ test('in modalità file senza IndexedDB inizializzato non carica la DEMO', async
     assert.equal(store.fileName, 'organizer-data.json');
     assert.equal(store.dirty, false);
     assert.match(store.status.message, /nessun database locale/i);
+    assert.doesNotMatch(store.status.message, /nuovo/i);
     assert.deepEqual(store.status.warnings, []);
     assert.equal(cache.saveCount, 0);
 });

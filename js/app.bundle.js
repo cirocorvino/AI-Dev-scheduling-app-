@@ -1433,7 +1433,7 @@
                 this.#databaseConfiguration = emptyDatabaseConfiguration();
                 this.#activeDatabasePath = USER_DATABASE_URL;
                 this.#warnings = [...extraWarnings];
-                this.#setStatus('Nessun database locale: usa Apri database o Nuovo', extraWarnings.length ? 'warning' : 'info');
+                this.#setStatus('Nessun database locale: apri un JSON oppure configura il planner vuoto', extraWarnings.length ? 'warning' : 'info');
                 this.#emit();
             }
 
