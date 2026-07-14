@@ -15,7 +15,7 @@ L'app non ottiene mai un collegamento permanente e scrivibile a un file scelto d
 | `db-configuration.json` | Ignorato | Letto all'avvio e generato quando necessario |
 | Scrittura diretta sul file originale | No | No |
 
-La modalità `file://` è consigliata per l'uso personale senza configurazione. Il server HTTP è preferibile per distribuire l'app, usare un database predefinito presente nel progetto o mostrare automaticamente la DEMO su GitHub Pages.
+La modalità `file://` è consigliata per l'uso personale senza configurazione. Il server HTTP è preferibile usare un database predefinito presente nel progetto.
 
 ## Uso diretto dal disco (`file://`)
 

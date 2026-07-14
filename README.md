@@ -13,8 +13,8 @@ Il piano viene mostrato su un diagramma di Gantt e, per ogni settimana, come age
 - target settimanale e date eccezionali che riducono la capacità reale;
 - Gantt calcolato sulla disponibilità effettiva e dettaglio di ogni settimana;
 - copia di lavoro IndexedDB in modalità `file://` ed esportazione JSON portabile;
-- importazione di piani;
-- database predefinito configurabile, con fallback automatici e avvisi non bloccanti.
+- importazione di piani (solo dati relativi ai moduli e agli argomenti, senza le categorie e i parametri dell'app);
+- database predefinito configurabile (indexedDB, oppure, con web server, data/user/organizer-data.json).
 
 ## Scegliere come avviare l'app
 
