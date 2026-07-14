@@ -1,11 +1,12 @@
 # Privacy e pubblicazione
 
-Un database può rivelare nomi, impegni, orari, assenze e programmi personali. L'app prova a caricare automaticamente soltanto il percorso convenzionale `data/user/organizer-data.json`, servito dalla stessa istanza HTTP locale; in sua assenza usa un esempio fittizio.
+Un database può rivelare nomi, impegni, orari, assenze e programmi personali. L'app carica il percorso relativo indicato in `data/user/db-configuration.json`; in assenza di un valore usa `data/user/organizer-data.json` e infine un esempio fittizio. Nessun percorso remoto o esterno alla root del progetto è accettato.
 
 ## Regole del repository
 
 - `data/examples/` contiene solo dati inventati e revisionabili.
 - `data/user/` contiene database locali ed è ignorata da Git.
+- `db-configuration.json` è ignorato insieme agli altri dati utente e può rivelare il nome del database personale.
 - `data/private/` contiene note o materiale di supporto locale ed è ignorata da Git.
 - esportazioni, backup, file `.env` e varianti `*.personal.json`, `*.private.json`, `*.local.json` e `*.secret.json` sono ignorati.
 - nessun dato importato viene inviato in rete dal codice dell'app.

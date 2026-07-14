@@ -564,6 +564,11 @@ code {
     grid-column: 1 / -1;
 }
 
+.settings-hint {
+    margin: 0.65rem 0 0;
+    font-size: 0.82rem;
+}
+
 label {
     display: grid;
     gap: 0.35rem;
@@ -588,6 +593,15 @@ select:focus,
 textarea:focus {
     border-color: var(--primary);
     outline: 3px solid rgba(37, 99, 235, 0.13);
+}
+
+.field-disabled {
+    opacity: 0.72;
+}
+
+.field-disabled input:disabled {
+    cursor: not-allowed;
+    background: #f1f5f9;
 }
 
 .editor-section {
@@ -808,4 +822,5 @@ textarea:focus {
     .dialog form {
         padding: 1rem;
     }
+
 }

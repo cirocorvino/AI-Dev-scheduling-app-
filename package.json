@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Planner local-first e personalizzabile per percorsi di apprendimento.",
   "scripts": {
-    "test": "node --test"
+    "build": "node scripts/build-classic.mjs",
+    "test": "node scripts/build-classic.mjs --check && node --test"
   },
   "engines": {
     "node": ">=20"

@@ -2,6 +2,35 @@
 
 Ogni file viene validato integralmente prima di entrare nello stato dell'app. Date e orari usano rispettivamente `YYYY-MM-DD` e `HH:MM`; durate e stime sono minuti interi positivi.
 
+## Configurazione del database predefinito
+
+Il file `data/user/db-configuration.json` usa uno schema separato dal database:
+
+```json
+{
+  "kind": "learning-planner-db-configuration",
+  "schemaVersion": 1,
+  "defaultDatabase": "data/user/percorso-personale.json"
+}
+```
+
+`defaultDatabase` deve essere un percorso relativo alla root del progetto, non può contenere `..`, deve terminare in `.json` e non può indicare `db-configuration.json`. I percorsi assoluti del sistema operativo non sono caricabili dalla SPA.
+
+Quando non è definito alcun database predefinito, il file resta valido senza la proprietà `defaultDatabase`:
+
+```json
+{
+  "kind": "learning-planner-db-configuration",
+  "schemaVersion": 1
+}
+```
+
+Via HTTP, la priorità di caricamento è: database configurato, `data/user/organizer-data.json`, `data/examples/organizer-example.json`. Via `file://`, il browser non permette la lettura automatica dei file adiacenti: viene usato l'esempio incorporato e il database personale può essere selezionato con **Apri database**.
+
+L'assenza del file di configurazione, una configurazione vuota e il normale passaggio ai fallback non generano avvisi. Una configurazione non utilizzabile, un percorso non valido o un database indicato ma non caricabile producono un avviso non bloccante; il fallback successivo viene comunque caricato immediatamente.
+
+Il file è opzionale e non viene scritto direttamente dall'app. Con un database personalizzato, **Salva** lo genera come download insieme al database; con il fallback `data/user/organizer-data.json` non viene generato perché non è necessario.
+
 ## Database completo
 
 ```json

@@ -1,9 +1,9 @@
 # Dati utente locali
 
-Questa cartella contiene il database personale che l'app prova a caricare automaticamente all'avvio.
+Questa cartella contiene i database personali e `db-configuration.json`, che identifica il database predefinito.
 
-Tutto il contenuto, eccetto questo README, è escluso da Git. Il database caricato automaticamente deve chiamarsi esattamente `organizer-data.json`.
+Tutto il contenuto, eccetto questo README, è escluso da Git. Quando l'app è servita via HTTP, se la configurazione contiene `defaultDatabase`, quel file ha la priorità più alta; altrimenti l'app prova `organizer-data.json` e infine l'esempio fittizio. Aprendo direttamente `index.html`, selezionare invece il database con **Apri database**, perché il browser non può leggere automaticamente questa cartella.
 
-Dopo aver usato **Salva**, sposta qui il file ottenuto e rinominalo `organizer-data.json`. Al successivo avvio l'app lo caricherà al posto dell'esempio; se non è presente o non è utilizzabile, verrà caricato `data/examples/organizer-example.json`.
+L'app non scrive direttamente in questa cartella. **Salva** scarica il database corrente e, per un database personalizzato, anche `db-configuration.json`; spetta all'utente copiare qui la configurazione e collocare il database nel percorso relativo dichiarato.
 
-Gli altri file possono ancora essere aperti con **Apri database**. Non collocare dati personali in `data/examples/`, che contiene esclusivamente esempi fittizi e versionati.
+Con il fallback convenzionale viene scaricato soltanto `organizer-data.json` e non serve alcun file di configurazione. Svuotando il campo **Percorso database** nelle Impostazioni si ripristina questo comportamento. Non collocare dati personali in `data/examples/`, che contiene esclusivamente esempi fittizi e versionati.
